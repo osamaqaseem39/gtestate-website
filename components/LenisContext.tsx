@@ -22,11 +22,11 @@ export function LenisProvider({ children }: { children: ReactNode }) {
     const instance = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      mouseMultiplier: 20,
-      smoothTouch: false,
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 20,
+      syncTouch: false,
       touchMultiplier: 2,
       infinite: false,
     })
