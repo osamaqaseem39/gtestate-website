@@ -1,4 +1,6 @@
 import Hero from '@/components/Hero'
+import HouseGallery from '@/components/HouseGallery'
+import WhyChooseGT from '@/components/WhyChooseGT'
 import QuickSearch from '@/components/QuickSearch'
 import FeaturedProperties from '@/components/FeaturedProperties'
 import StatsSection from '@/components/StatsSection'
@@ -14,9 +16,13 @@ export default function Home() {
     <main className="min-h-screen">
       <Hero />
       {/* Spacer so page can scroll; content below scrolls under the fixed hero (z-30 < hero z-40) */}
-      {/* Spacer matches Hero's max scroll range: heroHeight * 1.5 = 150vh */}
-      <div className="h-[150vh]" aria-hidden />
-      <div className="relative z-30">
+      {/* Spacer matches Hero's max scroll range: heroHeight * 1.5 = 150vh, plus extra for second slide */}
+      {/* Increased to 250vh to allow Hero's second slide to fully appear and complete animations */}
+      <div className="h-[250vh]" aria-hidden />
+      {/* Content appears after Hero scrolls away */}
+      <div className="relative" style={{ zIndex: 50, position: 'relative' }}>
+        <HouseGallery />
+        <WhyChooseGT />
         <QuickSearch />
         <Footer />
       </div>

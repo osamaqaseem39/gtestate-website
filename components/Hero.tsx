@@ -1193,7 +1193,7 @@ export default function Hero() {
               >
                 {/* Full About Section Layout - full screen width, always fixed size */}
                 <div 
-                  className="bg-[#1a1a1a] flex items-center justify-center py-20"
+                  className="relative flex items-center justify-center py-20"
                   style={{
                     width: viewportSize.width > 0 ? `${viewportSize.width}px` : '100vw',
                     height: viewportSize.height > 0 ? `${viewportSize.height}px` : '100vh',
@@ -1204,7 +1204,21 @@ export default function Hero() {
                     transform: 'translateZ(0)',
                   }}
                 >
-                  <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                  {/* Background Image */}
+                  <div className="absolute inset-0 z-0">
+                    <Image
+                      src="/about-bg.jpeg"
+                      alt="Background"
+                      fill
+                      priority
+                      quality={100}
+                      className="object-cover"
+                      sizes="100vw"
+                    />
+                    {/* Dark overlay for better text readability */}
+                    <div className="absolute inset-0 bg-black/80" />
+                  </div>
+                  <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center z-10">
                     {/* Center Image - Absolutely positioned to be perfectly centered */}
                     <motion.div 
                       className="hidden lg:block absolute left-1/2 top-1/2 overflow-hidden pointer-events-none z-10"
