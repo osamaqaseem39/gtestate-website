@@ -1,6 +1,5 @@
 import Hero from '@/components/Hero'
-import HouseGallery from '@/components/HouseGallery'
-import WhyChooseGT from '@/components/WhyChooseGT'
+import GalleryToWhyChoose from '@/components/GalleryToWhyChoose'
 import QuickSearch from '@/components/QuickSearch'
 import FeaturedProperties from '@/components/FeaturedProperties'
 import StatsSection from '@/components/StatsSection'
@@ -21,8 +20,7 @@ export default function Home() {
       <div className="h-[250vh]" aria-hidden />
       {/* Content appears after Hero scrolls away */}
       <div className="relative" style={{ zIndex: 50, position: 'relative' }}>
-        <HouseGallery />
-        <WhyChooseGT />
+        <GalleryToWhyChoose />
         <QuickSearch />
         <Footer />
       </div>
