@@ -2,17 +2,14 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { 
-  Home, 
-  Phone, 
-  Mail, 
-  MapPin,
+import Link from 'next/link'
+import {
+  Phone,
+  Mail,
   Facebook,
-  Twitter,
   Instagram,
   Linkedin,
-  ArrowRight,
-  Zap
+  ChevronUp,
 } from 'lucide-react'
 
 export default function Footer() {
@@ -21,179 +18,153 @@ export default function Footer() {
     threshold: 0.1,
   })
 
-  const footerLinks = {
-    company: [
-      { name: 'About Us', href: '/about' },
-      { name: 'Our Team', href: '/team' },
-      { name: 'Careers', href: '/careers' },
-      { name: 'Press', href: '/press' },
-    ],
-    services: [
-      { name: 'Property Search', href: '/search' },
-      { name: 'Virtual Tours', href: '/tours' },
-      { name: 'AI Matching', href: '/ai-matching' },
-      { name: 'Smart Homes', href: '/smart-homes' },
-    ],
-    support: [
-      { name: 'Help Center', href: '/help' },
-      { name: 'Contact Us', href: '/contact' },
-      { name: 'Privacy Policy', href: '/privacy' },
-      { name: 'Terms of Service', href: '/terms' },
-    ],
-    resources: [
-      { name: 'Blog', href: '/blog' },
-      { name: 'News', href: '/news' },
-      { name: 'Market Reports', href: '/reports' },
-      { name: 'Investment Guide', href: '/investment' },
-    ]
-  }
+  const navLinks = [
+    { name: 'About Us', href: '/about' },
+    { name: 'Services', href: '/services' },
+    { name: 'Team', href: '/team' },
+    { name: 'Projects', href: '/projects' },
+  ]
 
   const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
     { icon: Instagram, href: '#', label: 'Instagram' },
     { icon: Linkedin, href: '#', label: 'LinkedIn' },
   ]
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
-    <footer ref={ref} className="bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 cyber-grid opacity-10" />
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-neon-blue to-transparent" />
+    <footer ref={ref} className="bg-black relative overflow-hidden">
+      {/* Marquee - WE ARE GT ESTATE */}
+      <div className="relative border-b border-white/10 overflow-hidden">
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+        <div className="flex py-4 whitespace-nowrap text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light tracking-tight animate-footer-marquee w-max">
+          <span className="flex items-center shrink-0 gap-2 pr-8">
+            {[...Array(6)].map((_, i) => (
+              <span key={i} className="inline-flex items-center gap-2">
+                GT ESTATE <span className="text-[#5dd4c8] text-xl sm:text-2xl md:text-3xl">◆</span> WE ARE{' '}
+              </span>
+            ))}
+          </span>
+          <span className="flex items-center shrink-0 gap-2 pr-8" aria-hidden>
+            {[...Array(6)].map((_, i) => (
+              <span key={`d-${i}`} className="inline-flex items-center gap-2">
+                GT ESTATE <span className="text-[#5dd4c8] text-xl sm:text-2xl md:text-3xl">◆</span> WE ARE{' '}
+              </span>
+            ))}
+          </span>
+        </div>
+      </div>
 
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
-        {/* Main Footer Content */}
-        <div className="py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-            {/* Brand Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="lg:col-span-2"
-            >
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg flex items-center justify-center">
-                  <Home className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-white">GT Estate</span>
-              </div>
-              
-              <p className="text-white/60 mb-6 max-w-md">
-                Experience the future of real estate with AI-powered matching, 
-                virtual reality tours, and smart home integration.
-              </p>
-
-              {/* Contact Info */}
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3 text-white/60">
-                  <Phone className="w-4 h-4 text-neon-blue" />
-                  <span>+1 (555) 123-4567</span>
-                </div>
-                <div className="flex items-center space-x-3 text-white/60">
-                  <Mail className="w-4 h-4 text-neon-blue" />
-                  <span>info@gtestate.com</span>
-                </div>
-                <div className="flex items-center space-x-3 text-white/60">
-                  <MapPin className="w-4 h-4 text-neon-blue" />
-                  <span>Lahore, Pakistan</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Company Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <h3 className="text-white font-semibold mb-4">Company</h3>
-              <ul className="space-y-3">
-                {footerLinks.company.map((link, index) => (
-                  <li key={link.name}>
-                    <a 
-                      href={link.href}
-                      className="text-white/60 hover:text-neon-blue transition-colors duration-200 flex items-center group"
-                    >
-                      <span>{link.name}</span>
-                      <ArrowRight className="w-3 h-3 ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Services Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <h3 className="text-white font-semibold mb-4">Services</h3>
-              <ul className="space-y-3">
-                {footerLinks.services.map((link, index) => (
-                  <li key={link.name}>
-                    <a 
-                      href={link.href}
-                      className="text-white/60 hover:text-neon-blue transition-colors duration-200 flex items-center group"
-                    >
-                      <span>{link.name}</span>
-                      <ArrowRight className="w-3 h-3 ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Support Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <h3 className="text-white font-semibold mb-4">Support</h3>
-              <ul className="space-y-3">
-                {footerLinks.support.map((link, index) => (
-                  <li key={link.name}>
-                    <a 
-                      href={link.href}
-                      className="text-white/60 hover:text-neon-blue transition-colors duration-200 flex items-center group"
-                    >
-                      <span>{link.name}</span>
-                      <ArrowRight className="w-3 h-3 ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-
-          {/* Newsletter Signup */}
+        {/* Main Footer Content - columns + optional image area */}
+        <div className="py-12 lg:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
+          {/* HOME / Navigation */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-12 pt-8 border-t border-white/10"
+            transition={{ duration: 0.5 }}
           >
-            <div className="max-w-md">
-              <h3 className="text-white font-semibold mb-4 flex items-center">
-                <Zap className="w-5 h-5 text-neon-blue mr-2" />
-                Stay Updated
-              </h3>
-              <p className="text-white/60 mb-4">
-                Get the latest property updates and market insights delivered to your inbox.
-              </p>
-              <div className="flex space-x-3">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-neon-blue focus:ring-1 focus:ring-neon-blue/50"
-                />
-                <button className="px-6 py-3 bg-gradient-to-r from-neon-blue to-neon-purple text-white font-semibold rounded-lg hover:scale-105 transition-transform duration-200">
-                  Subscribe
-                </button>
+            <h3 className="text-white font-semibold uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span className="text-[#5dd4c8] text-[8px]">◆</span> Home
+            </h3>
+            <ul className="space-y-3">
+              {navLinks.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-white hover:text-[#5dd4c8] transition-colors duration-200 uppercase text-sm tracking-wide"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* CONTACT */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <h3 className="text-white font-semibold uppercase tracking-wider mb-4">Contact</h3>
+            <div className="space-y-2 text-white/90 text-sm">
+              <a href="mailto:info@gtestate.com" className="flex items-center gap-2 hover:text-[#5dd4c8] transition-colors">
+                <Mail className="w-4 h-4 text-[#5dd4c8] shrink-0" />
+                info@gtestate.com
+              </a>
+              <a href="tel:+923001234567" className="flex items-center gap-2 hover:text-[#5dd4c8] transition-colors">
+                <Phone className="w-4 h-4 text-[#5dd4c8] shrink-0" />
+                +92 300 1234567
+              </a>
+              <a href="https://www.gtestate.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#5dd4c8] transition-colors">
+                www.gtestate.com
+              </a>
+            </div>
+          </motion.div>
+
+          {/* SOCIAL MEDIA + CAREERS */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="space-y-8"
+          >
+            <div>
+              <h3 className="text-white font-semibold uppercase tracking-wider mb-4">Social Media</h3>
+              <div className="flex gap-4">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    className="text-white border border-white/40 rounded p-2 hover:border-[#5dd4c8] hover:text-[#5dd4c8] transition-colors"
+                    aria-label={social.label}
+                  >
+                    <social.icon className="w-5 h-5" />
+                  </a>
+                ))}
               </div>
             </div>
+            <div>
+              <h3 className="text-white font-semibold uppercase tracking-wider mb-4">Careers</h3>
+              <p className="text-white/90 text-sm">
+                Apply on{' '}
+                <a href="mailto:careers@gtestate.com" className="text-[#5dd4c8] hover:underline">
+                  careers@gtestate.com
+                </a>
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Got a project in mind? + Back to top */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex flex-col justify-between items-start lg:items-end"
+          >
+            <span className="btn-hero-group">
+              <Link
+                href="/contact"
+                className="btn-hero px-5 py-3 text-sm"
+              >
+                <span className="text-[8px]">◆</span> Got a project in mind?
+              </Link>
+            </span>
+            <span className="btn-hero-group mt-6 inline-flex">
+              <button
+                type="button"
+                onClick={scrollToTop}
+                className="btn-hero w-12 h-12 p-0 justify-center rotate-45 [&>svg]:-rotate-45"
+                aria-label="Back to top"
+              >
+                <ChevronUp className="w-5 h-5" />
+              </button>
+            </span>
           </motion.div>
         </div>
 
@@ -201,25 +172,16 @@ export default function Footer() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="py-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="py-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-white/70 text-sm"
         >
-          <div className="text-white/60 text-sm">
-            © 2024 GT Estate. All rights reserved.
+          <div>© 2025 GT ESTATE. All Rights Reserved.</div>
+          <div className="flex items-center gap-2">
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <span>|</span>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms and conditions</Link>
           </div>
-          
-          <div className="flex items-center space-x-6">
-            {socialLinks.map((social, index) => (
-              <a
-                key={social.label}
-                href={social.href}
-                className="text-white/60 hover:text-neon-blue transition-colors duration-200"
-                aria-label={social.label}
-              >
-                <social.icon className="w-5 h-5" />
-              </a>
-            ))}
-          </div>
+          <div>By GT ESTATE</div>
         </motion.div>
       </div>
     </footer>

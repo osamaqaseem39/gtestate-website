@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
 import { 
   Smartphone, 
@@ -136,13 +137,11 @@ export default function TechFeatures() {
             <p className="text-white/60 mb-6">
               Schedule a virtual tour and see how our technology can transform your living experience.
             </p>
-            <motion.button 
-              className="btn-primary"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Schedule Virtual Tour
-            </motion.button>
+            <motion.span className="btn-hero-group" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link href="/contact" className="btn-hero">
+                Schedule Virtual Tour
+              </Link>
+            </motion.span>
           </div>
         </motion.div>
       </div>

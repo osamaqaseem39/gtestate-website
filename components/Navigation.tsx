@@ -1,26 +1,41 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { 
   ChevronUp,
-  Menu,
-  X,
   Diamond
 } from 'lucide-react'
+import SideMenu from './SideMenu'
+
+const SCROLL_THRESHOLD = 10
+const NAV_HEIGHT = 80
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true)
+  const lastScrollY = useRef(0)
   const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
+      const currentScrollY = window.scrollY
+      setScrolled(currentScrollY > 50)
+
+      if (currentScrollY <= SCROLL_THRESHOLD) {
+        setIsHeaderVisible(true)
+      } else if (currentScrollY > lastScrollY.current && currentScrollY > NAV_HEIGHT) {
+        setIsHeaderVisible(false)
+      } else if (currentScrollY < lastScrollY.current) {
+        setIsHeaderVisible(true)
+      }
+
+      lastScrollY.current = currentScrollY
     }
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -28,13 +43,22 @@ export default function Navigation() {
     { name: 'About Us', href: '/about' },
     { name: 'What We Do', href: '/what-we-do' },
     { name: 'Projects', href: '/projects' },
+    { name: 'Properties', href: '/properties' },
+    { name: 'Gallery', href: '/gallery' },
   ]
 
   return (
     <motion.nav
       initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      animate={{
+        y: isHeaderVisible ? 0 : -NAV_HEIGHT - 20,
+      }}
+      transition={{
+        type: 'tween',
+        duration: 0.35,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
+      className="fixed top-0 left-0 right-0 z-50"
     >
       {/* Thin horizontal line separator */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gray-300/30" />
@@ -116,32 +140,8 @@ export default function Navigation() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-gray-300/30 mt-4"
-          >
-            <div className="py-4 space-y-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`block px-4 py-2 text-lg font-medium transition-colors duration-200 ${
-                    pathname === item.href
-                      ? 'text-white bg-white/5'
-                      : 'text-white hover:text-white/80 hover:bg-white/5'
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
+        {/* Side menu (slides in from right) */}
+        <SideMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />
       </div>
     </motion.nav>
   )

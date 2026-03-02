@@ -75,8 +75,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${spartan.variable} font-sans`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${spartan.variable} font-sans`} suppressHydrationWarning>
         <GSAPProvider>
           <Navigation />
           {children}

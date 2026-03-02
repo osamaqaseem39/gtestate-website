@@ -19,6 +19,7 @@ module.exports = {
         'neon-cyan': '#06B6D4',
         'teal': '#14B8A6',
         'light-green': '#86EFAC',
+        'brand-teal': '#5dd4c8',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

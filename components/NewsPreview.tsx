@@ -208,13 +208,11 @@ export default function NewsPreview() {
                 placeholder="Enter your email"
                 className="flex-1 px-4 py-3 bg-black/50 border border-neon-blue/30 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-neon-blue focus:border-transparent transition-all duration-300"
               />
-              <motion.button 
-                className="btn-primary"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Subscribe
-              </motion.button>
+              <motion.span className="btn-hero-group" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <button type="button" className="btn-hero">
+                  Subscribe
+                </button>
+              </motion.span>
             </div>
           </div>
         </motion.div>

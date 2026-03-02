@@ -1,7 +1,10 @@
 import { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import Footer from '@/components/Footer'
-import FeaturedProperties from '@/components/FeaturedProperties'
-import QuickSearch from '@/components/QuickSearch'
+
+const FeaturedProperties = dynamic(() => import('@/components/FeaturedProperties'), {
+  ssr: false,
+})
 
 export const metadata: Metadata = {
   title: 'Properties - GT Estate',
@@ -33,7 +36,6 @@ export default function Properties() {
         </div>
       </section>
 
-      <QuickSearch />
       <FeaturedProperties />
       <Footer />
     </main>

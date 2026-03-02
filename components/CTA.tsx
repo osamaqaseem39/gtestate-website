@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
 import { 
   ArrowRight, 
@@ -86,22 +87,18 @@ export default function CTA() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <motion.button 
-                className="btn-primary flex items-center justify-center space-x-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span>Start Your Search</span>
-                <ArrowRight className="h-4 w-4" />
-              </motion.button>
-              <motion.button 
-                className="btn-secondary flex items-center justify-center space-x-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Play className="h-4 w-4" />
-                <span>Watch Demo</span>
-              </motion.button>
+              <motion.span className="btn-hero-group" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link href="/properties" className="btn-hero">
+                  <span>Start Your Search</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </motion.span>
+              <motion.span className="btn-hero-group" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <button type="button" className="btn-hero-outline">
+                  <Play className="h-4 w-4" />
+                  <span>Watch Demo</span>
+                </button>
+              </motion.span>
             </div>
 
             {/* Contact Info */}
@@ -223,13 +220,11 @@ export default function CTA() {
             <p className="text-white/60 mb-6">
               Get your first virtual tour free and receive a personalized AI property recommendation within 24 hours.
             </p>
-            <motion.button 
-              className="btn-primary text-lg px-8 py-4"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Claim Your Free Tour Now
-            </motion.button>
+            <motion.span className="btn-hero-group" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link href="/contact" className="btn-hero text-lg px-8 py-4">
+                Claim Your Free Tour Now
+              </Link>
+            </motion.span>
           </div>
         </motion.div>
       </div>

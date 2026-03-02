@@ -1,27 +1,26 @@
-import Hero from '@/components/Hero'
-import GalleryToWhyChoose from '@/components/GalleryToWhyChoose'
-import QuickSearch from '@/components/QuickSearch'
-import FeaturedProperties from '@/components/FeaturedProperties'
-import StatsSection from '@/components/StatsSection'
-import TechFeatures from '@/components/TechFeatures'
-import AboutPreview from '@/components/AboutPreview'
+ 'use client'
+
+import dynamic from 'next/dynamic'
+import ChoiceSection from '@/components/ChoiceSection'
+import MajorClients from '@/components/MajorClients'
 import Testimonials from '@/components/Testimonials'
-import NewsPreview from '@/components/NewsPreview'
-import CTA from '@/components/CTA'
+import ReachUsSection from '@/components/ReachUsSection'
 import Footer from '@/components/Footer'
 
 export default function Home() {
+  const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
+
   return (
     <main className="min-h-screen">
       <Hero />
       {/* Spacer so page can scroll; content below scrolls under the fixed hero (z-30 < hero z-40) */}
-      {/* Spacer matches Hero's max scroll range: heroHeight * 1.5 = 150vh, plus extra for second slide */}
-      {/* Increased to 250vh to allow Hero's second slide to fully appear and complete animations */}
-      <div className="h-[250vh]" aria-hidden />
-      {/* Content appears after Hero scrolls away */}
-      <div className="relative" style={{ zIndex: 50, position: 'relative' }}>
-        <GalleryToWhyChoose />
-        <QuickSearch />
+      <div className="h-[200vh]" aria-hidden />
+      {/* Content scrolls under the hero (parallel scroll); hero z-40 stays on top until it translates away */}
+      <div className="relative space-y-24" style={{ zIndex: 30, position: 'relative' }}>
+        <ChoiceSection />
+        <MajorClients />
+        <Testimonials />
+        <ReachUsSection />
         <Footer />
       </div>
     </main>

@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
@@ -209,14 +210,12 @@ export default function FeaturedProperties() {
                       </div>
 
                       {/* CTA */}
-                      <motion.button 
-                        className="w-full btn-secondary flex items-center justify-center space-x-2"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <span>View Details</span>
-                        <ArrowRight className="h-4 w-4" />
-                      </motion.button>
+                      <motion.span className="btn-hero-group w-full block" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                        <Link href="/properties" className="btn-hero w-full">
+                          <span>View Details</span>
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      </motion.span>
                     </div>
                   </div>
                 </motion.div>
@@ -232,13 +231,11 @@ export default function FeaturedProperties() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-center"
         >
-          <motion.button 
-            className="btn-primary"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            View All Properties
-          </motion.button>
+          <motion.span className="btn-hero-group" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Link href="/properties" className="btn-hero">
+              View All Properties
+            </Link>
+          </motion.span>
         </motion.div>
       </div>
     </section>
