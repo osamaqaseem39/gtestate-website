@@ -14,7 +14,6 @@ export default function MobileHero() {
           alt="Luxurious interior design"
           fill
           priority
-          quality={85}
           className="object-cover object-center"
           sizes="100vw"
         />

@@ -95,7 +95,6 @@ export default function WhyChooseGT() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 45vw, 45vw"
-                quality={90}
               />
             </motion.div>
 
@@ -112,7 +111,6 @@ export default function WhyChooseGT() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 45vw, 45vw"
-                quality={90}
               />
             </motion.div>
 
@@ -129,7 +127,6 @@ export default function WhyChooseGT() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 30vw, 30vw"
-                quality={90}
               />
             </motion.div>
 
@@ -146,7 +143,6 @@ export default function WhyChooseGT() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 30vw, 30vw"
-                quality={90}
               />
             </motion.div>
           </div>

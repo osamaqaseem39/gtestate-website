@@ -119,7 +119,6 @@ export default function NewHero() {
           alt="Signature real estate experience"
           fill
           priority
-          quality={90}
           className="object-cover object-center"
           sizes="100vw"
         />

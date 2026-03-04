@@ -73,7 +73,6 @@ export default function Testimonials() {
           priority={false}
           className="object-cover scale-105"
           sizes="100vw"
-          quality={85}
         />
         <div className="absolute inset-0 bg-black/75 backdrop-blur-[2px]" />
         <div className="absolute inset-0 bg-neutral-900/90" />

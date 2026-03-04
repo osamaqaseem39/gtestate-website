@@ -45,7 +45,6 @@ export default function ChoiceSection() {
           priority={false}
           className="object-cover"
           sizes="100vw"
-          quality={90}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/88 to-black/95" />
       </div>

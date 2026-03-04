@@ -102,7 +102,6 @@ export default function MajorClients() {
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 50vw"
-            quality={90}
           />
         </motion.div>
       </div>

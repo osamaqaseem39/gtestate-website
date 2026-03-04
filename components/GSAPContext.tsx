@@ -35,7 +35,6 @@ export function GSAPProvider({ children }: { children: ReactNode }) {
     const lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
-      smoothTouch: false,
       wheelMultiplier: 1,
     })
 

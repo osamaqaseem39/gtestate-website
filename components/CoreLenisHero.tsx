@@ -145,7 +145,6 @@ export default function CoreLenisHero() {
           alt="Luxurious interior design"
           fill
           priority
-          quality={90}
           className="object-cover object-center"
           sizes="100vw"
         />

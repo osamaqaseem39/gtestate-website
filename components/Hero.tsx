@@ -870,7 +870,6 @@ export default function Hero() {
           alt="Luxurious interior design"
           fill
           priority
-          quality={90}
           className="object-cover object-center"
           sizes="100vw"
         />
@@ -972,7 +971,6 @@ export default function Hero() {
                       alt="Background"
                       fill
                       priority
-                      quality={100}
                       className="object-cover object-center"
                       sizes="100vw"
                     />
@@ -1012,7 +1010,6 @@ export default function Hero() {
                             src="/about-1.jpeg"
                             alt="Luxurious interior design"
                             fill
-                            quality={100}
                             className="object-cover object-center"
                             sizes="(max-width: 1280px) 40vw, (max-width: 1536px) 35vw, 512px"
                           />
@@ -1028,7 +1025,6 @@ export default function Hero() {
                             src="/about-2.jpeg"
                             alt="Luxurious interior design"
                             fill
-                            quality={100}
                             className="object-cover object-center"
                             sizes="(max-width: 1280px) 40vw, (max-width: 1536px) 35vw, 512px"
                           />
@@ -1067,7 +1063,6 @@ export default function Hero() {
                               src="/about-1.jpeg"
                               alt="Luxurious interior design"
                               fill
-                              quality={100}
                               className="object-cover object-center"
                               sizes="(max-width: 480px) 85vw, (max-width: 768px) 75vw, 400px"
                             />
@@ -1083,7 +1078,6 @@ export default function Hero() {
                               src="/about-2.jpeg"
                               alt="Luxurious interior design"
                               fill
-                              quality={100}
                               className="object-cover object-center"
                               sizes="(max-width: 480px) 85vw, (max-width: 768px) 75vw, 400px"
                             />

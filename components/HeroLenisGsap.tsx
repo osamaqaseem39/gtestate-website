@@ -292,7 +292,6 @@ export default function HeroLenisGsap() {
           alt="Luxurious interior design"
           fill
           priority
-          quality={90}
           className="object-cover object-center"
           sizes="100vw"
         />
@@ -352,7 +351,7 @@ export default function HeroLenisGsap() {
                   <div className="absolute inset-0 bg-black/80" />
 
                   {/* Center image stack that the square reveals */}
-                  <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 w-[min(40vw,512px)] max-w-[512px] -translate-x-1/2 -translate-y-1/2 overflow-hidden">
+                  <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 w-[min(40vw,512px)] max-w-[512px] aspect-[4/5] -translate-x-1/2 -translate-y-1/2 overflow-hidden">
                     <div
                       ref={centerImageOneRef}
                       className="absolute inset-0"
@@ -361,7 +360,6 @@ export default function HeroLenisGsap() {
                         src="/about-1.jpeg"
                         alt="Luxurious interior design"
                         fill
-                        quality={100}
                         className="object-cover object-center"
                         sizes="(max-width: 1280px) 40vw, (max-width: 1536px) 35vw, 512px"
                       />
@@ -374,7 +372,6 @@ export default function HeroLenisGsap() {
                         src="/about-2.jpeg"
                         alt="Luxurious interior design"
                         fill
-                        quality={100}
                         className="object-cover object-center"
                         sizes="(max-width: 1280px) 40vw, (max-width: 1536px) 35vw, 512px"
                       />

@@ -39,7 +39,6 @@ export default function MobileHouseGallery() {
               fill
               className="object-cover"
               sizes="50vw"
-              quality={80}
             />
           </figure>
         ))}

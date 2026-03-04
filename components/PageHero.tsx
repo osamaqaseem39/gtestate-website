@@ -47,7 +47,6 @@ export default function PageHero({
               priority={false}
               className="object-cover"
               sizes="100vw"
-              quality={85}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/92 to-black/98" />
           </div>

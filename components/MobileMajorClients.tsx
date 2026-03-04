@@ -34,7 +34,6 @@ export default function MobileMajorClients() {
           fill
           className="object-cover"
           sizes="100vw"
-          quality={85}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/20" />
         <div className="absolute inset-x-4 bottom-4 space-y-1">
