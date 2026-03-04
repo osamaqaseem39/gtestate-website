@@ -18,10 +18,25 @@ export default function ReachUsSection() {
   return (
     <section
       ref={ref}
-      className="relative bg-black text-white overflow-hidden"
+      className="relative text-white overflow-hidden"
       style={{ position: 'relative', zIndex: 50 }}
       aria-label="Reach us – location and map"
     >
+      {/* Full-width Google Map background in black & white */}
+      <div className="absolute inset-0 -z-20">
+        <iframe
+          title="Al Otaiba Building on map"
+          src={`https://www.google.com/maps?q=${encodeURIComponent('Al Otaiba Building Hamdan Street Abu Dhabi UAE')}&output=embed`}
+          width="100%"
+          height="100%"
+          className="w-full h-full border-0 grayscale"
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+      </div>
+      {/* Dark overlay to ensure content readability on top of the map */}
+      <div className="absolute inset-0 bg-black/70 -z-10" />
       <div className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-16 md:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 min-h-[480px] lg:min-h-[520px]">
@@ -77,24 +92,8 @@ export default function ReachUsSection() {
               </div>
             </motion.div>
 
-            {/* Map – right, full height */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="lg:col-span-7 xl:col-span-8 relative -mt-4 lg:mt-0 lg:pl-0 min-h-[320px] lg:min-h-[520px] rounded-2xl overflow-hidden bg-gray-900"
-            >
-              <iframe
-                title="Al Otaiba Building on map"
-                src={`https://www.google.com/maps?q=${encodeURIComponent('Al Otaiba Building Hamdan Street Abu Dhabi UAE')}&output=embed`}
-                width="100%"
-                height="100%"
-                className="absolute inset-0 w-full h-full border-0"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </motion.div>
+            {/* Spacer column on large screens – content sits over the map background */}
+            <div className="hidden lg:block lg:col-span-7 xl:col-span-8" />
           </div>
         </div>
       </div>

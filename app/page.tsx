@@ -1,29 +1,58 @@
- 'use client'
+'use client'
 
+import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import ChoiceSection from '@/components/ChoiceSection'
 import MajorClients from '@/components/MajorClients'
+import HouseGallery from '@/components/HouseGallery'
 import Testimonials from '@/components/Testimonials'
 import ReachUsSection from '@/components/ReachUsSection'
 import Footer from '@/components/Footer'
+import MobileHero from '@/components/MobileHero'
+import MobileHouseGallery from '@/components/MobileHouseGallery'
+import MobileChoiceSection from '@/components/MobileChoiceSection'
+import MobileMajorClients from '@/components/MobileMajorClients'
+import MobileTestimonials from '@/components/MobileTestimonials'
+import MobileReachUsSection from '@/components/MobileReachUsSection'
+
+const Hero = dynamic(() => import('@/components/HeroLenisGsap'), { ssr: false })
 
 export default function Home() {
-  const Hero = dynamic(() => import('@/components/Hero'), { ssr: false })
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    const update = () => {
+      if (typeof window === 'undefined') return
+      setIsDesktop(window.innerWidth >= 1024) // Tailwind "lg" breakpoint
+    }
+
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
 
   return (
     <main className="min-h-screen">
-      <Hero />
-      {/* Spacer so page can scroll; content below scrolls under the fixed hero (z-30 < hero z-40) */}
-      <div className="h-[200vh]" aria-hidden />
-      {/* Content scrolls under the hero (parallel scroll); hero z-40 stays on top until it translates away */}
-      <div className="relative space-y-24" style={{ zIndex: 30, position: 'relative' }}>
-        <ChoiceSection />
-        <MajorClients />
-        <Testimonials />
-        <ReachUsSection />
-        <Footer />
-      </div>
+      {isDesktop ? (
+        <>
+          <Hero />
+          <HouseGallery />
+          <ChoiceSection />
+          <MajorClients />
+          <Testimonials />
+          <ReachUsSection />
+        </>
+      ) : (
+        <>
+          <MobileHero />
+          <MobileHouseGallery />
+          <MobileChoiceSection />
+          <MobileMajorClients />
+          <MobileTestimonials />
+          <MobileReachUsSection />
+        </>
+      )}
+      <Footer />
     </main>
   )
 }
-

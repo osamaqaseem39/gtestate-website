@@ -1,12 +1,15 @@
 import { Metadata } from 'next'
+import { useEffect, useState } from 'react'
 import Footer from '@/components/Footer'
 import ReachUsSection from '@/components/ReachUsSection'
 import PageHero from '@/components/PageHero'
+import MobilePageHero from '@/components/MobilePageHero'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Team - GT Estate',
-  description: 'Meet the experts behind GT Estate – dedicated professionals delivering exceptional real estate services.',
+  description:
+    'Meet the experts behind GT Estate – dedicated professionals delivering exceptional real estate services.',
 }
 
 const TEAM = [
@@ -17,14 +20,35 @@ const TEAM = [
 ]
 
 export default function Team() {
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    const update = () => {
+      if (typeof window === 'undefined') return
+      setIsDesktop(window.innerWidth >= 1024)
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
   return (
     <main className="min-h-screen bg-black">
-      <PageHero
-        label="Our People"
-        title="Meet Our "
-        titleAccent="Team"
-        description="Experienced professionals committed to delivering outstanding real estate services and client satisfaction."
-      />
+      {isDesktop ? (
+        <PageHero
+          label="Our People"
+          title="Meet Our "
+          titleAccent="Team"
+          description="Experienced professionals committed to delivering outstanding real estate services and client satisfaction."
+        />
+      ) : (
+        <MobilePageHero
+          label="Our people"
+          title="Meet our"
+          titleAccent="team"
+          description="Specialists in renovation, fit‑out, and real estate working together on every brief."
+        />
+      )}
 
       <section className="relative bg-black text-white">
         <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-16 md:py-24">

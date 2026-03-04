@@ -147,24 +147,20 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col justify-between items-start lg:items-end"
           >
-            <span className="btn-hero-group">
-              <Link
-                href="/contact"
-                className="btn-hero px-5 py-3 text-sm"
-              >
-                <span className="text-[8px]">◆</span> Got a project in mind?
-              </Link>
-            </span>
-            <span className="btn-hero-group mt-6 inline-flex">
-              <button
-                type="button"
-                onClick={scrollToTop}
-                className="btn-hero w-12 h-12 p-0 justify-center rotate-45 [&>svg]:-rotate-45"
-                aria-label="Back to top"
-              >
-                <ChevronUp className="w-5 h-5" />
-              </button>
-            </span>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-5 py-3 border border-[#5dd4c8] text-white text-sm hover:bg-[#5dd4c8]/10 transition-colors"
+            >
+              <span className="text-[#5dd4c8] text-[8px]">◆</span> Got a project in mind?
+            </Link>
+            <button
+              type="button"
+              onClick={scrollToTop}
+              className="mt-6 flex items-center justify-center gap-2 w-12 h-12 border border-[#5dd4c8] text-white text-xs uppercase tracking-wider hover:bg-[#5dd4c8]/10 transition-colors rotate-45 [&>svg]:-rotate-45"
+              aria-label="Back to top"
+            >
+              <ChevronUp className="w-5 h-5" />
+            </button>
           </motion.div>
         </div>
 

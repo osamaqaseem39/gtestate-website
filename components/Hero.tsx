@@ -15,7 +15,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default function Hero() {
-  const { scrollTo, getScrollY } = useGSAP()
+  const { scrollTo, getScrollY, pauseSmoothScroll, resumeSmoothScroll } = useGSAP()
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -34,8 +34,9 @@ export default function Hero() {
   const [showNewContent, setShowNewContent] = useState(false)
   const [firstSlideLoaded, setFirstSlideLoaded] = useState(false)
   const [secondSlideLoaded, setSecondSlideLoaded] = useState(false)
+  const [heroIntroPlayed, setHeroIntroPlayed] = useState(false)
   const [hasScrolledPastHero, setHasScrolledPastHero] = useState(false)
-  const [screenLocked, setScreenLocked] = useState(false) // Lock screen for reading
+  const [screenLocked, setScreenLocked] = useState(false) // Previously used to lock screen for reading; now kept for compatibility but not actively set
   const [useRelativePosition, setUseRelativePosition] = useState(false) // Use relative positioning during lock
   const scrollProgressRef = useRef(0)
   const isCompleteRef = useRef(false)
@@ -54,6 +55,8 @@ export default function Hero() {
   const scrollPositionAtLockRef = useRef<number | null>(null) // Store scroll position when lock started
   const hasUserScrolledAfterUnlockRef = useRef<boolean>(false) // Track if user has scrolled after unlock
   const scrollTargetYRef = useRef(1080) // Fallback for SSR; set to window.innerHeight after mount to avoid hydration mismatch
+  const firstSlideLockDoneRef = useRef(false) // Ensure first slide lock runs only once per cycle
+  const secondSlideLockDoneRef = useRef(false) // Ensure second slide lock runs only once per cycle
   
   // Update viewport size (only after mount to keep server and first client render identical)
   useEffect(() => {
@@ -91,6 +94,13 @@ export default function Hero() {
       scrollYWhenFirstSlideLoadedRef.current = y
     }
   }, [firstSlideLoaded, getScrollY])
+
+  // Trigger first hero intro animation once when it enters view
+  useEffect(() => {
+    if (inView && !heroIntroPlayed) {
+      setHeroIntroPlayed(true)
+    }
+  }, [inView, heroIntroPlayed])
   
   // Calculate scale from scroll progress (all animations based on scrollY)
   // Scale calculated from scrollProgress: 1 + (scrollProgress * 19)
@@ -163,29 +173,13 @@ export default function Hero() {
         cancelAnimationFrame(animationFrameRef.current)
         animationFrameRef.current = null
       }
-      // Wait for first slide content to animate in (1.5s)
+      // Wait briefly for first slide content to animate in, then mark it as loaded.
+      // We no longer lock the screen here so that scroll always continues driving the animation.
       const loadTimer = setTimeout(() => {
         setFirstSlideLoaded(true)
         // Reset second slide states to ensure clean transition
         setSecondSlideLoaded(false)
         setShowNewContent(false)
-        // Lock screen for 2s when first slide appears to prevent jitter and let content settle
-        const lockY = window.innerHeight * 0.75
-        lockedScrollPositionRef.current = lockY
-        scrollPositionAtLockRef.current = lockY
-        hasUserScrolledAfterUnlockRef.current = false
-        setScreenLocked(true)
-        if (screenLockTimerRef.current) {
-          clearTimeout(screenLockTimerRef.current)
-        }
-        screenLockTimerRef.current = setTimeout(() => {
-          screenLockTimerRef.current = null
-          setScreenLocked(false)
-          lockedScrollPositionRef.current = null
-          scrollPositionAtLockRef.current = null
-        }, 2000)
-        // Don't set target to 1 automatically - let scroll handler control it
-        // The scroll handler will set targetAboutProgressRef based on scroll position
       }, 1500)
       
       return () => clearTimeout(loadTimer)
@@ -290,32 +284,12 @@ export default function Hero() {
 
     if (aboutContentProgress >= THRESHOLD && !showNewContent) {
       setShowNewContent(true)
-      // Lock screen for 3 seconds when transitioning to visions (only when scrolling down)
-      // Pass true to changePosition - this is the SECOND slide, so change fixed to relative
-      const currentScrollY = getScrollY()
-      const lastScrollY = lastProcessedScrollYRef.current
-      // Only trigger lock if not already locked and scrolling down
-      if (currentScrollY > lastScrollY && !screenLocked) {
-        // Only lock when scrolling down - pass true to change positioning
-        lockScreenForReading(true)
-      }
     } else if (aboutContentProgress < THRESHOLD && showNewContent) {
       setShowNewContent(false)
-      // Reset lock when scrolling back to About
-      if (screenLocked) {
-        setScreenLocked(false)
-        if (screenLockTimerRef.current) {
-          clearTimeout(screenLockTimerRef.current)
-          screenLockTimerRef.current = null
-        }
-        lockedScrollPositionRef.current = null
-        scrollPositionAtLockRef.current = null
-        hasUserScrolledAfterUnlockRef.current = false
-        setUseRelativePosition(false)
-      }
-      // No delay when scrolling up - allow immediate reverse transition
     }
-  }, [aboutContentProgress, showNewContent, firstSlideLoaded, screenLocked, getScrollY])
+    // Note: this effect only depends on aboutContentProgress and showNewContent.
+    // Keeping the dependency array minimal avoids Turbopack's "final argument changed size" warning.
+  }, [aboutContentProgress, showNewContent])
 
   // Previously locked screen for 3 seconds to allow reading.
   // Now we only optionally adjust positioning without introducing any delay or scroll lock.
@@ -354,16 +328,8 @@ export default function Hero() {
 
   // Lock screen when first slide loads (about content appears)
   useEffect(() => {
-    if (firstSlideLoaded && hasReachedScale10 && !showNewContent) {
-      // Only lock when scrolling down, not when scrolling up
-      // Pass false to changePosition - this is the FIRST slide, so keep fixed positioning
-      const currentScrollY = getScrollY()
-      const lastScrollY = lastProcessedScrollYRef.current
-      // Only trigger lock if not already locked and scrolling down
-      if (currentScrollY >= lastScrollY && !screenLocked) {
-        lockScreenForReading(false) // false = don't change positioning, just lock screen
-      }
-    }
+    // We keep this effect for potential future hooks, but screen locking
+    // is no longer applied here so scrolling always drives the hero animation.
   }, [firstSlideLoaded, hasReachedScale10, showNewContent, screenLocked, getScrollY, lockScreenForReading])
 
   // Cleanup lock timer on unmount
@@ -372,8 +338,25 @@ export default function Hero() {
       if (screenLockTimerRef.current) {
         clearTimeout(screenLockTimerRef.current)
       }
+      // Ensure smooth scroll is resumed if component unmounts while locked
+      resumeSmoothScroll()
     }
-  }, [])
+  }, [resumeSmoothScroll])
+
+  // When screenLocked toggles, pause/resume Lenis smooth scrolling
+  useEffect(() => {
+    if (screenLocked) {
+      pauseSmoothScroll()
+    } else {
+      resumeSmoothScroll()
+    }
+  }, [screenLocked, pauseSmoothScroll, resumeSmoothScroll])
+
+  // Note: we intentionally do NOT lock global page scroll via body overflow here.
+  // The hero is designed as a scroll-driven animation: it reads window scroll and
+  // uses that as its progress. If we globally freeze scroll, the hero cannot progress.
+  // Instead, the hero keeps itself on top (via z-index) and clamps how far the user
+  // can scroll through its own wheel/keyboard handlers until animations are complete.
   
   // This effect is no longer needed - scroll handler controls progress directly
   // Removed to prevent conflicts
@@ -401,189 +384,21 @@ export default function Hero() {
     }
   }, [hasReachedFullScale, useRelativePosition])
   
-  // Prevent scrolling until all animations are complete
-  useEffect(() => {
-    const preventScroll = (e: WheelEvent) => {
-      // Lock screen for 3 seconds when content changes (for reading)
-      // But allow scrolling up even when locked
-      const isScrollingUp = e.deltaY < 0
-      
-      // Reset useRelativePosition when scrolling back up - handled in main scroll logic
-      // This check is redundant but kept for safety
-      
-      // After unlock, check if user has scrolled from the locked position
-      if (!screenLocked && lockedScrollPositionRef.current !== null && scrollPositionAtLockRef.current !== null) {
-        const currentScrollY = getScrollY()
-        const lockPosition = scrollPositionAtLockRef.current
-        
-        // If user hasn't scrolled away from lock position yet, maintain it
-        if (!hasUserScrolledAfterUnlockRef.current) {
-          const scrollDiff = Math.abs(currentScrollY - lockPosition)
-          if (scrollDiff < 5 && !isScrollingUp) {
-            // User hasn't scrolled yet - maintain position
-            e.preventDefault()
-            e.stopPropagation()
-            scrollTo(lockPosition)
-            return false
-          } else {
-            // User is scrolling - mark as scrolled and allow
-            hasUserScrolledAfterUnlockRef.current = true
-            lockedScrollPositionRef.current = null
-            scrollPositionAtLockRef.current = null
-          }
-        }
-      }
-      
-      if (screenLocked && lockedScrollPositionRef.current !== null && !isScrollingUp) {
-        // During lock, prevent scroll but allow animations to continue
-        // Only prevent scroll down, allow scroll up to unlock
-        e.preventDefault()
-        e.stopPropagation()
-        // Keep scroll position locked (only when scrolling down)
-        scrollTo(lockedScrollPositionRef.current)
-        return false
-      }
-      
-      // Allow scroll up even when locked to unlock smoothly
-      if (screenLocked && isScrollingUp) {
-        // User scrolling up - unlock immediately and allow scroll
-        setScreenLocked(false)
-        if (useRelativePosition) {
-          setUseRelativePosition(false)
-          if (sectionRef.current && hasReachedFullScale) {
-            const element = sectionRef.current as HTMLElement
-            element.style.position = 'fixed'
-            element.style.top = '0'
-            element.style.left = '0'
-            element.style.right = '0'
-            element.style.bottom = '0'
-          }
-        }
-        // Clear lock timer
-        if (screenLockTimerRef.current) {
-          clearTimeout(screenLockTimerRef.current)
-          screenLockTimerRef.current = null
-        }
-        lockedScrollPositionRef.current = null
-        scrollPositionAtLockRef.current = null
-        hasUserScrolledAfterUnlockRef.current = true
-      }
-      
-      // Phase 1: Square scales and image descales - allow scroll
-      // Phase 2: First slide loads - lock scroll until first slide loads
-      // Phase 3: Second slide loads on scroll - allow scroll for second slide
-      // Phase 4: Screen moves down - allow full scroll after allAnimationsComplete
-      
-      const currentScroll = getScrollY()
-      
-      if (!allAnimationsComplete) {
-        const heroHeight = window.innerHeight
-        const scale15ScrollY = heroHeight * 0.75 // Scroll position when scale = 15
-        const scrollMaxValue = heroHeight * 1.0 // Scroll position when scale = 20 (100%)
-        const slideAnimationScrollRange = heroHeight * 0.5
-        const maxSlideScrollY = scrollMaxValue + slideAnimationScrollRange
-        
-        // Check if we've reached scale 15 based on scrollY
-        const hasReachedScale15 = currentScroll >= scale15ScrollY
-        
-        if (hasReachedScale15 && !firstSlideLoaded) {
-          // Lock scroll until first slide loads (at scale 15)
-          e.preventDefault()
-          e.stopPropagation()
-          return false
-        }
-        // Allow smooth scroll up from second slide - don't block it
-        else if (!hasReachedScale15) {
-          // Before reaching scale 15, allow scroll up to scale 15
-          if (currentScroll >= scale15ScrollY) {
-            e.preventDefault()
-            e.stopPropagation()
-            return false
-          }
-        } else if (hasReachedScale15 && firstSlideLoaded) {
-          // Allow scrolling from scale 15 to scale 20 (square scaling to 100%)
-          // After scale 20, allow scroll for slide animations (based on scrollY)
-          // When scrolling up, allow free movement through all transitions
-          const isScrollingUp = e.deltaY < 0
-          if (!isScrollingUp && currentScroll >= maxSlideScrollY) {
-            // Only prevent scrolling down past maxSlideScrollY
-            e.preventDefault()
-            e.stopPropagation()
-            return false
-          }
-          // If scrolling up, allow free movement
-        }
-        // If we reach here, scrolling is allowed - don't prevent it
-      }
-    }
-    
-    const preventKeyScroll = (e: KeyboardEvent) => {
-      // Lock screen for 3 seconds when content changes (for reading)
-      if (screenLocked && lockedScrollPositionRef.current !== null) {
-        if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
-          e.preventDefault()
-          return false
-        }
-      }
-      
-      const currentScroll = getScrollY()
-      
-      if (!allAnimationsComplete) {
-        const heroHeight = window.innerHeight
-        const scale15ScrollY = heroHeight * 0.75 // Scroll position when scale = 15
-        const scrollMaxValue = heroHeight * 1.0 // Scroll position when scale = 20 (100%)
-        const slideAnimationScrollRange = heroHeight * 0.5
-        const maxSlideScrollY = scrollMaxValue + slideAnimationScrollRange
-        
-        // Check if we've reached scale 15 based on scrollY
-        const hasReachedScale15 = currentScroll >= scale15ScrollY
-        
-        if (hasReachedScale15 && !firstSlideLoaded) {
-          // Lock scroll until first slide loads (at scale 15)
-          if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
-            e.preventDefault()
-            return false
-          }
-        }
-        // Allow smooth scroll up from second slide - don't block it
-        else if (!hasReachedScale15) {
-          // Before reaching scale 15, allow scroll up to scale 15
-          if (currentScroll >= scale15ScrollY) {
-            if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
-              e.preventDefault()
-              return false
-            }
-          }
-        } else if (hasReachedScale15 && firstSlideLoaded) {
-          // Allow scrolling from scale 15 to scale 20 (square scaling to 100%)
-          // After scale 20, allow scroll for slide animations (based on scrollY)
-          // When scrolling up (arrow keys up/page up), allow free movement
-          const isScrollingUp = [33, 38].includes(e.keyCode) // Page Up, Arrow Up
-          if (!isScrollingUp && currentScroll >= maxSlideScrollY) {
-            // Only prevent scrolling down past maxSlideScrollY
-            if ([32, 34, 35, 36, 37, 39, 40].includes(e.keyCode)) {
-              e.preventDefault()
-              return false
-            }
-          }
-          // If scrolling up, allow free movement
-        }
-      }
-    }
-    
-    window.addEventListener('wheel', preventScroll as EventListener, { passive: false })
-    window.addEventListener('keydown', preventKeyScroll, { passive: false })
-    
-    return () => {
-      window.removeEventListener('wheel', preventScroll as EventListener)
-      window.removeEventListener('keydown', preventKeyScroll)
-    }
-  }, [allAnimationsComplete, hasReachedFullScale, firstSlideLoaded, secondSlideLoaded, aboutContentProgress, showNewContent, screenLocked, useRelativePosition, getScrollY, scrollTo])
-  
+  // Note: we rely on Lenis pause/resume and internal hero logic for "locks".
+  // We no longer globally block wheel/keyboard events to avoid scroll getting stuck.
   // Calculate inverse scale to keep content fixed size
   const inverseScale = useMemo(() => {
     return currentScale > 0 ? 1 / currentScale : 1
   }, [currentScale])
+
+  // Once all hero animations are fully complete, release the hero so the
+  // next sections can scroll normally. Until this flag is true, the hero
+  // remains fixed and the page won't progress past it.
+  useEffect(() => {
+    if (allAnimationsComplete && scrollProgress >= 1) {
+      setUseRelativePosition(true)
+    }
+  }, [allAnimationsComplete, scrollProgress])
   
   // Combined ref callback
   const setRefs = useCallback((node: HTMLElement | null) => {
@@ -618,6 +433,12 @@ export default function Hero() {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
+          // While locked, freeze hero animations (no scroll-driven updates)
+          if (screenLocked) {
+            ticking = false
+            return
+          }
+
           if (!sectionRef.current) {
             ticking = false
             return
@@ -667,8 +488,8 @@ export default function Hero() {
           const rawScrollY = animationScrollY // Use animation scroll Y for calculations
           const heroHeight = window.innerHeight
           
-          // Round scrollY to prevent micro-movements (round to nearest 2 pixels to prevent flickering)
-          const SCROLL_THRESHOLD = 2 // Minimum pixel change to process
+          // Round scrollY to prevent micro-movements (round to nearest 1 pixel)
+          const SCROLL_THRESHOLD = 1 // Minimum pixel change to process
           const scrollY = Math.round(rawScrollY / SCROLL_THRESHOLD) * SCROLL_THRESHOLD
           
           // During lock, always process animations even if scroll hasn't changed
@@ -765,21 +586,24 @@ export default function Hero() {
               targetScrollYForScale = Math.min(effectiveScrollYRaw, scale15ScrollY)
             }
           }
-          const scaleProgress = Math.min(1.0, Math.max(0, targetScrollYForScale / scrollMaxValue))
+          const rawScaleProgress = Math.min(1.0, Math.max(0, targetScrollYForScale / scrollMaxValue))
+          // Quantize scale progress to avoid reacting to tiny scroll changes
+          const scaleProgress = Math.round(rawScaleProgress * 1000) / 1000
           
           // Calculate scale directly from scrollY
           // Scale goes from 1 to 20 as scrollY goes from 0 to scrollMaxValue (heroHeight)
           // Scale = 1 + (scrollY / heroHeight) * 19
           // Scale is capped at 20 (100%) when scrollY >= scrollMaxValue
-          const calculatedScale = targetScrollY >= scrollMaxValue 
+          // Use the smoother, unclamped scroll value for scale to avoid jitter
+          const calculatedScale = targetScrollYForScale >= scrollMaxValue 
             ? 20 
-            : Math.max(1, 1 + (targetScrollY / scrollMaxValue) * 19)
+            : Math.max(1, 1 + (targetScrollYForScale / scrollMaxValue) * 19)
           
           // Calculate thresholds based on scrollY directly
-          const calculatedHasReachedScale10 = targetScrollY >= (heroHeight * 0.5) // Scale 10 at 50% scroll
-          const calculatedHasReachedFullScale = targetScrollY >= scale15ScrollY // Scale 15 at 75% scroll
-          const calculatedHasReachedScale20 = targetScrollY >= scrollMaxValue // Scale 20 at 100% scroll
-          
+          const calculatedHasReachedScale10 = targetScrollYForScale >= (heroHeight * 0.5) // Scale 10 at 50% scroll
+          const calculatedHasReachedFullScale = targetScrollYForScale >= scale15ScrollY // Scale 15 at 75% scroll
+          const calculatedHasReachedScale20 = targetScrollYForScale >= scrollMaxValue // Scale 20 at 100% scroll
+
           // After square reaches max scale (20/100%), slide animations are based on scroll height
           // Use scrollMaxValue, slideAnimationScrollRange, and maxSlideScrollY declared earlier
           
@@ -797,7 +621,11 @@ export default function Hero() {
           const prevPastHero = hasScrolledPastHero
           setHasScrolledPastHero((prev) => (prev !== pastHero ? pastHero : prev))
           
-          setScrollProgress(scaleProgress)
+          // Only update scrollProgress state when there is a meaningful change
+          if (Math.abs(scaleProgress - scrollProgressRef.current) > 0.004) {
+            scrollProgressRef.current = scaleProgress
+            setScrollProgress(scaleProgress)
+          }
           
           // Calculate aboutContentProgress based on scrollY directly
           // Progress goes from 0 to 1 based on scrollY position
@@ -962,6 +790,9 @@ export default function Hero() {
                 // Reset locked image scale so it can scale properly again
                 lockedImageScaleRef.current = null
                 setLockedImageScale(null)
+                // Reset slide locks so hero can replay cleanly if user scrolls back to top
+                firstSlideLockDoneRef.current = false
+                secondSlideLockDoneRef.current = false
                 // Progress refs already reset above
                 // Reset lock state when scrolling back up past first slide
                 if (screenLocked) {
@@ -1004,7 +835,7 @@ export default function Hero() {
   return (
     <motion.section 
       ref={setRefs}
-      className="fixed inset-0 min-h-screen overflow-hidden z-40"
+      className="inset-0 min-h-screen overflow-hidden"
       style={{
         y: translateY,
         // Position changes dynamically: relative during lock, fixed otherwise
@@ -1013,15 +844,27 @@ export default function Hero() {
         left: useRelativePosition ? 'auto' : 0,
         right: useRelativePosition ? 'auto' : 0,
         bottom: useRelativePosition ? 'auto' : 0,
-        willChange: hasReachedFullScale ? 'transform' : 'transform',
-        // Always visible - translateY will scroll it up naturally when animations complete
+        // When hero animation is done and user has scrolled past it,
+        // drop z-index and disable pointer events so content below can sit on top.
+        zIndex: allAnimationsComplete && scrollProgress >= 1 ? 0 : 40,
+        transform: 'translate3d(0, 0, 0)',
+        willChange: 'transform',
         visibility: 'visible',
         opacity: 1,
-        pointerEvents: 'auto',
+        pointerEvents: allAnimationsComplete && scrollProgress >= 1 ? 'none' : 'auto',
       }}
     >
       {/* Background Image - responsive to viewport */}
-      <div className="absolute inset-0 z-0">
+      <motion.div 
+        className="absolute inset-0 z-0"
+        initial={{ scale: 1.1 }}
+        animate={{ scale: heroIntroPlayed ? 1 : 1.1 }}
+        transition={{ duration: 1.2, ease: 'easeOut' }}
+        style={{
+          transformOrigin: 'center center',
+          willChange: 'transform',
+        }}
+      >
         <Image
           src="/hero-landscape.jpeg"
           alt="Luxurious interior design"
@@ -1033,7 +876,7 @@ export default function Hero() {
         />
         {/* Minor dark overlay for better text readability */}
         <div className="absolute inset-0 bg-black/40" />
-      </div>
+      </motion.div>
 
       <div className="relative z-10 min-h-screen flex flex-col">
         {/* Navigation - only visible during hero phase, completely hidden in about section */}
@@ -1418,13 +1261,12 @@ export default function Hero() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-24 w-full relative">
               {/* Left Side - BUILDING (above the line) */}
               <motion.div
-                initial={{ opacity: 0, x: -50 }}
+                initial={{ opacity: 0, x: -120 }}
                 animate={{ 
-                  // Keep visible when scrolling up or when animations haven't completed
                   opacity: (allAnimationsComplete && scrollProgress >= 1) ? 0 : (inView ? 1 : 0),
-                  x: scrollProgress >= 1 ? -50 : (inView ? scrollProgress * 300 : -50)
+                  x: inView ? 0 : -120,
                 }}
-                transition={{ duration: 0 }}
+                transition={{ duration: 0.9, ease: 'easeOut' }}
                 className="relative"
                 style={{ 
                   position: 'absolute',
@@ -1434,9 +1276,9 @@ export default function Hero() {
               >
                 {/* Tagline */}
                 <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={inView ? { opacity: 1, y: 0, x: scrollProgress * 300 } : {}}
-                  transition={{ duration: 0 }}
+                  initial={{ opacity: 0, x: -80 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
                   className="text-white text-sm md:text-base font-light uppercase tracking-wider mb-4"
                 >
                   Best Renovation Company & Fit Out Contractor Lahore, Pakistan
@@ -1444,9 +1286,9 @@ export default function Hero() {
 
                 {/* Main Headline - BUILDING */}
                 <motion.h1
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.8, delay: 0.3 }}
+                  initial={{ opacity: 0, x: -120 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.9, ease: 'easeOut', delay: 0.25 }}
                   className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white uppercase tracking-tight leading-none relative"
                 >
                   BUILDING
@@ -1455,13 +1297,12 @@ export default function Hero() {
 
               {/* Right Side - VISIONS (below the line) */}
               <motion.div
-                initial={{ opacity: 0, x: 50 }}
+                initial={{ opacity: 0, x: 120 }}
                 animate={{ 
-                  // Keep visible when scrolling up or when animations haven't completed
                   opacity: (allAnimationsComplete && scrollProgress >= 1) ? 0 : (inView ? 1 : 0),
-                  x: scrollProgress >= 1 ? 50 : (inView ? -scrollProgress * 300 : 50)
+                  x: inView ? 0 : 120,
                 }}
-                transition={{ duration: 0 }}
+                transition={{ duration: 0.9, ease: 'easeOut' }}
                 className="flex flex-col items-end lg:items-end space-y-8"
                 style={{ 
                   position: 'absolute',
@@ -1472,9 +1313,9 @@ export default function Hero() {
               >
                 {/* Main Headline - VISIONS */}
                 <motion.h1
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.8, delay: 0.4 }}
+                  initial={{ opacity: 0, x: 120 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.9, ease: 'easeOut', delay: 0.25 }}
                   className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white uppercase tracking-tight leading-none text-right"
                 >
                   VISIONS
@@ -1482,9 +1323,9 @@ export default function Hero() {
 
                 {/* Contact Us Button */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={inView ? { opacity: 1, y: 0, x: -scrollProgress * 300 } : {}}
-                  transition={{ duration: 0 }}
+                  initial={{ opacity: 0, x: 120 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.7, ease: 'easeOut', delay: 0.4 }}
                   className="mt-8"
                 >
                   <span className="btn-hero-group">
@@ -1499,14 +1340,12 @@ export default function Hero() {
             
             {/* Descriptive Text - Below the line */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ 
-                // Keep visible when scrolling up or when animations haven't completed
                 opacity: (allAnimationsComplete && scrollProgress >= 1) ? 0 : (inView ? 1 : 0),
-                y: scrollProgress >= 1 ? 20 : (inView ? 0 : 20),
-                x: scrollProgress >= 1 ? 0 : (inView ? scrollProgress * 300 : 0)
+                y: inView ? 0 : 40,
               }}
-              transition={{ duration: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.35 }}
               className="absolute left-4 sm:left-6 lg:left-8 xl:left-12 text-white/80 text-sm md:text-base font-light leading-relaxed max-w-md lg:max-w-lg z-10"
               style={{ top: 'calc(50% + 2rem)' }}
             >

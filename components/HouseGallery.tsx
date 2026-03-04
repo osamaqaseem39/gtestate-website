@@ -82,7 +82,7 @@ export default function HouseGallery() {
       <section
         ref={sectionRef}
         className="relative bg-black overflow-hidden h-[200vh]"
-        style={{ position: 'relative', zIndex: 30 }}
+        style={{ position: 'relative' }}
         aria-label="Gallery and Why Choose GT Estate"
       >
         <div
@@ -102,7 +102,7 @@ export default function HouseGallery() {
     <section
       ref={sectionRef}
       className="relative bg-black overflow-hidden h-[200vh]"
-      style={{ position: 'relative', zIndex: 50 }}
+      style={{ position: 'relative' }}
       aria-label="Gallery and Why Choose GT Estate"
     >
       {/* Background image behind section content */}
