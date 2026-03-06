@@ -128,14 +128,14 @@ export default function HeroLenisGsap() {
         )
       }
 
-      // Tilted square: scales up so it feels like
-      // the camera is zooming toward the window.
+      // Tilted square: keep a fixed scale so that
+      // only the inner content appears to scale down.
       if (squareRef.current) {
         master.fromTo(
           squareRef.current,
           { scale: 1, rotation: 45 },
-          { scale: 15, rotation: 45 },
-          0,
+          { scale: 15, rotation: 80 },
+          0.01,
         )
       }
 
@@ -145,9 +145,9 @@ export default function HeroLenisGsap() {
       if (innerContentRef.current) {
         master.fromTo(
           innerContentRef.current,
-          { scale: 1, opacity: 1 },
-          { scale: 1/15, opacity: 1 },
-          0,
+          { scale: 1, opacity: 1 , rotation: -45},
+          { scale: 1/15, opacity: 1 , rotation: -80},
+          0.01,
         )
       }
 
@@ -351,7 +351,7 @@ export default function HeroLenisGsap() {
                   <div className="absolute inset-0 bg-black/80" />
 
                   {/* Center image stack that the square reveals */}
-                  <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 w-[min(40vw,512px)] max-w-[512px] aspect-[4/5] -translate-x-1/2 -translate-y-1/2 overflow-hidden">
+                  <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-[min(40vw,512px)] max-w-[512px] aspect-[4/5] -translate-x-1/2 -translate-y-1/2 overflow-hidden">
                     <div
                       ref={centerImageOneRef}
                       className="absolute inset-0"
@@ -378,12 +378,12 @@ export default function HeroLenisGsap() {
                     </div>
                   </div>
 
-                  <div className="relative z-10 grid w-full grid-cols-1 items-center gap-8 px-4 sm:px-6 lg:grid-cols-12 lg:gap-12 xl:px-12">
+                  <div className="relative z-20 grid w-full grid-cols-1 items-center gap-8 px-4 sm:px-6 lg:grid-cols-12 lg:gap-12 xl:px-12">
                     {/* About / Vision text block (left column) */}
                     <div className="relative lg:col-span-4">
                       <div ref={aboutBlockRef} className="space-y-6">
                         <p className="text-sm font-light uppercase tracking-wider text-white">
-                          ABOUT UPTOWN
+                          ABOUT GT ESTATES
                         </p>
                         <h2 className="text-4xl font-bold uppercase leading-tight tracking-tight text-white md:text-5xl lg:text-6xl xl:text-7xl">
                           <span className="whitespace-nowrap">REFLECT THE SPIRIT</span>
@@ -421,14 +421,13 @@ export default function HeroLenisGsap() {
                     <div className="relative lg:col-span-3">
                       <div ref={aboutDescRef} className="space-y-3">
                         <p className="mb-1 text-sm font-light leading-relaxed text-white md:text-base">
-                          Uptown is an established and well-renowned renovation &amp; fit-out
-                          company in Abu Dhabi and Dubai, known as one of the leading fast
-                          track project service providers in the UAE.
+                          GT Estates is a Lahore-based team of investors, realtors, and finance
+                          advisors focused on verified plots, high-footfall opportunities, and
+                          premium homes and business locations.
                         </p>
                         <p className="text-sm font-light leading-relaxed text-white md:text-base">
-                          Over 13 years, Uptown has expanded in projects, experience, and
-                          distinctive solutions, always focused on bringing bold visions to
-                          life.
+                          We combine market insight with strict due diligence so you can move
+                          from &quot;hard to verify&quot; to confident, well-timed investments.
                         </p>
                       </div>
 
@@ -437,14 +436,13 @@ export default function HeroLenisGsap() {
                         className="pointer-events-none absolute inset-0 space-y-3 opacity-0"
                       >
                         <p className="mb-1 text-sm font-light leading-relaxed text-white md:text-base">
-                          Our vision is to shape immersive environments that merge aesthetics
-                          with function, creating spaces that resonate with the people who
-                          live and work in them.
+                          We see a real estate market where every investor buys with clarity,
+                          not confusion – powered by verified projects, honest numbers, and
+                          on-ground facts.
                         </p>
                         <p className="text-sm font-light leading-relaxed text-white md:text-base">
-                          Through thoughtful design, innovation, and attention to detail, we
-                          aim to continually elevate everyday experiences in the built
-                          environment.
+                          Our vision is to help clients in Lahore and beyond build lifelong
+                          profitability through smarter, better-informed property decisions.
                         </p>
                       </div>
                     </div>
@@ -464,7 +462,7 @@ export default function HeroLenisGsap() {
                   ref={taglineRef}
                   className="mb-4 text-sm font-light uppercase tracking-wider text-white md:text-base"
                 >
-                  Best Renovation Company &amp; Fit Out Contractor Lahore, Pakistan
+                  Real Estate &amp; Investment Advisors · Lahore, Pakistan
                 </p>
                 <h1
                   ref={buildingRef}

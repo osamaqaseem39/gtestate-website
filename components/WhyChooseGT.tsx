@@ -60,7 +60,7 @@ export default function WhyChooseGT() {
               WHY CHOOSE
             </h2>
             <h2 
-              className="text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold text-cyan-400 mb-8 uppercase tracking-tight leading-tight"
+              className="text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold text-neon-green mb-8 uppercase tracking-tight leading-tight"
               style={{ fontFamily: 'var(--font-spartan)' }}
             >
               GT ESTATE?
@@ -165,9 +165,9 @@ export default function WhyChooseGT() {
               }}
               className="relative w-20 h-20 mx-auto"
             >
-              <div className="absolute inset-0 border-2 border-cyan-400 rotate-45"></div>
+              <div className="absolute inset-0 border-2 border-neon-green rotate-45"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider -rotate-45">SCROLL</span>
+                <span className="text-neon-green text-xs font-bold uppercase tracking-wider -rotate-45">SCROLL</span>
               </div>
             </motion.div>
           </motion.div>

@@ -6,6 +6,7 @@ import ReachUsSection from '@/components/ReachUsSection'
 import PageHero from '@/components/PageHero'
 import MobilePageHero from '@/components/MobilePageHero'
 import MobileContactFormSection from '@/components/MobileContactFormSection'
+import PageLoadAnimation from '@/components/PageLoadAnimation'
 
 export default function ContactPageClient() {
   const [isDesktop, setIsDesktop] = useState(false)
@@ -22,8 +23,9 @@ export default function ContactPageClient() {
 
   return (
     <main className="min-h-screen bg-black">
-      {isDesktop ? (
-        <PageHero
+      <PageLoadAnimation stagger>
+        {isDesktop ? (
+          <PageHero
           label="Get In Touch"
           title="Contact "
           titleAccent="Our Team"
@@ -36,13 +38,13 @@ export default function ContactPageClient() {
           titleAccent="our team"
           description="Tell us what you’re planning and we’ll help you move it forward."
         />
-      )}
+        )}
 
-      {isDesktop ? (
-        <section className="relative bg-black text-white">
-          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-16 md:py-24">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        {isDesktop ? (
+          <section className="relative bg-black text-white">
+            <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-16 md:py-24">
+              <div className="max-w-6xl mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
                 <form className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -105,12 +107,9 @@ export default function ContactPageClient() {
 
                 <div className="space-y-8">
                   <div>
-                    <h3
-                      className="text-2xl font-bold text-white mb-6 uppercase tracking-tight"
-                      style={{ fontFamily: 'var(--font-spartan)' }}
-                    >
-                      Get In Touch
-                    </h3>
+                    <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.35em] text-white/60 mb-4">
+                      Contact details
+                    </p>
                     <div className="space-y-6">
                       <div className="flex items-start gap-4">
                         <div className="w-12 h-12 bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center shrink-0 text-cyan-400">
@@ -180,12 +179,13 @@ export default function ContactPageClient() {
             </div>
           </div>
         </section>
-      ) : (
-        <MobileContactFormSection />
-      )}
+        ) : (
+          <MobileContactFormSection />
+        )}
 
-      <ReachUsSection />
-      <Footer />
+        <ReachUsSection />
+        <Footer />
+      </PageLoadAnimation>
     </main>
   )
 }

@@ -67,25 +67,25 @@ export default function ReachUsSection() {
                     AL OTAIBA BUILDING
                   </h2>
                   <div className="flex items-start gap-3 text-gray-700 mb-4">
-                    <MapPin className="w-5 h-5 text-[#00D4FF] shrink-0 mt-0.5" aria-hidden />
+                    <MapPin className="w-5 h-5 text-[#fabb22] shrink-0 mt-0.5" aria-hidden />
                     <span className="text-sm md:text-base">{ADDRESS}</span>
                   </div>
-                  <div className="border-t border-[#00D4FF]/30 pt-4 mb-4">
+                  <div className="border-t border-[#fabb22]/30 pt-4 mb-4">
                     <div className="flex items-center gap-3 text-gray-700 mb-3">
-                      <Building2 className="w-5 h-5 text-[#00D4FF] shrink-0" aria-hidden />
+                      <Building2 className="w-5 h-5 text-[#fabb22] shrink-0" aria-hidden />
                       <span className="font-medium">{OFFICE}</span>
                     </div>
                     <p className="text-sm text-gray-600">
                       Visiting us? Google Maps will get you here easily. Just search our location!
                     </p>
                   </div>
-                  <a
-                    href={MAP_SEARCH_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-2 border-[#00D4FF] text-black font-medium hover:bg-[#00D4FF]/10 transition-colors duration-200"
-                  >
-                    <Navigation className="w-4 h-4 text-[#00D4FF]" aria-hidden />
+                    <a
+                      href={MAP_SEARCH_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-2 border-[#fabb22] text-black font-medium hover:bg-[#fabb22]/10 transition-colors duration-200"
+                    >
+                      <Navigation className="w-4 h-4 text-[#fabb22]" aria-hidden />
                     Take me there
                   </a>
                 </div>

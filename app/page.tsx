@@ -14,6 +14,7 @@ import MobileChoiceSection from '@/components/MobileChoiceSection'
 import MobileMajorClients from '@/components/MobileMajorClients'
 import MobileTestimonials from '@/components/MobileTestimonials'
 import MobileReachUsSection from '@/components/MobileReachUsSection'
+import PageLoadAnimation from '@/components/PageLoadAnimation'
 
 const Hero = dynamic(() => import('@/components/HeroLenisGsap'), { ssr: false })
 
@@ -33,26 +34,28 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      {isDesktop ? (
-        <>
-          <Hero />
-          <HouseGallery />
-          <ChoiceSection />
-          <MajorClients />
-          <Testimonials />
-          <ReachUsSection />
-        </>
-      ) : (
-        <>
-          <MobileHero />
-          <MobileHouseGallery />
-          <MobileChoiceSection />
-          <MobileMajorClients />
-          <MobileTestimonials />
-          <MobileReachUsSection />
-        </>
-      )}
-      <Footer />
+      <PageLoadAnimation>
+        {isDesktop ? (
+          <>
+            <Hero />
+            <HouseGallery />
+            <ChoiceSection />
+            <MajorClients />
+            <Testimonials />
+            <ReachUsSection />
+          </>
+        ) : (
+          <>
+            <MobileHero />
+            <MobileHouseGallery />
+            <MobileChoiceSection />
+            <MobileMajorClients />
+            <MobileTestimonials />
+            <MobileReachUsSection />
+          </>
+        )}
+        <Footer />
+      </PageLoadAnimation>
     </main>
   )
 }

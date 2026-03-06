@@ -1,12 +1,16 @@
- 'use client'
+'use client'
 
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 
 const CLIENTS = [
-  'Al Forsan International Sports Resort',
+  'FARAH Experiences',
   'Yas Asset Management',
-  'Department of Culture & Tourism',
-  'Abu Dhabi Airports',
+  'Department of Culture and Tourism',
+  'AL FORSAN International Sports Resort',
+  'MIRAL',
+  'Healthpoint',
+  'ABU DHABI AIRPORTS',
 ]
 
 export default function MobileMajorClients() {
@@ -46,17 +50,28 @@ export default function MobileMajorClients() {
         </div>
       </div>
 
-      <ul className="space-y-2 text-xs text-white/75">
-        {CLIENTS.map((name) => (
-          <li
-            key={name}
-            className="flex items-center gap-2 rounded-lg border border-white/5 bg-white/5 px-3 py-2"
-          >
-            <span className="inline-block h-1.5 w-1.5 rotate-45 bg-teal" />
-            <span>{name}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="relative mt-2 overflow-hidden">
+        <motion.div
+          className="flex gap-4 whitespace-nowrap"
+          initial={{ x: 0 }}
+          animate={{ x: '-50%' }}
+          transition={{
+            ease: 'linear',
+            duration: 25,
+            repeat: Infinity,
+          }}
+        >
+          {[...CLIENTS, ...CLIENTS].map((name, index) => (
+            <span
+              key={`${name}-${index}`}
+              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.25em] text-white/70 flex-shrink-0"
+            >
+              <span className="inline-block h-1.5 w-1.5 rotate-45 bg-teal" />
+              <span>{name}</span>
+            </span>
+          ))}
+        </motion.div>
+      </div>
     </section>
   )
 }

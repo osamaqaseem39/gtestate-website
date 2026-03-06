@@ -55,21 +55,28 @@ export default function HouseGallery() {
 
   // Home 1 image scroll-driven offsets (smoothed with springs)
   // As scrollYProgress goes from 0 → 1, move it noticeably but keep it in view
-  const Home1Y = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '250vh'])
-  const Home1X = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '1500px'])
-
+  const Home1Y = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '120vh'])
+  const Home1X = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '750px'])
 
   // Back card (House 2) also moves down with scroll + slight left drift (smoothed)
-  const Home2Y = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '230vh'])
-  const Home2X = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '-1600px'])
+  const Home2Y = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '130vh'])
+  const Home2X = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '-900px'])
 
   // Main gallery side images: strong downward motion + sideways drift on scroll (smoothed by springs)
-  const leftImageY = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '100vh'])
-  const leftImageX = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '-700px'])
-  const rightImageY = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '100vh'])
-  const rightImageX = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '600px'])
+  const leftImageY = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '70vh'])
+  const leftImageX = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '-400px'])
+  const rightImageY = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '65vh'])
+  const rightImageX = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '200px'])
 
-  // Opacity transforms used in JSX styles
+  // Scroll-driven straightening (rotation) + opacity for cards and side images
+  // When scrollYProgress reaches the end of its range, all cards are straight (0deg) and fully opaque (1)
+  const leftImageRotate = useTransform(scrollYProgress, [0.4, 0.7], [-6, 0])
+  const rightImageRotate = useTransform(scrollYProgress, [0.4, 0.7], [6, 0])
+  const home2Rotate = useTransform(scrollYProgress, [0.4, 0.7], [2, 0])
+  const home2Opacity = useTransform(scrollYProgress, [0.4, 0.7], [0.7, 1])
+  const home1Rotate = useTransform(scrollYProgress, [0.4, 0.7], [2, 0])
+
+  // Opacity transforms used in JSX stylesx
   const gridOpacity = useTransform(scrollYProgress, [0.1, 0.6], [0, 0.06])
   const whyTextOpacity = useTransform(scrollYProgress, [0.51, 0.55], [0, 1])
   const sideOverlayOpacity = useTransform(scrollYProgress, [0.45, 0.55], [1, 0])
@@ -88,7 +95,7 @@ export default function HouseGallery() {
         <div
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: 'url(/housegallery.webp)',
+            backgroundImage: 'url(/housegallery.png)',
             opacity: 1,
           }}
           aria-hidden
@@ -109,13 +116,13 @@ export default function HouseGallery() {
       <div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: 'url(/housegallery.webp)',
-          opacity: 0.1,
+          backgroundImage: 'url(/housegallery.png)',
+          opacity: 0.35,
         }}
         aria-hidden
       />
       {/* Static gallery block – original layout with text */}
-      <div ref={galleryRef} className="relative z-10 py-24 bg-black pb-32">
+      <div ref={galleryRef} className="relative z-10 py-24 pb-32">
         <motion.div
           initial={{ opacity: 0, y: 60, scale: 0.94 }}
           animate={galleryInView ? { opacity: 1, y: 0, scale: 1.02 } : { opacity: 0, y: 60, scale: 0.94 }}
@@ -126,15 +133,15 @@ export default function HouseGallery() {
             <div className="relative flex items-center justify-center gap-6 md:gap-10 lg:gap-12 w-full max-w-5xl">
               {/* Left tilted image (moves down and left on scroll) */}
               <motion.div
-                initial={{ opacity: 0, y: 40, rotate: -10, scale: 0.96 }}
+                initial={{ opacity: 0, y: 40, scale: 0.96 }}
                 animate={
                   galleryInView
-                    ? { opacity: 1, rotate: -6, scale: 1 }
-                    : { opacity: 0, y: 40, rotate: -10, scale: 0.96 }
+                    ? { opacity: 1, y: 0, scale: 1 }
+                    : { opacity: 0, y: 40, scale: 0.96 }
                 }
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 0.61, 0.36, 1] }}
-                className="relative w-[220px] md:w-[260px] lg:w-[300px] flex-shrink-0 overflow-hidden shadow-2xl -rotate-6"
-                style={{ aspectRatio: '3/4', y: leftImageY, x: leftImageX }}
+                className="relative w-[220px] md:w-[260px] lg:w-[300px] flex-shrink-0 overflow-hidden shadow-2xl"
+                style={{ aspectRatio: '3/4', y: leftImageY, x: leftImageX, rotate: leftImageRotate }}
               >
                 <Image
                   src={GALLERY_IMAGES[2].src}
@@ -142,7 +149,6 @@ export default function HouseGallery() {
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 260px, (max-width: 1024px) 320px, 380px"
-                  quality={90}
                 />
                 <motion.div
                   className="absolute inset-0 pointer-events-none"
@@ -189,12 +195,12 @@ export default function HouseGallery() {
                     initial={{ opacity: 0, y: 40, rotate: -4 }}
                     animate={
                       galleryInView
-                        ? { opacity: 0.7, rotate: 2 }
+                        ? { opacity: 0.7 }
                         : { opacity: 0, y: 40, rotate: -4 }
                     }
                     transition={{ duration: 0.8, delay: 0.22, ease: [0.22, 0.61, 0.36, 1] }}
                     className="absolute top-0 left-0 w-full h-full overflow-hidden shadow-2xl"
-                    style={{ aspectRatio: '3/4', zIndex: 7, y: Home2Y, x: Home2X }}
+                    style={{ aspectRatio: '3/4', zIndex: 7, y: Home2Y, x: Home2X, rotate: home2Rotate, opacity: home2Opacity }}
                   >
                     <Image
                       src={GALLERY_IMAGES[1].src}
@@ -202,7 +208,6 @@ export default function HouseGallery() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 320px, (max-width: 1024px) 400px, 480px"
-                      quality={90}
                     />
                   </motion.div>
 
@@ -211,12 +216,12 @@ export default function HouseGallery() {
                     initial={{ opacity: 0, rotate: 0 }}
                     animate={
                       galleryInView
-                        ? { opacity: 1, rotate: 2 }
+                        ? { opacity: 1 }
                         : { opacity: 0, rotate: 0 }
                     }
                     transition={{ duration: 0.8, delay: 0.28, ease: [0.22, 0.61, 0.36, 1] }}
                     className="absolute top-0 left-0 w-full h-full overflow-hidden shadow-2xl"
-                    style={{ aspectRatio: '3/4', zIndex: 8, y: Home1Y, x: Home1X }}
+                    style={{ aspectRatio: '3/4', zIndex: 8, y: Home1Y, x: Home1X, rotate: home1Rotate }}
                   >
                     <Image
                       src={GALLERY_IMAGES[0].src}
@@ -224,7 +229,6 @@ export default function HouseGallery() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 320px, (max-width: 1024px) 400px, 480px"
-                      quality={90}
                     />
                   </motion.div>
                 </div>
@@ -246,15 +250,15 @@ export default function HouseGallery() {
 
               {/* Right tilted image (moves down and right on scroll) */}
               <motion.div
-                initial={{ opacity: 0, y: 40, rotate: 10, scale: 0.96 }}
+                initial={{ opacity: 0, y: 40, scale: 0.96 }}
                 animate={
                   galleryInView
-                    ? { opacity: 1, rotate: 6, scale: 1 }
-                    : { opacity: 0, y: 40, rotate: 10, scale: 0.96 }
+                    ? { opacity: 1, y: 0, scale: 1 }
+                    : { opacity: 0, y: 40, scale: 0.96 }
                 }
                 transition={{ duration: 0.8, delay: 0.14, ease: [0.22, 0.61, 0.36, 1] }}
-                className="relative w-[220px] md:w-[260px] lg:w-[300px] flex-shrink-0 overflow-hidden shadow-2xl rotate-6"
-                style={{ aspectRatio: '3/4', y: rightImageY, x: rightImageX }}
+                className="relative w-[220px] md:w-[260px] lg:w-[300px] flex-shrink-0 overflow-hidden shadow-2xl"
+                style={{ aspectRatio: '3/4', y: rightImageY, x: rightImageX, rotate: rightImageRotate }}
               >
                 <Image
                   src={GALLERY_IMAGES[3].src}
@@ -262,7 +266,6 @@ export default function HouseGallery() {
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 260px, (max-width: 1024px) 320px, 380px"
-                  quality={90}
                 />
                 <motion.div
                   className="absolute inset-0 pointer-events-none"
@@ -309,7 +312,7 @@ export default function HouseGallery() {
               WHY CHOOSE
             </h2>
             <h2
-              className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-cyan-400 mb-6 md:mb-8 uppercase tracking-tight leading-tight"
+              className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-neon-green mb-6 md:mb-8 uppercase tracking-tight leading-tight"
               style={{ fontFamily: 'var(--font-spartan)' }}
             >
               GT ESTATE?

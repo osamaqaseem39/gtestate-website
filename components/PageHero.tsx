@@ -21,7 +21,7 @@ export default function PageHero({
 }: PageHeroProps) {
   const displayTitle = titleAccent ? (
     <>
-      {title} <span className="text-cyan-400">{titleAccent}</span>
+      {title} <span className="text-neon-green">{titleAccent}</span>
     </>
   ) : (
     title
@@ -60,7 +60,7 @@ export default function PageHero({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-block px-4 py-2 border border-cyan-400/40 text-cyan-400 text-xs md:text-sm font-medium uppercase tracking-[0.2em] mb-6"
+              className="inline-block px-4 py-2 border border-neon-green/40 text-neon-green text-xs md:text-sm font-medium uppercase tracking-[0.2em] mb-6"
             >
               {label}
             </motion.span>

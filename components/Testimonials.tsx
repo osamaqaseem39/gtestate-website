@@ -60,7 +60,7 @@ export default function Testimonials() {
   return (
     <section
       ref={ref}
-      className="relative bg-neutral-900 text-white overflow-hidden py-20 md:py-28"
+      className="relative bg-black text-white overflow-hidden py-20 md:py-28"
       style={{ position: 'relative', zIndex: 50 }}
       aria-label="Testimonials"
     >
@@ -74,33 +74,47 @@ export default function Testimonials() {
           className="object-cover scale-105"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-black/75 backdrop-blur-[2px]" />
-        <div className="absolute inset-0 bg-neutral-900/90" />
+        <div className="absolute inset-0 bg-black/80 backdrop-blur-[3px]" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-black/95 via-black/90 to-cyan-950/50" />
       </div>
 
-      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="relative z-10 w-full px-0 sm:px-0 lg:px-0">
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1] }}
-          className="text-center mb-14 md:mb-16"
+          className="text-center mb-10 md:mb-14"
         >
           <h2
-            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight uppercase text-white"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight uppercase text-white"
             style={{ fontFamily: 'var(--font-spartan)' }}
           >
-            Over 1000+ People Trust
+            People Who Trust
+            <span className="block text-cyan-400 mt-1">GT Estate</span>
           </h2>
+          <p className="mt-3 md:mt-4 text-sm md:text-base text-white/70 max-w-2xl mx-auto">
+            Real feedback from clients who trusted us with their homes, investments, and fit‑out projects.
+          </p>
         </motion.div>
 
-        {/* Carousel – partial cards on sides, center full */}
+        {/* Carousel – partial cards on sides, center full, with edge fade instead of hard cut */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 0.61, 0.36, 1] }}
-          className="overflow-hidden"
+          className="relative"
         >
+          {/* Edge fade gradients */}
+          <div
+            className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-20 md:w-24 lg:w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-20"
+            aria-hidden
+          />
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-20 md:w-24 lg:w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-20"
+            aria-hidden
+          />
+
           <Swiper
             modules={[Autoplay]}
             spaceBetween={24}
@@ -118,21 +132,21 @@ export default function Testimonials() {
           >
             {testimonials.map((t) => (
               <SwiperSlide key={t.id}>
-                <article className="bg-white rounded-2xl p-6 md:p-8 shadow-xl min-h-[320px] md:min-h-[340px] flex flex-col text-neutral-800">
+                <article className="bg-black/70 border border-white/10 rounded-2xl p-6 md:p-8 shadow-xl min-h-[320px] md:min-h-[340px] flex flex-col text-white/90 backdrop-blur-sm">
                   {/* Large quote mark – teal */}
                   <span
                     className="text-6xl md:text-7xl font-serif leading-none select-none block -mb-2"
-                    style={{ color: '#06B6D4', fontFamily: 'Georgia, serif' }}
+                    style={{ color: '#fabb22', fontFamily: 'Georgia, serif' }}
                     aria-hidden
                   >
                     “
                   </span>
-                  <p className="text-neutral-600 text-sm md:text-base leading-relaxed flex-1 mb-6">
+                  <p className="text-white/75 text-sm md:text-base leading-relaxed flex-1 mb-6">
                     {t.text}
                   </p>
                   <div className="flex items-center justify-between gap-4 flex-wrap">
                     <div className="flex items-center gap-3">
-                      <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-neutral-200">
+                      <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-neutral-800">
                         <Image
                           src={t.image}
                           alt={t.name}
@@ -142,21 +156,21 @@ export default function Testimonials() {
                         />
                       </div>
                       <div>
-                        <p className="font-semibold text-neutral-900">{t.name}</p>
-                        <p className="text-sm text-neutral-500">{t.role}</p>
+                        <p className="font-semibold text-white">{t.name}</p>
+                        <p className="text-sm text-white/60">{t.role}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-0.5" aria-label={`${t.rating} out of 5 stars`}>
                       {[1, 2, 3, 4, 5].map((i) => (
-                        <Star
-                          key={i}
-                          className="w-5 h-5 flex-shrink-0"
-                          style={{
-                            color: '#06B6D4',
-                            fill: i <= t.rating ? '#06B6D4' : 'transparent',
-                            stroke: '#06B6D4',
-                          }}
-                        />
+                      <Star
+                        key={i}
+                        className="w-5 h-5 flex-shrink-0"
+                        style={{
+                          color: '#fabb22',
+                          fill: i <= t.rating ? '#fabb22' : 'transparent',
+                          stroke: '#fabb22',
+                        }}
+                      />
                       ))}
                     </div>
                   </div>

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Diamond, X, Facebook, Instagram, Linkedin } from 'lucide-react'
 
-const TEAL = '#5dd4c8'
+const TEAL = '#fabb22'
 
 const menuItems = [
   { name: 'HOME', href: '/' },
@@ -123,7 +123,7 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
                       <a
                         key={social.label}
                         href={social.href}
-                        className="text-white border border-white/40 rounded p-2 hover:border-[#5dd4c8] hover:text-[#5dd4c8] transition-colors"
+                        className="text-white border border-white/40 rounded p-2 hover:border-[#fabb22] hover:text-[#fabb22] transition-colors"
                         aria-label={social.label}
                       >
                         <social.icon className="w-5 h-5" />
@@ -137,7 +137,7 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
                   <Link
                     href="/contact"
                     onClick={onClose}
-                    className="inline-flex items-center gap-2 px-5 py-3 border text-white text-sm hover:bg-[#5dd4c8]/10 transition-colors"
+                    className="inline-flex items-center gap-2 px-5 py-3 border text-white text-sm hover:bg-[#fabb22]/10 transition-colors"
                     style={{ borderColor: TEAL }}
                   >
                     <Diamond className="w-3 h-3 shrink-0" style={{ color: TEAL }} fill={TEAL} strokeWidth={0} />

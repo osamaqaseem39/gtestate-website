@@ -13,12 +13,14 @@ module.exports = {
       colors: {
         'neon-blue': '#00D4FF',
         'neon-purple': '#8B5CF6',
-        'neon-green': '#10B981',
+        // Main accent color (replaces previous green)
+        'neon-green': '#fabb22',
         'neon-pink': '#EC4899',
         'neon-orange': '#F59E0B',
         'neon-cyan': '#06B6D4',
-        'teal': '#14B8A6',
-        'light-green': '#86EFAC',
+        'teal': '#fabb22',
+        // Softer variant of the main accent
+        'light-green': '#FFE08A',
         'brand-teal': '#5dd4c8',
       },
       backgroundImage: {

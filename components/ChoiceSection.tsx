@@ -88,7 +88,7 @@ export default function ChoiceSection() {
                   <p className="text-sm md:text-base font-medium text-white/60 tracking-[0.25em] uppercase mb-4">
                     {card.id}
                   </p>
-                  <p className="text-xs md:text-sm font-semibold text-cyan-400 tracking-[0.35em] uppercase mb-3">
+                  <p className="text-xs md:text-sm font-semibold text-neon-green tracking-[0.35em] uppercase mb-3">
                     {card.label}
                   </p>
                   <p className="text-2xl md:text-3xl lg:text-4xl font-semibold uppercase leading-tight">
@@ -101,25 +101,25 @@ export default function ChoiceSection() {
         </div>
 
         {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-          transition={{ duration: 0.8, delay: 0.65 }}
-          className="mt-16 md:mt-20 flex justify-center"
-        >
           <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="relative w-16 h-16 md:w-20 md:h-20"
+            initial={{ opacity: 0, y: 10 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            transition={{ duration: 0.8, delay: 0.65 }}
+            className="mt-16 md:mt-20 flex justify-center"
           >
-            <div className="absolute inset-0 border-2 border-cyan-400 rotate-45" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-cyan-400 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] -rotate-45">
-                SCROLL
-              </span>
-            </div>
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              className="relative w-16 h-16 md:w-20 md:h-20"
+            >
+              <div className="absolute inset-0 border-2 border-neon-green rotate-45" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-neon-green text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] -rotate-45">
+                  SCROLL
+                </span>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
       </div>
     </section>
   )

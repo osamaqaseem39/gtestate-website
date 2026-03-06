@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react'
 import Footer from '@/components/Footer'
 import ReachUsSection from '@/components/ReachUsSection'
 import PageHero from '@/components/PageHero'
-import HouseGallery from '@/components/HouseGallery'
 import MobilePageHero from '@/components/MobilePageHero'
-import MobileHouseGallery from '@/components/MobileHouseGallery'
+import GalleryGrid from '@/components/GalleryGrid'
+import PageLoadAnimation from '@/components/PageLoadAnimation'
 
 export default function GalleryPageClient() {
   const [isDesktop, setIsDesktop] = useState(false)
@@ -23,30 +23,30 @@ export default function GalleryPageClient() {
 
   return (
     <main className="min-h-screen bg-black">
-      {isDesktop ? (
-        <PageHero
-          label="Gallery"
-          title="Visualize Your"
-          titleAccent="Next Property"
-          description="Browse our curated collection of properties, interiors, and landmark projects that define GT Estate."
-        />
-      ) : (
-        <MobilePageHero
-          label="Gallery"
-          title="Visualize your"
-          titleAccent="next property"
-          description="Scroll through a selection of interiors and exteriors from recent projects."
-        />
-      )}
+      <PageLoadAnimation stagger>
+        {isDesktop ? (
+          <PageHero
+            label="Gallery"
+            title="Visualize Your"
+            titleAccent="Next Property"
+            description="Browse our curated collection of properties, interiors, and landmark projects that define GT Estate."
+          />
+        ) : (
+          <MobilePageHero
+            label="Gallery"
+            title="Visualize your"
+            titleAccent="next property"
+            description="Scroll through a selection of interiors and exteriors from recent projects."
+          />
+        )}
 
-      <section className="relative bg-black text-white">
-        <div className="w-full">
-          {isDesktop ? <HouseGallery /> : <MobileHouseGallery />}
-        </div>
-      </section>
+        <section className="relative bg-black text-white">
+          <GalleryGrid />
+        </section>
 
-      <ReachUsSection />
-      <Footer />
+        <ReachUsSection />
+        <Footer />
+      </PageLoadAnimation>
     </main>
   )
 }

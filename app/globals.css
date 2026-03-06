@@ -48,9 +48,9 @@
     @apply bg-gradient-to-r from-neon-blue to-neon-purple bg-clip-text text-transparent;
   }
   
-  /* Inner page hero accent – matches home/teal theme */
+  /* Inner page hero accent – matches new brand accent */
   .text-gradient-teal {
-    @apply bg-gradient-to-r from-brand-teal to-teal bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-neon-green to-light-green bg-clip-text text-transparent;
   }
   
   .cyber-grid {
@@ -73,7 +73,7 @@
   }
   
   .neon-glow-green {
-    box-shadow: 0 0 20px rgba(16,185,129,0.3);
+    box-shadow: 0 0 20px rgba(250,187,34,0.3);
   }
 }
 
@@ -148,10 +148,10 @@
     z-index: 0;
   }
   .btn-hero {
-    @apply inline-flex items-center justify-center gap-3 px-8 py-4 bg-teal border-2 border-white text-white font-medium uppercase tracking-wider transition-all duration-300 relative;
+    @apply inline-flex items-center justify-center gap-3 px-8 py-4 bg-neon-green border-2 border-white text-black font-medium uppercase tracking-wider transition-all duration-300 relative;
   }
   .btn-hero:hover {
-    @apply bg-teal/90;
+    @apply bg-neon-green/90;
   }
   /* Secondary: outline only, same border light effect */
   .btn-hero-outline {

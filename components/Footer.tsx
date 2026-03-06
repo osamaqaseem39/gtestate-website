@@ -45,14 +45,14 @@ export default function Footer() {
           <span className="flex items-center shrink-0 gap-2 pr-8">
             {[...Array(6)].map((_, i) => (
               <span key={i} className="inline-flex items-center gap-2">
-                GT ESTATE <span className="text-[#5dd4c8] text-xl sm:text-2xl md:text-3xl">◆</span> WE ARE{' '}
+                GT ESTATE <span className="text-[#fabb22] text-xl sm:text-2xl md:text-3xl">◆</span> WE ARE{' '}
               </span>
             ))}
           </span>
           <span className="flex items-center shrink-0 gap-2 pr-8" aria-hidden>
             {[...Array(6)].map((_, i) => (
               <span key={`d-${i}`} className="inline-flex items-center gap-2">
-                GT ESTATE <span className="text-[#5dd4c8] text-xl sm:text-2xl md:text-3xl">◆</span> WE ARE{' '}
+                GT ESTATE <span className="text-[#fabb22] text-xl sm:text-2xl md:text-3xl">◆</span> WE ARE{' '}
               </span>
             ))}
           </span>
@@ -69,14 +69,14 @@ export default function Footer() {
             transition={{ duration: 0.5 }}
           >
             <h3 className="text-white font-semibold uppercase tracking-wider mb-4 flex items-center gap-2">
-              <span className="text-[#5dd4c8] text-[8px]">◆</span> Home
+              <span className="text-[#fabb22] text-[8px]">◆</span> Home
             </h3>
             <ul className="space-y-3">
               {navLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-white hover:text-[#5dd4c8] transition-colors duration-200 uppercase text-sm tracking-wide"
+                    className="text-white hover:text-[#fabb22] transition-colors duration-200 uppercase text-sm tracking-wide"
                   >
                     {link.name}
                   </Link>
@@ -93,15 +93,15 @@ export default function Footer() {
           >
             <h3 className="text-white font-semibold uppercase tracking-wider mb-4">Contact</h3>
             <div className="space-y-2 text-white/90 text-sm">
-              <a href="mailto:info@gtestate.com" className="flex items-center gap-2 hover:text-[#5dd4c8] transition-colors">
-                <Mail className="w-4 h-4 text-[#5dd4c8] shrink-0" />
+              <a href="mailto:info@gtestate.com" className="flex items-center gap-2 hover:text-[#fabb22] transition-colors">
+                <Mail className="w-4 h-4 text-[#fabb22] shrink-0" />
                 info@gtestate.com
               </a>
-              <a href="tel:+923001234567" className="flex items-center gap-2 hover:text-[#5dd4c8] transition-colors">
-                <Phone className="w-4 h-4 text-[#5dd4c8] shrink-0" />
+              <a href="tel:+923001234567" className="flex items-center gap-2 hover:text-[#fabb22] transition-colors">
+                <Phone className="w-4 h-4 text-[#fabb22] shrink-0" />
                 +92 300 1234567
               </a>
-              <a href="https://www.gtestate.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#5dd4c8] transition-colors">
+              <a href="https://www.gtestate.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#fabb22] transition-colors">
                 www.gtestate.com
               </a>
             </div>
@@ -121,7 +121,7 @@ export default function Footer() {
                   <a
                     key={social.label}
                     href={social.href}
-                    className="text-white border border-white/40 rounded p-2 hover:border-[#5dd4c8] hover:text-[#5dd4c8] transition-colors"
+                    className="text-white border border-white/40 rounded p-2 hover:border-[#fabb22] hover:text-[#fabb22] transition-colors"
                     aria-label={social.label}
                   >
                     <social.icon className="w-5 h-5" />
@@ -131,10 +131,10 @@ export default function Footer() {
             </div>
             <div>
               <h3 className="text-white font-semibold uppercase tracking-wider mb-4">Careers</h3>
-              <p className="text-white/90 text-sm">
-                Apply on{' '}
-                <a href="mailto:careers@gtestate.com" className="text-[#5dd4c8] hover:underline">
-                  careers@gtestate.com
+                <p className="text-white/90 text-sm">
+                  Apply on{' '}
+                  <a href="mailto:careers@gtestate.com" className="text-[#fabb22] hover:underline">
+                    careers@gtestate.com
                 </a>
               </p>
             </div>
@@ -149,14 +149,14 @@ export default function Footer() {
           >
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-5 py-3 border border-[#5dd4c8] text-white text-sm hover:bg-[#5dd4c8]/10 transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-3 border border-[#fabb22] text-white text-sm hover:bg-[#fabb22]/10 transition-colors"
             >
-              <span className="text-[#5dd4c8] text-[8px]">◆</span> Got a project in mind?
+              <span className="text-[#fabb22] text-[8px]">◆</span> Got a project in mind?
             </Link>
             <button
               type="button"
               onClick={scrollToTop}
-              className="mt-6 flex items-center justify-center gap-2 w-12 h-12 border border-[#5dd4c8] text-white text-xs uppercase tracking-wider hover:bg-[#5dd4c8]/10 transition-colors rotate-45 [&>svg]:-rotate-45"
+              className="mt-6 flex items-center justify-center gap-2 w-12 h-12 border border-[#fabb22] text-white text-xs uppercase tracking-wider hover:bg-[#fabb22]/10 transition-colors rotate-45 [&>svg]:-rotate-45"
               aria-label="Back to top"
             >
               <ChevronUp className="w-5 h-5" />

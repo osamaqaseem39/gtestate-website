@@ -1214,10 +1214,10 @@ export default function Hero() {
                           {showNewContent && (
                             <Link
                               href="/about"
-                              className="group inline-flex items-center gap-2 text-white font-medium uppercase tracking-wider hover:text-teal transition-colors duration-300"
+                              className="group inline-flex items-center gap-2 text-white font-medium uppercase tracking-wider hover:text-neon-green transition-colors duration-300"
                             >
-                              <Diamond className="w-3 h-3 fill-teal text-teal shrink-0" />
-                              <span className="border-b border-teal">AFFILIATED PAGES</span>
+                              <Diamond className="w-3 h-3 fill-neon-green text-neon-green shrink-0" />
+                              <span className="border-b border-neon-green">AFFILIATED PAGES</span>
                             </Link>
                           )}
                         </motion.div>
@@ -1233,17 +1233,17 @@ export default function Hero() {
                             y: { duration: 0.5, ease: "easeInOut" }
                           }}
                         >
-                          <Link
-                            href="/about"
-                            className={`group inline-flex items-center gap-3 px-6 py-3 bg-transparent border text-white font-medium uppercase tracking-wider transition-all duration-300 ${
+                            <Link
+                              href="/about"
+                              className={`group inline-flex items-center gap-3 px-6 py-3 bg-transparent border text-white font-medium uppercase tracking-wider transition-all duration-300 ${
                               showNewContent 
-                                ? "border-teal hover:bg-teal/10" 
+                                ? "border-neon-green hover:bg-neon-green/10" 
                                 : "border-white/30 hover:border-white/60"
-                            }`}
-                          >
-                            <Diamond className="w-4 h-4 fill-teal text-teal" />
-                            <span>Learn more</span>
-                          </Link>
+                              }`}
+                            >
+                              <Diamond className="w-4 h-4 fill-neon-green text-neon-green" />
+                              <span>Learn more</span>
+                            </Link>
                         </motion.div>
                       </div>
                     </div>

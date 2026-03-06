@@ -47,7 +47,7 @@ export default function MobileHero() {
 
             <Link
               href="/properties"
-              className="inline-flex items-center gap-2 rounded-full border border-white/40 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-white/90 backdrop-blur-sm hover:border-teal hover:text-teal transition-colors"
+              className="inline-flex items-center gap-2 rounded-full border border-white/40 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-white/90 backdrop-blur-sm hover:border-neon-green hover:text-neon-green transition-colors"
             >
               <span>View Properties</span>
             </Link>

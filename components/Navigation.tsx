@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { 
@@ -43,7 +44,6 @@ export default function Navigation() {
     { name: 'About Us', href: '/about' },
     { name: 'What We Do', href: '/what-we-do' },
     { name: 'Projects', href: '/projects' },
-    { name: 'Properties', href: '/properties' },
     { name: 'Gallery', href: '/gallery' },
   ]
 
@@ -89,19 +89,25 @@ export default function Navigation() {
           </div>
 
           {/* Logo (Center) */}
-          <Link href="/" className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center cursor-pointer group">
-            <div className="relative">
+          <Link
+            href="/"
+            className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center cursor-pointer group"
+          >
+            <div className="relative flex flex-col items-center">
               {/* Small green upward arrow above */}
-              <ChevronUp className="absolute -top-2.5 left-1/2 transform -translate-x-1/2 w-2.5 h-2.5 text-light-green" />
-              {/* Main logo text */}
-              <span className="text-2xl font-semibold text-teal tracking-tight uppercase" style={{ letterSpacing: '0.02em' }}>
-                GT ESTATE
-              </span>
+              <ChevronUp className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-3 h-3 text-light-green" />
+              {/* Image logo */}
+              <Image
+                src="/logo.png"
+                alt="GT Estate logo"
+                width={200}
+                height={60}
+                priority
+                className="h-12 w-auto object-contain"
+              />
+              {/* Accessible text / subtle subtitle */}
+              <span className="sr-only">GT Estate - Real Estate Services</span>
             </div>
-            {/* Subtitle */}
-            <span className="text-[10px] text-light-green mt-0.5 tracking-wider uppercase">
-              REAL ESTATE SERVICES
-            </span>
           </Link>
 
           {/* Header Right Button */}

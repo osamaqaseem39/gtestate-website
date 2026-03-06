@@ -106,23 +106,29 @@ export default function MajorClients() {
         </motion.div>
       </div>
 
-      {/* Full-width client logos strip */}
+      {/* Full-width client marquee strip */}
       <div className="w-full border-t border-white/10 bg-black/40">
-        <div className="w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 py-8 md:py-10">
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-16 lg:gap-x-20">
-            {CLIENTS.map((name, index) => (
-              <motion.span
-                key={name}
-                initial={{ opacity: 0, y: 8 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.1 * index }}
-                className="text-white/70 text-xs md:text-sm font-medium uppercase tracking-widest whitespace-nowrap"
+        <div className="w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 py-6 md:py-8 overflow-hidden">
+          <motion.div
+            className="flex items-center gap-12 md:gap-16 lg:gap-20 whitespace-nowrap"
+            initial={{ x: 0 }}
+            animate={inView ? { x: '-50%' } : { x: 0 }}
+            transition={{
+              ease: 'linear',
+              duration: 30,
+              repeat: inView ? Infinity : 0,
+            }}
+          >
+            {[...CLIENTS, ...CLIENTS].map((name, index) => (
+              <span
+                key={`${name}-${index}`}
+                className="text-white/70 text-xs md:text-sm font-medium uppercase tracking-[0.35em] whitespace-nowrap"
                 style={{ fontFamily: 'var(--font-spartan)' }}
               >
                 {name}
-              </motion.span>
+              </span>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

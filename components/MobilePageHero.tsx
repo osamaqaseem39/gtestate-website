@@ -16,7 +16,7 @@ export default function MobilePageHero({
   const displayTitle = titleAccent ? (
     <>
       {title}
-      <span className="text-cyan-400"> {titleAccent}</span>
+      <span className="text-neon-green"> {titleAccent}</span>
     </>
   ) : (
     title
@@ -29,7 +29,7 @@ export default function MobilePageHero({
     >
       <div className="max-w-xl">
         {label && (
-          <p className="mb-3 inline-flex rounded-full border border-cyan-400/40 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-400">
+          <p className="mb-3 inline-flex rounded-full border border-neon-green/40 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-neon-green">
             {label}
           </p>
         )}

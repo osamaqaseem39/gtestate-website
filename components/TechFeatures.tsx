@@ -76,10 +76,10 @@ export default function TechFeatures() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            <span className="text-gradient">Cutting-Edge</span> Technology
-          </h2>
-          <p className="text-white/60 text-lg max-w-2xl mx-auto">
+          <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.35em] text-white/60 mb-3">
+            Technology that powers what we do
+          </p>
+          <p className="text-white/60 text-sm md:text-base max-w-2xl mx-auto">
             Experience the future of living with our integrated smart home technology and AI-powered features.
           </p>
         </motion.div>

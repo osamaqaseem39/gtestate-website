@@ -129,8 +129,8 @@ export default function NewHero() {
         <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center">
           {/* Top badge */}
           <div ref={badgeRef} className="mb-6 flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-white/70">
-            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/40 bg-white/5">
-              <Diamond className="h-3 w-3 text-teal" />
+            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-neon-green/60 bg-white/5">
+              <Diamond className="h-3 w-3 text-neon-green" />
             </span>
             <span>Signature Experience</span>
           </div>
@@ -142,7 +142,7 @@ export default function NewHero() {
               className="text-4xl font-bold uppercase tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
             >
               Crafting
-              <span className="block text-teal">Living Landmarks</span>
+              <span className="block text-neon-green">Living Landmarks</span>
             </h1>
 
             <p
@@ -161,7 +161,7 @@ export default function NewHero() {
           >
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-3 border border-teal bg-teal px-6 py-3 text-xs font-medium uppercase tracking-[0.25em] text-black transition-colors hover:bg-transparent hover:text-teal"
+              className="group inline-flex items-center gap-3 border border-neon-green bg-neon-green px-6 py-3 text-xs font-medium uppercase tracking-[0.25em] text-black transition-colors hover:bg-transparent hover:text-neon-green"
             >
               <Diamond className="h-4 w-4" />
               <span>Request a consultation</span>
