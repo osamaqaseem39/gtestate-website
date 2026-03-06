@@ -1,4 +1,7 @@
- 'use client'
+'use client'
+
+import { motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
 
 const CHOICE_ITEMS = [
   {
@@ -19,24 +22,46 @@ const CHOICE_ITEMS = [
 ]
 
 export default function MobileChoiceSection() {
+  const [ref, inView] = useInView({
+    // Animate both when entering and leaving viewport
+    triggerOnce: false,
+    threshold: 0.2,
+  })
+
   return (
     <section
-      className="bg-black text-white px-4 py-12 space-y-6 sm:px-6"
+      ref={ref}
+      className="bg-black text-white px-4 py-12 space-y-6 sm:px-6 md:py-16"
       aria-label="Why choose GT Estate numbers"
     >
-      <div>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
+      >
         <h2 className="text-2xl font-bold uppercase tracking-tight">
           Make your choice
         </h2>
         <p className="mt-2 text-sm text-white/80">
           A proven track record backed by experience, engineering strength, and on-time delivery.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="space-y-4">
-        {CHOICE_ITEMS.map((item) => (
-          <article
+      <div className="space-y-4 md:grid md:grid-cols-3 md:gap-4 md:space-y-0">
+        {CHOICE_ITEMS.map((item, index) => (
+          <motion.article
             key={item.label}
+            initial={{ opacity: 0, y: 30, scale: 0.96 }}
+            animate={
+              inView
+                ? { opacity: 1, y: 0, scale: 1 }
+                : { opacity: 0, y: 30, scale: 0.96 }
+            }
+            transition={{
+              duration: 0.6,
+              delay: 0.15 + index * 0.08,
+              ease: [0.22, 0.61, 0.36, 1],
+            }}
             className="rounded-xl border border-white/10 bg-white/5 px-4 py-4"
           >
             <div className="flex items-baseline justify-between gap-3">
@@ -46,7 +71,7 @@ export default function MobileChoiceSection() {
               <p className="text-xl font-semibold text-teal">{item.value}</p>
             </div>
             <p className="mt-2 text-xs text-white/75">{item.detail}</p>
-          </article>
+          </motion.article>
         ))}
       </div>
     </section>

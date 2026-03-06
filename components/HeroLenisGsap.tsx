@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { ChevronDown, Diamond } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Navigation from './Navigation'
 import { useGSAP } from './GSAPContext'
 
 /**
@@ -298,12 +297,7 @@ export default function HeroLenisGsap() {
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      <div className="relative z-10 flex min-h-screen flex-col">
-        {/* Navigation always on top for this hero */}
-        <div className="fixed top-0 left-0 right-0 z-50">
-          <Navigation />
-        </div>
-
+      <div className="relative z-10 flex min-h-screen flex-col pt-20">
         {/* Main content area */}
         <div className="flex flex-1 items-center justify-center px-4 py-20 sm:px-6 lg:px-8 xl:px-12">
           <div className="relative w-full">
@@ -385,7 +379,7 @@ export default function HeroLenisGsap() {
                         <p className="text-sm font-light uppercase tracking-wider text-white">
                           ABOUT GT ESTATES
                         </p>
-                        <h2 className="text-4xl font-bold uppercase leading-tight tracking-tight text-white md:text-5xl lg:text-6xl xl:text-7xl">
+                        <h2 className="text-3xl font-bold uppercase leading-tight tracking-tight text-white md:text-4xl lg:text-5xl xl:text-6xl">
                           <span className="whitespace-nowrap">REFLECT THE SPIRIT</span>
                           <br />
                           <span className="whitespace-nowrap">OF INNOVATION</span>
@@ -403,7 +397,7 @@ export default function HeroLenisGsap() {
                         <p className="text-sm font-light uppercase tracking-wider text-white">
                           OUR VISION
                         </p>
-                        <h2 className="text-4xl font-bold uppercase leading-tight tracking-tight text-white md:text-5xl lg:text-6xl xl:text-7xl">
+                        <h2 className="text-3xl font-bold uppercase leading-tight tracking-tight text-white md:text-4xl lg:text-5xl xl:text-6xl">
                           <span className="whitespace-nowrap">CREATING SPACES</span>
                           <br />
                           <span className="whitespace-nowrap">THAT INSPIRE</span>
@@ -420,12 +414,12 @@ export default function HeroLenisGsap() {
 
                     <div className="relative lg:col-span-3">
                       <div ref={aboutDescRef} className="space-y-3">
-                        <p className="mb-1 text-sm font-light leading-relaxed text-white md:text-base">
+                        <p className="mb-1 text-sm font-light leading-relaxed text-white md:text-sm">
                           GT Estates is a Lahore-based team of investors, realtors, and finance
                           advisors focused on verified plots, high-footfall opportunities, and
                           premium homes and business locations.
                         </p>
-                        <p className="text-sm font-light leading-relaxed text-white md:text-base">
+                        <p className="text-sm font-light leading-relaxed text-white md:text-sm">
                           We combine market insight with strict due diligence so you can move
                           from &quot;hard to verify&quot; to confident, well-timed investments.
                         </p>
@@ -435,12 +429,12 @@ export default function HeroLenisGsap() {
                         ref={visionDescRef}
                         className="pointer-events-none absolute inset-0 space-y-3 opacity-0"
                       >
-                        <p className="mb-1 text-sm font-light leading-relaxed text-white md:text-base">
+                        <p className="mb-1 text-sm font-light leading-relaxed text-white md:text-sm">
                           We see a real estate market where every investor buys with clarity,
                           not confusion – powered by verified projects, honest numbers, and
                           on-ground facts.
                         </p>
-                        <p className="text-sm font-light leading-relaxed text-white md:text-base">
+                        <p className="text-sm font-light leading-relaxed text-white md:text-sm">
                           Our vision is to help clients in Lahore and beyond build lifelong
                           profitability through smarter, better-informed property decisions.
                         </p>
@@ -466,7 +460,7 @@ export default function HeroLenisGsap() {
                 </p>
                 <h1
                   ref={buildingRef}
-                  className="text-6xl font-bold uppercase tracking-tight text-white md:text-7xl lg:text-8xl xl:text-9xl"
+                  className="text-5xl font-bold uppercase tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl"
                 >
                   BUILDING
                 </h1>
@@ -484,7 +478,7 @@ export default function HeroLenisGsap() {
               >
                 <h1
                   ref={visionsRef}
-                  className="text-right text-6xl font-bold uppercase tracking-tight text-white md:text-7xl lg:text-8xl xl:text-9xl"
+                  className="text-right text-5xl font-bold uppercase tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl"
                 >
                   VISIONS
                 </h1>

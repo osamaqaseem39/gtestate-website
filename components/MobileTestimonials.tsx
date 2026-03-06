@@ -27,7 +27,7 @@ const testimonials = [
 export default function MobileTestimonials() {
   return (
     <section
-      className="bg-black text-white px-4 py-12 sm:px-6"
+      className="bg-black text-white px-4 py-12 sm:px-6 md:py-16"
       aria-label="Client testimonials"
     >
       <div>
@@ -43,7 +43,7 @@ export default function MobileTestimonials() {
         </p>
       </div>
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
         {testimonials.map((t) => (
           <article
             key={t.id}

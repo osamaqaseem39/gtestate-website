@@ -9,7 +9,6 @@ import {
   ChevronDown,
   Diamond
 } from 'lucide-react'
-import Navigation from './Navigation'
 import { useGSAP } from './GSAPContext'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -877,21 +876,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-black/40" />
       </motion.div>
 
-      <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Navigation - only visible during hero phase, completely hidden in about section */}
-        <div
-          className="fixed top-0 left-0 right-0 z-50"
-          style={{ 
-            // Keep visible when scrolling up or when animations haven't completed
-            visibility: (allAnimationsComplete && scrollProgress >= 1) ? 'hidden' : 'visible',
-            opacity: (allAnimationsComplete && scrollProgress >= 1) ? 0 : 1,
-            pointerEvents: (allAnimationsComplete && scrollProgress >= 1) ? 'none' : 'auto',
-            transition: 'opacity 0.3s ease-out'
-          }}
-        >
-          <Navigation />
-        </div>
-        
+      <div className="relative z-10 min-h-screen flex flex-col pt-20">
         {/* Main Content */}
         <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 xl:px-12 py-20 relative" style={{
           WebkitFontSmoothing: 'antialiased',

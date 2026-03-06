@@ -21,18 +21,18 @@ export default function MobileHero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex min-h-[90vh] flex-col px-4 pt-28 pb-10">
-        <div className="max-w-xl">
+      <div className="relative z-10 flex min-h-[90vh] flex-col px-4 pt-24 pb-10 sm:px-6 md:pt-28">
+        <div className="max-w-xl md:max-w-2xl">
           <p className="mb-3 text-xs font-light uppercase tracking-[0.18em] text-white/80">
             Renovation & Fit Out • Lahore, Pakistan
           </p>
 
-          <h1 className="text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl">
+          <h1 className="text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl md:text-5xl">
             <span className="block">Building</span>
             <span className="mt-1 block text-gradient-teal">Visions</span>
           </h1>
 
-          <p className="mt-4 text-sm leading-relaxed text-white/80">
+          <p className="mt-4 text-sm leading-relaxed text-white/80 md:text-base md:max-w-xl">
             Turnkey renovation and fit‑out solutions that blend global design standards with
             local insight, delivering spaces that feel tailored, timeless, and truly livable.
           </p>

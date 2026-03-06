@@ -78,7 +78,7 @@ export default function Testimonials() {
         <div className="absolute inset-0 bg-gradient-to-tr from-black/95 via-black/90 to-cyan-950/50" />
       </div>
 
-      <div className="relative z-10 w-full px-0 sm:px-0 lg:px-0">
+      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-12">
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -87,13 +87,13 @@ export default function Testimonials() {
           className="text-center mb-10 md:mb-14"
         >
           <h2
-            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight uppercase text-white"
+            className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight uppercase text-white"
             style={{ fontFamily: 'var(--font-spartan)' }}
           >
             People Who Trust
-            <span className="block text-cyan-400 mt-1">GT Estate</span>
+            <span className="block text-[#fabb22] mt-1 text-xl md:text-2xl">GT Estate</span>
           </h2>
-          <p className="mt-3 md:mt-4 text-sm md:text-base text-white/70 max-w-2xl mx-auto">
+          <p className="mt-2 md:mt-3 text-sm md:text-base text-white/70 max-w-2xl mx-auto">
             Real feedback from clients who trusted us with their homes, investments, and fit‑out projects.
           </p>
         </motion.div>
@@ -103,29 +103,29 @@ export default function Testimonials() {
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 0.61, 0.36, 1] }}
-          className="relative"
+          className="relative max-w-5xl mx-auto"
         >
           {/* Edge fade gradients */}
           <div
-            className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-20 md:w-24 lg:w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-20"
+            className="pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-16 md:w-20 lg:w-24 bg-gradient-to-r from-black via-black/80 to-transparent z-20"
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-20 md:w-24 lg:w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-20"
+            className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-16 md:w-20 lg:w-24 bg-gradient-to-l from-black via-black/80 to-transparent z-20"
             aria-hidden
           />
 
           <Swiper
             modules={[Autoplay]}
             spaceBetween={24}
-            slidesPerView={1.15}
+            slidesPerView={1.05}
             centeredSlides
             loop
             autoplay={{ delay: 5000, disableOnInteraction: false }}
             breakpoints={{
-              640: { slidesPerView: 1.2 },
-              768: { slidesPerView: 1.35 },
-              1024: { slidesPerView: 1.4 },
+              640: { slidesPerView: 1.1 },
+              768: { slidesPerView: 1.2 },
+              1024: { slidesPerView: 1.3 },
               1280: { slidesPerView: 1.35 },
             }}
             className="!overflow-visible"
@@ -162,15 +162,15 @@ export default function Testimonials() {
                     </div>
                     <div className="flex items-center gap-0.5" aria-label={`${t.rating} out of 5 stars`}>
                       {[1, 2, 3, 4, 5].map((i) => (
-                      <Star
-                        key={i}
-                        className="w-5 h-5 flex-shrink-0"
-                        style={{
-                          color: '#fabb22',
-                          fill: i <= t.rating ? '#fabb22' : 'transparent',
-                          stroke: '#fabb22',
-                        }}
-                      />
+                        <Star
+                          key={i}
+                          className="w-5 h-5 flex-shrink-0"
+                          style={{
+                            color: '#fabb22',
+                            fill: i <= t.rating ? '#fabb22' : 'transparent',
+                            stroke: '#fabb22',
+                          }}
+                        />
                       ))}
                     </div>
                   </div>

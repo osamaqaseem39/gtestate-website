@@ -95,15 +95,15 @@ export default function Navigation() {
           >
             <div className="relative flex flex-col items-center">
               {/* Small green upward arrow above */}
-              <ChevronUp className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-3 h-3 text-light-green" />
+              <ChevronUp className="absolute -top-5 left-1/2 transform -translate-x-1/2 w-3 h-3 text-light-green" />
               {/* Image logo */}
               <Image
                 src="/logo.png"
                 alt="GT Estate logo"
-                width={200}
-                height={60}
+                width={260}
+                height={80}
                 priority
-                className="h-12 w-auto object-contain"
+                className="h-16 w-auto object-contain"
               />
               {/* Accessible text / subtle subtitle */}
               <span className="sr-only">GT Estate - Real Estate Services</span>

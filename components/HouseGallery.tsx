@@ -173,7 +173,7 @@ export default function HouseGallery() {
                   className="absolute inset-0 flex items-end justify-center pb-[10%] pointer-events-none z-0"
                   style={{ fontFamily: 'var(--font-spartan)', opacity: centerTextOpacity }}
                 >
-                  <span className="text-white/60 font-bold uppercase tracking-tight text-5xl md:text-6xl lg:text-7xl whitespace-nowrap">
+                  <span className="text-white/60 font-bold uppercase tracking-tight text-4xl md:text-5xl lg:text-6xl whitespace-nowrap">
                     TRUSTWORTHY
                   </span>
                 </motion.div>
@@ -183,7 +183,7 @@ export default function HouseGallery() {
                   className="absolute inset-0 flex items-start justify-center pt-[10%] pointer-events-none z-0"
                   style={{ fontFamily: 'var(--font-spartan)', opacity: centerTextOpacity }}
                 >
-                  <span className="text-white/60 font-bold uppercase tracking-tight text-5xl md:text-6xl lg:text-7xl whitespace-nowrap">
+                  <span className="text-white/60 font-bold uppercase tracking-tight text-4xl md:text-5xl lg:text-6xl whitespace-nowrap">
                     PROFESSIONALISM
                   </span>
                 </motion.div>
@@ -242,7 +242,7 @@ export default function HouseGallery() {
                     textShadow: '0 6px 18px rgba(0, 0, 0, 0.9)',
                   }}
                 >
-                  <span className="text-white font-extrabold uppercase tracking-tight text-5xl md:text-6xl lg:text-7xl xl:text-8xl whitespace-nowrap">
+                  <span className="text-white font-extrabold uppercase tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl whitespace-nowrap">
                     CONTEMPORARY
                   </span>
                 </motion.div>
@@ -306,18 +306,18 @@ export default function HouseGallery() {
             className="text-center max-w-4xl"
           >
             <h2
-              className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-2 uppercase tracking-tight leading-tight"
+              className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 uppercase tracking-tight leading-tight"
               style={{ fontFamily: 'var(--font-spartan)' }}
             >
               WHY CHOOSE
             </h2>
             <h2
-              className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-neon-green mb-6 md:mb-8 uppercase tracking-tight leading-tight"
+              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-neon-green mb-6 md:mb-8 uppercase tracking-tight leading-tight"
               style={{ fontFamily: 'var(--font-spartan)' }}
             >
               GT ESTATE?
             </h2>
-            <p className="text-white text-base md:text-lg leading-relaxed text-center mt-4">
+            <p className="text-white text-sm md:text-base leading-relaxed text-center mt-4">
               To achieve flawless real estate solutions from planning to execution, you need a skilled partner in property investment.
               Our experienced team delivers customized solutions, prioritizing client satisfaction and handling projects of all sizes with precision.
             </p>

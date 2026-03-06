@@ -28,8 +28,8 @@ export default function MajorClients() {
       style={{ position: 'relative', zIndex: 50 }}
       aria-label="Major clients and projects"
     >
-      {/* Main content: text left + image right, full width */}
-      <div className="w-full grid grid-cols-1 lg:grid-cols-2 min-h-[70vh] lg:min-h-[85vh]">
+      {/* Main content: text left + image right, centered on larger screens */}
+      <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 min-h-[70vh] lg:min-h-[80vh]">
         {/* Left: copy and controls */}
         <div className="relative z-10 flex flex-col justify-center px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 py-16 lg:py-24">
           <motion.div
@@ -39,30 +39,30 @@ export default function MajorClients() {
             className="max-w-xl"
           >
             <div className="flex items-center gap-3 mb-4">
-              <span className="w-2 h-2 bg-cyan-400 rotate-45" aria-hidden />
+              <span className="w-2 h-2 bg-[#fabb22] rotate-45" aria-hidden />
               <span
-                className="text-sm font-semibold text-cyan-400 tracking-[0.35em] uppercase"
+                className="text-sm font-semibold text-[#fabb22] tracking-[0.35em] uppercase"
                 style={{ fontFamily: 'var(--font-spartan)' }}
               >
                 Major clients
               </span>
             </div>
             <h2
-              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight uppercase mb-6"
+              className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight uppercase mb-4"
               style={{ fontFamily: 'var(--font-spartan)' }}
             >
               AL FORSAN
             </h2>
-            <p className="text-white/90 text-base md:text-lg leading-relaxed mb-8">
+            <p className="text-white/90 text-sm md:text-base leading-relaxed mb-6">
               International Sports Resort in Khalifa City, the Marriott Hotel Al Forsan Abu Dhabi offers
               unparalleled luxury and thoughtful amenities.
             </p>
             <Link
               href="#"
-              className="inline-flex items-center gap-3 border border-cyan-400 text-white px-6 py-3.5 font-medium text-sm uppercase tracking-wider hover:bg-cyan-400/10 transition-colors"
+              className="inline-flex items-center gap-3 border border-[#fabb22] text-white px-6 py-3.5 font-medium text-sm uppercase tracking-wider hover:bg-[#fabb22]/10 transition-colors"
               style={{ fontFamily: 'var(--font-spartan)' }}
-            >
-              <span className="w-2 h-2 bg-cyan-400 rotate-45 flex-shrink-0" />
+              >
+              <span className="w-2 h-2 bg-[#fabb22] rotate-45 flex-shrink-0" />
               Learn more
             </Link>
             {/* Navigation arrows */}

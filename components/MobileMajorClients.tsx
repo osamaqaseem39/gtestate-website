@@ -16,7 +16,7 @@ const CLIENTS = [
 export default function MobileMajorClients() {
   return (
     <section
-      className="bg-black text-white px-4 py-12 space-y-8 sm:px-6"
+      className="bg-black text-white px-4 py-12 space-y-8 sm:px-6 md:py-16"
       aria-label="Major clients"
     >
       <div>

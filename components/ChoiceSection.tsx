@@ -24,7 +24,8 @@ const CHOICE_CARDS = [
 
 export default function ChoiceSection() {
   const [ref, inView] = useInView({
-    triggerOnce: true,
+    // Allow animations both on enter and on leave
+    triggerOnce: false,
     threshold: 0.2,
   })
 
@@ -50,57 +51,58 @@ export default function ChoiceSection() {
       </div>
 
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-24 md:py-32 lg:py-40">
-        {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ duration: 0.8, ease: [0.22, 0.61, 0.36, 1] }}
-          className="text-center mb-16 md:mb-20"
-        >
-          <h2
-            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight uppercase"
-            style={{ fontFamily: 'var(--font-spartan)' }}
+        <div className="max-w-6xl mx-auto">
+          {/* Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ duration: 0.8, ease: [0.22, 0.61, 0.36, 1] }}
+            className="text-center mb-12 md:mb-16"
           >
-            MAKE YOUR CHOICE
-          </h2>
-        </motion.div>
+            <h2
+              className="text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold tracking-tight uppercase"
+              style={{ fontFamily: 'var(--font-spartan)' }}
+            >
+              MAKE YOUR CHOICE
+            </h2>
+          </motion.div>
 
-        {/* Cards - full width grid */}
-        <div className="w-full">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
-            {CHOICE_CARDS.map((card, index) => (
-              <motion.article
-                key={card.id}
-                initial={{ opacity: 0, y: 40, scale: 0.96 }}
-                animate={
-                  inView
-                    ? { opacity: 1, y: 0, scale: 1 }
-                    : { opacity: 0, y: 40, scale: 0.96 }
-                }
-                transition={{
-                  duration: 0.7,
-                  delay: 0.25 + index * 0.1,
-                  ease: [0.22, 0.61, 0.36, 1],
-                }}
-                className="relative bg-black/85 backdrop-blur-md border border-white/8 px-8 py-10 md:px-10 md:py-12 flex flex-col justify-between shadow-[0_32px_80px_rgba(0,0,0,0.9)]"
-              >
-                <div className="mb-8">
-                  <p className="text-sm md:text-base font-medium text-white/60 tracking-[0.25em] uppercase mb-4">
-                    {card.id}
-                  </p>
-                  <p className="text-xs md:text-sm font-semibold text-neon-green tracking-[0.35em] uppercase mb-3">
-                    {card.label}
-                  </p>
-                  <p className="text-2xl md:text-3xl lg:text-4xl font-semibold uppercase leading-tight">
-                    {card.value}
-                  </p>
-                </div>
-              </motion.article>
-            ))}
+          {/* Cards - centered grid */}
+          <div className="w-full">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+              {CHOICE_CARDS.map((card, index) => (
+                <motion.article
+                  key={card.id}
+                  initial={{ opacity: 0, y: 40, scale: 0.96 }}
+                  animate={
+                    inView
+                      ? { opacity: 1, y: 0, scale: 1 }
+                      : { opacity: 0, y: 40, scale: 0.96 }
+                  }
+                  transition={{
+                    duration: 0.7,
+                    delay: 0.25 + index * 0.1,
+                    ease: [0.22, 0.61, 0.36, 1],
+                  }}
+                  className="relative bg-black/85 backdrop-blur-md border border-white/8 px-8 py-10 md:px-10 md:py-12 flex flex-col justify-between shadow-[0_32px_80px_rgba(0,0,0,0.9)]"
+                >
+                  <div className="mb-8">
+                    <p className="text-xs md:text-sm font-medium text-white/60 tracking-[0.25em] uppercase mb-4">
+                      {card.id}
+                    </p>
+                    <p className="text-[11px] md:text-xs font-semibold text-neon-green tracking-[0.35em] uppercase mb-3">
+                      {card.label}
+                    </p>
+                    <p className="text-xl md:text-2xl lg:text-3xl font-semibold uppercase leading-tight">
+                      {card.value}
+                    </p>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Scroll indicator */}
+          {/* Scroll indicator */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
@@ -120,6 +122,7 @@ export default function ChoiceSection() {
               </div>
             </motion.div>
           </motion.div>
+        </div>
       </div>
     </section>
   )
