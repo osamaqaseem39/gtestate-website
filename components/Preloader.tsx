@@ -82,15 +82,17 @@ export default function Preloader() {
         </div>
 
         {/* Bottom bar + text row */}
-        <div className="w-full px-4 pb-3 sm:px-8 sm:pb-4">
-          <div className="mb-1 flex items-center justify-between text-[11px] sm:text-xs">
-            <span className="text-white/80">Brewing your experience</span>
-            <span className="text-white/80">{progress}%</span>
+        <div className="w-full px-6 pb-6 sm:px-10 sm:pb-8">
+          <div className="mb-2 flex items-center justify-between text-xs sm:text-sm md:text-base">
+            <span className="font-medium tracking-[0.18em] uppercase text-white/90">
+              Brewing your experience
+            </span>
+            <span className="font-semibold text-white">{progress}%</span>
           </div>
-          <div className="h-[3px] w-full bg-white/20">
+          <div className="h-1.5 w-full rounded-full bg-white/15">
             <div
               ref={barRef}
-              className="h-full w-full origin-left scale-x-0 bg-white"
+              className="h-full w-full origin-left scale-x-0 rounded-full bg-white"
               style={{ transformOrigin: 'left' }}
             />
           </div>
