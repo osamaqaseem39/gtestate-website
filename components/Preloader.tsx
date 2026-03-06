@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { gsap } from 'gsap'
 
 export default function Preloader() {
   const [isVisible, setIsVisible] = useState(true)
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const textRef = useRef<HTMLSpanElement>(null)
+  const textRef = useRef<HTMLParagraphElement>(null)
   const barRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -21,14 +22,14 @@ export default function Preloader() {
       bar &&
       gsap.to(bar, {
         scaleX: 1,
-        duration: 0.8,
+        duration: 0.9,
         ease: 'power1.inOut',
         repeat: -1,
         yoyo: true,
         transformOrigin: 'left',
       })
 
-    const minDisplayTime = 1200
+    const minDisplayTime = 1400
     const start = performance.now()
 
     const hide = () => {
@@ -47,30 +48,30 @@ export default function Preloader() {
       if (bar) {
         tl.to(bar, {
           scaleX: 1,
-          duration: 0.4,
+          duration: 0.5,
           ease: 'power2.inOut',
           transformOrigin: 'left',
         })
       }
+
       tl.to(
-          text,
-          {
-            opacity: 0,
-            y: -12,
-            duration: 0.35,
-            ease: 'power2.in',
-          },
-          '-=0.2'
-        )
-        .to(
-          wrapper,
-          {
-            opacity: 0,
-            duration: 0.5,
-            ease: 'power2.inOut',
-          },
-          '-=0.15'
-        )
+        text,
+        {
+          opacity: 0,
+          y: -16,
+          duration: 0.4,
+          ease: 'power2.in',
+        },
+        '-=0.25'
+      ).to(
+        wrapper,
+        {
+          opacity: 0,
+          duration: 0.6,
+          ease: 'power2.inOut',
+        },
+        '-=0.2'
+      )
     }
 
     if (document.readyState === 'complete') {
@@ -89,21 +90,50 @@ export default function Preloader() {
   return (
     <div
       ref={wrapperRef}
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
+      className="fixed inset-0 z-[9999] bg-black bg-cyber-grid"
       aria-hidden="true"
     >
-      <span
-        ref={textRef}
-        className="font-semibold tracking-wide text-white/90 text-xl sm:text-2xl"
-      >
-        GT Estate
-      </span>
-      <div className="mt-4 w-24 h-0.5 overflow-hidden rounded-full bg-white/10">
-        <div
-          ref={barRef}
-          className="h-full w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple"
-          style={{ transformOrigin: 'left' }}
-        />
+      <div className="absolute inset-x-0 bottom-0 px-6 pb-7 sm:px-10 sm:pb-9">
+        <div className="max-w-3xl">
+          <div className="flex items-center gap-3">
+            <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-white/10 bg-white/5">
+              <Image
+                src="/logo.png"
+                alt="GT Estate logo"
+                fill
+                priority
+                className="object-contain"
+              />
+            </div>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.35em] text-white/40">
+                GT Estate
+              </p>
+              <p className="text-sm text-white/60">
+                Next‑gen real estate platform
+              </p>
+            </div>
+          </div>
+
+          <p
+            ref={textRef}
+            className="mt-4 text-lg sm:text-xl font-semibold text-gradient text-sharp"
+          >
+            Preparing your experience
+          </p>
+          <p className="mt-1.5 text-sm text-white/60">
+            Calibrating market data, tailoring properties and setting up your
+            journey.
+          </p>
+        </div>
+
+        <div className="mt-6 h-1 w-full overflow-hidden rounded-none bg-white/5">
+          <div
+            ref={barRef}
+            className="h-full w-full origin-left scale-x-0 bg-gradient-to-r from-neon-green via-neon-blue to-neon-purple"
+            style={{ transformOrigin: 'left' }}
+          />
+        </div>
       </div>
     </div>
   )
