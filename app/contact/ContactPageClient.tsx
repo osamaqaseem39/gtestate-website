@@ -53,7 +53,7 @@ export default function ContactPageClient() {
                       </label>
                       <input
                         type="text"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50"
+                        className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
                         placeholder="Enter your first name"
                       />
                     </div>
@@ -63,7 +63,7 @@ export default function ContactPageClient() {
                       </label>
                       <input
                         type="text"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50"
+                        className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
                         placeholder="Enter your last name"
                       />
                     </div>
@@ -74,7 +74,7 @@ export default function ContactPageClient() {
                     </label>
                     <input
                       type="email"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
                       placeholder="Enter your email"
                     />
                   </div>
@@ -84,7 +84,7 @@ export default function ContactPageClient() {
                     </label>
                     <input
                       type="tel"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -94,7 +94,7 @@ export default function ContactPageClient() {
                     </label>
                     <textarea
                       rows={4}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 resize-none"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 resize-none"
                       placeholder="Tell us about your real estate needs"
                     />
                   </div>
@@ -112,7 +112,7 @@ export default function ContactPageClient() {
                     </p>
                     <div className="space-y-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center shrink-0 text-cyan-400">
+                        <div className="w-12 h-12 bg-amber-400/10 border border-amber-400/30 flex items-center justify-center shrink-0 text-amber-400">
                           ◆
                         </div>
                         <div>
@@ -124,7 +124,7 @@ export default function ContactPageClient() {
                         </div>
                       </div>
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center shrink-0 text-cyan-400">
+                        <div className="w-12 h-12 bg-amber-400/10 border border-amber-400/30 flex items-center justify-center shrink-0 text-amber-400">
                           ◆
                         </div>
                         <div>
@@ -138,7 +138,7 @@ export default function ContactPageClient() {
                         </div>
                       </div>
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center shrink-0 text-cyan-400">
+                        <div className="w-12 h-12 bg-amber-400/10 border border-amber-400/30 flex items-center justify-center shrink-0 text-amber-400">
                           ◆
                         </div>
                         <div>
@@ -157,19 +157,19 @@ export default function ContactPageClient() {
                     </h4>
                     <ul className="space-y-3 text-white/60 text-sm">
                       <li className="flex items-center gap-2">
-                        <span className="text-cyan-400">◆</span>
+                        <span className="text-amber-400">◆</span>
                         <span>AI-Powered Property Matching</span>
                       </li>
                       <li className="flex items-center gap-2">
-                        <span className="text-cyan-400">◆</span>
+                        <span className="text-amber-400">◆</span>
                         <span>Virtual Reality Tours</span>
                       </li>
                       <li className="flex items-center gap-2">
-                        <span className="text-cyan-400">◆</span>
+                        <span className="text-amber-400">◆</span>
                         <span>24/7 Customer Support</span>
                       </li>
                       <li className="flex items-center gap-2">
-                        <span className="text-cyan-400">◆</span>
+                        <span className="text-amber-400">◆</span>
                         <span>Blockchain Security</span>
                       </li>
                     </ul>

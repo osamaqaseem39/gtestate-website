@@ -56,17 +56,17 @@ export default function HouseGallery() {
   // Home 1 image scroll-driven offsets (smoothed with springs)
   // As scrollYProgress goes from 0 → 1, move it noticeably but keep it in view
   const Home1Y = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '120vh'])
-  const Home1X = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '750px'])
+  const Home1X = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '650px'])
 
   // Back card (House 2) also moves down with scroll + slight left drift (smoothed)
   const Home2Y = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '130vh'])
-  const Home2X = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '-900px'])
+  const Home2X = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '-800px'])
 
   // Main gallery side images: strong downward motion + sideways drift on scroll (smoothed by springs)
   const leftImageY = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '70vh'])
-  const leftImageX = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '-400px'])
+  const leftImageX = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '-300px'])
   const rightImageY = useTransform(scrollYProgress, [0.4, 0.7], ['0vh', '65vh'])
-  const rightImageX = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '200px'])
+  const rightImageX = useTransform(scrollYProgress, [0.4, 0.7], ['0px', '100px'])
 
   // Scroll-driven straightening (rotation) + opacity for cards and side images
   // When scrollYProgress reaches the end of its range, all cards are straight (0deg) and fully opaque (1)
@@ -317,7 +317,7 @@ export default function HouseGallery() {
             >
               GT ESTATE?
             </h2>
-            <p className="text-white text-sm md:text-base leading-relaxed text-center mt-4">
+            <p className="text-white text-sm md:text-base leading-relaxed text-center mt-4 max-w-2xl mx-auto">
               To achieve flawless real estate solutions from planning to execution, you need a skilled partner in property investment.
               Our experienced team delivers customized solutions, prioritizing client satisfaction and handling projects of all sizes with precision.
             </p>
@@ -326,8 +326,8 @@ export default function HouseGallery() {
 
       </div>
 
-      {/* Spacer removed so section height is controlled by min-h and content */}
-      <div className="h-0" aria-hidden />
+      {/* Spacer at bottom to give breathing room before next section */}
+      <div className="h-16 md:h-24" aria-hidden />
     </section>
   )
 }

@@ -115,9 +115,9 @@ export default function TeamPageClient() {
                 {CORE_EXPERTS.map((member) => (
                   <div
                     key={member.name}
-                    className="p-6 bg-white/5 border border-white/10 hover:border-cyan-400/30 transition-colors duration-200"
+                    className="p-6 bg-white/5 border border-white/10 hover:border-amber-400/40 transition-colors duration-200"
                   >
-                    <div className="w-20 h-20 rounded-full bg-cyan-400/20 border border-cyan-400/40 flex items-center justify-center text-2xl text-cyan-400 font-bold uppercase tracking-tight mb-4">
+                    <div className="w-20 h-20 rounded-full bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-2xl text-amber-400 font-bold uppercase tracking-tight mb-4">
                       {member.name.charAt(0)}
                     </div>
                     <h4
@@ -126,7 +126,7 @@ export default function TeamPageClient() {
                     >
                       {member.name}
                     </h4>
-                    <p className="text-cyan-400 text-sm font-medium uppercase tracking-wider mb-1">
+                    <p className="text-amber-400 text-sm font-medium uppercase tracking-wider mb-1">
                       {member.role}
                     </p>
                     <p className="text-white/60 text-sm">{member.area}</p>
@@ -147,7 +147,7 @@ export default function TeamPageClient() {
                 {TEAM.map((member) => (
                   <div
                     key={member.name}
-                    className="p-5 bg-white/5 border border-white/10 hover:border-cyan-400/30 transition-colors duration-200"
+                    className="p-5 bg-white/5 border border-white/10 hover:border-amber-400/40 transition-colors duration-200"
                   >
                     <h4
                       className="text-base md:text-lg font-semibold text-white mb-1 uppercase tracking-tight"
@@ -155,7 +155,7 @@ export default function TeamPageClient() {
                     >
                       {member.name}
                     </h4>
-                    <p className="text-cyan-400 text-xs md:text-sm font-medium uppercase tracking-wider">
+                    <p className="text-amber-400 text-xs md:text-sm font-medium uppercase tracking-wider">
                       {member.role}
                     </p>
                   </div>
@@ -166,7 +166,7 @@ export default function TeamPageClient() {
             <div className="text-center mt-16">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-cyan-400 text-black font-semibold uppercase tracking-wider hover:bg-cyan-300 transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-amber-400 text-black font-semibold uppercase tracking-wider hover:bg-amber-300 transition-colors"
               >
                 Get in touch
               </Link>
