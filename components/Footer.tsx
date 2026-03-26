@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
+import { useEffect } from 'react'
 import {
   Phone,
   Mail,
@@ -17,6 +18,32 @@ export default function Footer() {
     triggerOnce: true,
     threshold: 0.1,
   })
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const existingScript = document.getElementById('tawkto-script')
+    if (existingScript) return
+
+    ;(window as Window & { Tawk_API?: Record<string, unknown>; Tawk_LoadStart?: Date }).Tawk_API =
+      (window as Window & { Tawk_API?: Record<string, unknown> }).Tawk_API || {}
+    ;(window as Window & { Tawk_LoadStart?: Date }).Tawk_LoadStart = new Date()
+
+    const s1 = document.createElement('script')
+    const s0 = document.getElementsByTagName('script')[0]
+
+    s1.id = 'tawkto-script'
+    s1.async = true
+    s1.src = 'https://embed.tawk.to/69c3e1eea263321c38595747/1jkiil3st'
+    s1.charset = 'UTF-8'
+    s1.setAttribute('crossorigin', '*')
+
+    if (s0?.parentNode) {
+      s0.parentNode.insertBefore(s1, s0)
+    } else {
+      document.body.appendChild(s1)
+    }
+  }, [])
 
   const navLinks = [
     { name: 'About Us', href: '/about' },
