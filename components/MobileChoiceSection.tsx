@@ -55,7 +55,7 @@ export default function MobileChoiceSection() {
       <div className="space-y-4 md:grid md:grid-cols-3 md:gap-4 md:space-y-0">
         {CHOICE_ITEMS.map((item, index) => (
           <motion.article
-            key={item.label}
+            key={item.id}
             initial={{ opacity: 0, y: 30, scale: 0.96 }}
             animate={
               inView
