@@ -117,9 +117,9 @@ export default function ContactPageClient() {
                         </div>
                         <div>
                           <h4 className="text-white font-semibold uppercase tracking-wider">
-                            Phone
+                            Call / WhatsApp
                           </h4>
-                          <p className="text-white/60">+92 300 1234567</p>
+                          <p className="text-white/60">+92 300 5999993</p>
                           <p className="text-white/60 text-sm">Mon–Fri 9AM–6PM</p>
                         </div>
                       </div>
@@ -143,10 +143,10 @@ export default function ContactPageClient() {
                         </div>
                         <div>
                           <h4 className="text-white font-semibold uppercase tracking-wider">
-                            Office
+                            Visit Us
                           </h4>
-                          <p className="text-white/60">Lahore</p>
-                          <p className="text-white/60 text-sm">Pakistan</p>
+                          <p className="text-white/60">GT Commercial Building #C43, 3rd Floor,</p>
+                          <p className="text-white/60 text-sm">Near Tehzeeb Bakers, Lake City, Lahore</p>
                         </div>
                       </div>
                     </div>

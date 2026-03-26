@@ -105,11 +105,11 @@ export default function CTA() {
             <div className="flex flex-col sm:flex-row gap-6 text-white/60">
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-neon-blue" />
-                <span>+1 (555) 123-4567</span>
+                <span>+92 300 5999993</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-neon-purple" />
-                <span>info@nexusreal.com</span>
+                <span>info@gtestate.com</span>
               </div>
             </div>
           </motion.div>

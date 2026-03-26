@@ -147,8 +147,8 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
                     <a href="mailto:info@gtestate.com" className="block hover:opacity-80 transition-opacity">
                       info@gtestate.com
                     </a>
-                    <a href="tel:+923001234567" className="block hover:opacity-80 transition-opacity">
-                      +92 300 1234567
+                    <a href="tel:+923005999993" className="block hover:opacity-80 transition-opacity">
+                      +92 300 5999993
                     </a>
                   </div>
                 </div>

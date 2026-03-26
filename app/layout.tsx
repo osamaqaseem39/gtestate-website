@@ -124,6 +124,22 @@ export default function RootLayout({
           <Navigation />
           {children}
         </GSAPProvider>
+        <script
+          // Loaded in the HTML so the widget appears on every public page.
+          dangerouslySetInnerHTML={{
+            __html: `
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69c3e1eea263321c38595747/1jkiil3st';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+            `,
+          }}
+        />
       </body>
     </html>
   )

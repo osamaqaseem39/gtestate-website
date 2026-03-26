@@ -1090,7 +1090,7 @@ export default function Hero() {
                               y: { duration: 0.5, ease: "easeInOut" }
                             }}
                           >
-                            {showNewContent ? "OUR VISION" : "ABOUT UPTOWN"}
+                            {showNewContent ? "OUR VISION" : "ABOUT GT ESTATES"}
                           </motion.p>
                         </div>
                         
@@ -1111,8 +1111,8 @@ export default function Hero() {
                           }}
                         >
                           {showNewContent 
-                            ? <><span className="whitespace-nowrap">CREATING SPACES</span><br /><span className="whitespace-nowrap">THAT INSPIRE</span></>
-                            : <><span className="whitespace-nowrap">REFLECT THE SPIRIT</span><br /><span className="whitespace-nowrap">OF INNOVATION</span></>}
+                            ? <><span className="whitespace-nowrap">BUILDING TRUST THROUGH</span><br /><span className="whitespace-nowrap">SMART INVESTMENTS</span></>
+                            : <><span className="whitespace-nowrap">REDEFINE THE FUTURE</span><br /><span className="whitespace-nowrap">OF REAL ESTATE</span></>}
                         </motion.h2>
                         
                         {/* Description with fade transition */}
@@ -1132,8 +1132,8 @@ export default function Hero() {
                             }}
                           >
                             {showNewContent 
-                              ? "Enhancing lifestyles through exceptional interior and exterior design solutions that transform spaces." 
-                              : "Enhancing lifestyles through exceptional interior and exterior design that transforms spaces."}
+                              ? "Creating opportunities that inspire growth, value, and long-term success in real estate."
+                              : "Delivering smart investment opportunities through premium residential and commercial plots that shape modern living."}
                           </motion.p>
                         </div>
                         
@@ -1165,19 +1165,19 @@ export default function Hero() {
                             {showNewContent ? (
                               <>
                                 <p>
-                                  We redefine the urban skyline with architectural designs that merge elegance, innovation, and functionality across all projects and developments.
+                                  We envision a real estate market where every investor makes decisions with clarity and confidence - Backed by verified projects, transparent dealings, and real market insights.
                                 </p>
                                 <p>
-                                  Our vision is to create iconic spaces that transcend time, reflecting the sophisticated and avant-garde spirit of modern living and design excellence.
+                                  Our vision is to guide clients in Lahore and beyond toward secure investments in Etihad Town Phase 3 and Etihad Town Sialkot, helping them achieve sustainable growth and lasting returns.
                                 </p>
                               </>
                             ) : (
                               <>
                                 <p>
-                                  Uptown is an established and well-renowned Renovation & fit-out company in Abu Dhabi, Dubai. Also known as one of the leading "Fast Track Projects Service Providers" in the UAE.
+                                  GT Estates is a Lahore-based real estate firm specializing in residential and commercial plot investments, offering trusted opportunities in Etihad Town Phase 3 and Etihad Town Sialkot.
                                 </p>
                                 <p>
-                                  Uptown has only expanded in terms of projects, experience, distinctive solutions, and an eye for aesthetics in its 13 years in the sector. We believe in bringing visions to life.
+                                  We combine market expertise with strong credibility to help you invest with confidence, turning the right location into long-term value and growth.
                                 </p>
                               </>
                             )}
@@ -1260,7 +1260,7 @@ export default function Hero() {
                   transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
                   className="text-white text-sm md:text-base font-light uppercase tracking-wider mb-4"
                 >
-                  Best Renovation Company & Fit Out Contractor Lahore, Pakistan
+                  Professional Real Estate &amp; Plot Specialists – Pakistan
                 </motion.p>
 
                 {/* Main Headline - BUILDING */}
@@ -1270,7 +1270,7 @@ export default function Hero() {
                   transition={{ duration: 0.9, ease: 'easeOut', delay: 0.25 }}
                   className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white uppercase tracking-tight leading-none relative"
                 >
-                  BUILDING
+                  CREATING VALUE
                 </motion.h1>
               </motion.div>
 
@@ -1297,7 +1297,9 @@ export default function Hero() {
                   transition={{ duration: 0.9, ease: 'easeOut', delay: 0.25 }}
                   className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white uppercase tracking-tight leading-none text-right"
                 >
-                  VISIONS
+                  <span className="whitespace-nowrap">SHAPING</span>
+                  <br />
+                  <span className="whitespace-nowrap">FUTURES</span>
                 </motion.h1>
 
                 {/* Contact Us Button */}
@@ -1305,12 +1307,17 @@ export default function Hero() {
                   initial={{ opacity: 0, x: 120 }}
                   animate={inView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.7, ease: 'easeOut', delay: 0.4 }}
-                  className="mt-8"
+                  className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center"
                 >
                   <span className="btn-hero-group">
                     <Link href="/contact" className="btn-hero">
                       <Diamond className="w-4 h-4" />
-                      <span>Contact Us</span>
+                      <span>Start Investing</span>
+                    </Link>
+                  </span>
+                  <span className="btn-hero-group">
+                    <Link href="/projects" className="btn-hero-outline">
+                      <span>View Opportunities</span>
                     </Link>
                   </span>
                 </motion.div>
@@ -1328,7 +1335,7 @@ export default function Hero() {
               className="absolute left-4 sm:left-6 lg:left-8 xl:left-12 text-white/80 text-sm md:text-base font-light leading-relaxed max-w-md lg:max-w-lg z-10"
               style={{ top: 'calc(50% + 2rem)' }}
             >
-              Visionary turnkey solutions across Pakistan, blending global expertise with local insight, and transforming spaces through innovative design and meticulous execution.
+              We focus on residential and commercial plots, delivering secure investments, prime areas, honest guidance, and profitable growth through reliable projects.
             </motion.p>
           </div>
         </div>

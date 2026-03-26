@@ -315,11 +315,11 @@ export default function HouseGallery() {
               className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-neon-green mb-6 md:mb-8 uppercase tracking-tight leading-tight"
               style={{ fontFamily: 'var(--font-spartan)' }}
             >
-              GT ESTATE?
+                US
             </h2>
             <p className="text-white text-sm md:text-base leading-relaxed text-center mt-4 max-w-2xl mx-auto">
-              To achieve flawless real estate solutions from planning to execution, you need a skilled partner in property investment.
-              Our experienced team delivers customized solutions, prioritizing client satisfaction and handling projects of all sizes with precision.
+                We provide reliable real estate services built on trust, transparency, and market expertise. From consultation to closing,
+                our team ensures smooth processes, informed decisions, and long-term client satisfaction with complete professional support.
             </p>
           </motion.div>
         </div>

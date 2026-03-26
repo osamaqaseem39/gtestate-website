@@ -380,13 +380,13 @@ export default function HeroLenisGsap() {
                           ABOUT GT ESTATES
                         </p>
                         <h2 className="text-3xl font-bold uppercase leading-tight tracking-tight text-white md:text-4xl lg:text-5xl xl:text-6xl">
-                          <span className="whitespace-nowrap">REFLECT THE SPIRIT</span>
+                          <span className="whitespace-nowrap">REDEFINE THE FUTURE</span>
                           <br />
-                          <span className="whitespace-nowrap">OF INNOVATION</span>
+                          <span className="whitespace-nowrap">OF REAL ESTATE</span>
                         </h2>
                         <p className="text-sm font-light leading-relaxed text-white md:text-base">
-                          Enhancing lifestyles through exceptional interior and exterior
-                          design that transforms spaces.
+                          Delivering smart investment opportunities through premium residential
+                          and commercial plots that shape modern living.
                         </p>
                       </div>
 
@@ -398,13 +398,13 @@ export default function HeroLenisGsap() {
                           OUR VISION
                         </p>
                         <h2 className="text-3xl font-bold uppercase leading-tight tracking-tight text-white md:text-4xl lg:text-5xl xl:text-6xl">
-                          <span className="whitespace-nowrap">CREATING SPACES</span>
+                          <span className="whitespace-nowrap">BUILDING TRUST THROUGH</span>
                           <br />
-                          <span className="whitespace-nowrap">THAT INSPIRE</span>
+                          <span className="whitespace-nowrap">SMART INVESTMENTS</span>
                         </h2>
                         <p className="text-sm font-light leading-relaxed text-white md:text-base">
-                          Enhancing lifestyles through exceptional interior and exterior
-                          design solutions that transform spaces.
+                          Creating opportunities that inspire growth, value, and long-term
+                          success in real estate.
                         </p>
                       </div>
                     </div>
@@ -415,13 +415,13 @@ export default function HeroLenisGsap() {
                     <div className="relative lg:col-span-3">
                       <div ref={aboutDescRef} className="space-y-3">
                         <p className="mb-1 text-sm font-light leading-relaxed text-white md:text-sm">
-                          GT Estates is a Lahore-based team of investors, realtors, and finance
-                          advisors focused on verified plots, high-footfall opportunities, and
-                          premium homes and business locations.
+                          GT Estates is a Lahore-based real estate firm specializing in residential
+                          and commercial plot investments, offering trusted opportunities in Etihad
+                          Town Phase 3 and Etihad Town Sialkot.
                         </p>
                         <p className="text-sm font-light leading-relaxed text-white md:text-sm">
-                          We combine market insight with strict due diligence so you can move
-                          from &quot;hard to verify&quot; to confident, well-timed investments.
+                          We combine market expertise with strong credibility to help you invest with
+                          confidence, turning the right location into long-term value and growth.
                         </p>
                       </div>
 
@@ -430,13 +430,14 @@ export default function HeroLenisGsap() {
                         className="pointer-events-none absolute inset-0 space-y-3 opacity-0"
                       >
                         <p className="mb-1 text-sm font-light leading-relaxed text-white md:text-sm">
-                          We see a real estate market where every investor buys with clarity,
-                          not confusion – powered by verified projects, honest numbers, and
-                          on-ground facts.
+                          We envision a real estate market where every investor makes decisions with
+                          clarity and confidence - Backed by verified projects, transparent dealings,
+                          and real market insights.
                         </p>
                         <p className="text-sm font-light leading-relaxed text-white md:text-sm">
-                          Our vision is to help clients in Lahore and beyond build lifelong
-                          profitability through smarter, better-informed property decisions.
+                          Our vision is to guide clients in Lahore and beyond toward secure investments
+                          in Etihad Town Phase 3 and Etihad Town Sialkot, helping them achieve
+                          sustainable growth and lasting returns.
                         </p>
                       </div>
                     </div>
@@ -456,13 +457,13 @@ export default function HeroLenisGsap() {
                   ref={taglineRef}
                   className="mb-4 text-sm font-light uppercase tracking-wider text-white md:text-base"
                 >
-                  Real Estate &amp; Investment Advisors · Lahore, Pakistan
+                  Professional Real Estate &amp; Plot Specialists – Pakistan
                 </p>
                 <h1
                   ref={buildingRef}
                   className="text-5xl font-bold uppercase tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl"
                 >
-                  BUILDING
+                  CREATING VALUE
                 </h1>
               </div>
 
@@ -480,15 +481,24 @@ export default function HeroLenisGsap() {
                   ref={visionsRef}
                   className="text-right text-5xl font-bold uppercase tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl"
                 >
-                  VISIONS
+                  <span className="whitespace-nowrap">SHAPING</span>
+                  <br />
+                  <span className="whitespace-nowrap">FUTURES</span>
                 </h1>
                 <div ref={ctaRef} className="mt-8">
-                  <span className="btn-hero-group">
-                    <Link href="/contact" className="btn-hero">
-                      <Diamond className="h-4 w-4" />
-                      <span>Contact Us</span>
-                    </Link>
-                  </span>
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <span className="btn-hero-group">
+                      <Link href="/contact" className="btn-hero">
+                        <Diamond className="h-4 w-4" />
+                        <span>Start Investing</span>
+                      </Link>
+                    </span>
+                    <span className="btn-hero-group">
+                      <Link href="/projects" className="btn-hero-outline">
+                        <span>View Opportunities</span>
+                      </Link>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -499,9 +509,8 @@ export default function HeroLenisGsap() {
               className="absolute left-4 z-10 max-w-md text-sm font-light leading-relaxed text-white/80 sm:left-6 lg:left-8 lg:max-w-lg xl:left-12 md:text-base"
               style={{ top: 'calc(50% + 2rem)' }}
             >
-              Visionary turnkey solutions across Pakistan, blending global expertise with
-              local insight, transforming spaces through innovative design and meticulous
-              execution.
+              We focus on residential and commercial plots, delivering secure investments,
+              prime areas, honest guidance, and profitable growth through reliable projects.
             </p>
           </div>
         </div>

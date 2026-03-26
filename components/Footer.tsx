@@ -97,9 +97,9 @@ export default function Footer() {
                 <Mail className="w-4 h-4 text-[#fabb22] shrink-0" />
                 info@gtestate.com
               </a>
-              <a href="tel:+923001234567" className="flex items-center gap-2 hover:text-[#fabb22] transition-colors">
+              <a href="tel:+923005999993" className="flex items-center gap-2 hover:text-[#fabb22] transition-colors">
                 <Phone className="w-4 h-4 text-[#fabb22] shrink-0" />
-                +92 300 1234567
+                +92 300 5999993
               </a>
               <a href="https://www.gtestate.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#fabb22] transition-colors">
                 www.gtestate.com

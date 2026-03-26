@@ -3,10 +3,10 @@
 import Image from 'next/image'
 import { MapPin, Building2, Navigation as NavIcon } from 'lucide-react'
 
-const ADDRESS = 'GT Estates Office, Lahore, Pakistan'
+const ADDRESS = 'GT Commercial Building #C43, 3rd Floor, Near Tehzeeb Bakers, Lake City, Lahore'
 const OFFICE = 'Real Estate & Investment Advisory'
 const MAP_SEARCH_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-  'GT Estates Lahore Pakistan',
+  'GT Commercial Building C43 3rd Floor Near Tehzeeb Bakers Lake City Lahore',
 )}` as string
 
 export default function MobileReachUsSection() {
@@ -20,7 +20,7 @@ export default function MobileReachUsSection() {
           Visit our office
         </h2>
         <p className="text-sm text-white/80">
-          Find us in Lahore, Pakistan. Save the details or open the location in Google Maps.
+          Visit Us: GT Commercial Building #C43, 3rd Floor, Near Tehzeeb Bakers, Lake City, Lahore.
         </p>
       </div>
 
@@ -28,7 +28,7 @@ export default function MobileReachUsSection() {
         <div className="relative aspect-[16/10] w-full bg-gray-800">
           <Image
             src="/house-2.jpeg"
-            alt="Al Otaiba Building"
+            alt="GT Estates office"
             fill
             className="object-cover"
             sizes="100vw"

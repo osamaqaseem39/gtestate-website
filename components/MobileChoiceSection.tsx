@@ -5,19 +5,22 @@ import { useInView } from 'react-intersection-observer'
 
 const CHOICE_ITEMS = [
   {
-    label: 'Projects executed',
-    value: '741+',
-    detail: 'Turnkey renovations and fit‑out projects delivered.',
+    id: 'BOX 1',
+    primary: 'TRUST BUILT',
+    secondary: 'STRONG MARKET REPUTATION',
+    detail: 'Delivering reliable guidance with complete transparency in every deal.',
   },
   {
-    label: 'Years of experience',
-    value: '28+',
-    detail: 'Hands-on industry experience across multiple sectors.',
+    id: 'BOX 2',
+    primary: 'SMART DECISIONS',
+    secondary: 'EXPERT CONSULTANCY',
+    detail: 'Helping clients choose the right opportunities with clarity and confidence.',
   },
   {
-    label: 'Professional engineers',
-    value: '73+',
-    detail: 'Specialists guiding every step from plan to handover.',
+    id: 'BOX 3',
+    primary: 'CLIENT FIRST',
+    secondary: 'LONG-TERM RELATIONSHIPS',
+    detail: 'Focused on lasting partnerships, not just one-time transactions.',
   },
 ]
 
@@ -40,10 +43,12 @@ export default function MobileChoiceSection() {
         transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
       >
         <h2 className="text-2xl font-bold uppercase tracking-tight">
-          Make your choice
+          <span>DEFINED BY EXCELLENCE</span>
+          <br />
+          <span className="text-neon-green">WHERE TRUST MEETS EXPERTISE</span>
         </h2>
         <p className="mt-2 text-sm text-white/80">
-          A proven track record backed by experience, engineering strength, and on-time delivery.
+          Built to help investors make smart, confident decisions every step of the way.
         </p>
       </motion.div>
 
@@ -66,10 +71,13 @@ export default function MobileChoiceSection() {
           >
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
-                {item.label}
+                {item.id}
               </p>
-              <p className="text-xl font-semibold text-teal">{item.value}</p>
+              <p className="text-[11px] font-semibold text-neon-green tracking-[0.35em] uppercase">
+                {item.primary}
+              </p>
             </div>
+            <p className="mt-3 text-xl font-semibold uppercase leading-tight">{item.secondary}</p>
             <p className="mt-2 text-xs text-white/75">{item.detail}</p>
           </motion.article>
         ))}

@@ -5,9 +5,9 @@ import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
 import { MapPin, Building2, Navigation } from 'lucide-react'
 
-const ADDRESS = 'Al Otaiba Building, Hamdan Street, Abu Dhabi - UAE'
-const OFFICE = 'Office 404'
-const MAP_SEARCH_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Al Otaiba Building Hamdan Street Abu Dhabi UAE')}`
+const ADDRESS = 'GT Commercial Building #C43, 3rd Floor, Near Tehzeeb Bakers, Lake City, Lahore'
+const OFFICE = 'GT Estates Office'
+const MAP_SEARCH_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('GT Commercial Building C43 3rd Floor Near Tehzeeb Bakers Lake City Lahore')}`
 
 export default function ReachUsSection() {
   const [ref, inView] = useInView({
@@ -25,8 +25,8 @@ export default function ReachUsSection() {
       {/* Full-width Google Map background in black & white */}
       <div className="absolute inset-0 -z-20">
         <iframe
-          title="Al Otaiba Building on map"
-          src={`https://www.google.com/maps?q=${encodeURIComponent('Al Otaiba Building Hamdan Street Abu Dhabi UAE')}&output=embed`}
+          title="GT Estates office on map"
+          src={`https://www.google.com/maps?q=${encodeURIComponent('GT Commercial Building C43 3rd Floor Near Tehzeeb Bakers Lake City Lahore')}&output=embed`}
           width="100%"
           height="100%"
           className="w-full h-full border-0 grayscale"
@@ -52,7 +52,7 @@ export default function ReachUsSection() {
                 <div className="relative w-full aspect-[16/10] bg-gray-200 shrink-0">
                   <Image
                     src="/house-2.jpeg"
-                    alt="Al Otaiba Building"
+                    alt="GT Estates office"
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 420px"
@@ -61,10 +61,10 @@ export default function ReachUsSection() {
                 </div>
                 <div className="p-6 md:p-8 flex flex-col flex-1">
                   <span className="text-xs md:text-sm text-gray-500 uppercase tracking-wide mb-1">
-                    Uptown
+                    Visit Us
                   </span>
                   <h2 className="text-xl md:text-2xl font-bold text-black mb-4">
-                    AL OTAIBA BUILDING
+                    GT COMMERCIAL BUILDING #C43
                   </h2>
                   <div className="flex items-start gap-3 text-gray-700 mb-4">
                     <MapPin className="w-5 h-5 text-[#fabb22] shrink-0 mt-0.5" aria-hidden />

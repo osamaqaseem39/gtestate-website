@@ -6,6 +6,7 @@ import ChoiceSection from '@/components/ChoiceSection'
 import MajorClients from '@/components/MajorClients'
 import HouseGallery from '@/components/HouseGallery'
 import Testimonials from '@/components/Testimonials'
+import OurProjectsSection from '@/components/OurProjectsSection'
 import ReachUsSection from '@/components/ReachUsSection'
 import Footer from '@/components/Footer'
 import MobileHero from '@/components/MobileHero'
@@ -40,6 +41,7 @@ export default function Home() {
             <Hero />
             <HouseGallery />
             <ChoiceSection />
+            <OurProjectsSection />
             <MajorClients />
             <Testimonials />
             <ReachUsSection />
@@ -49,6 +51,7 @@ export default function Home() {
             <MobileHero />
             <MobileHouseGallery />
             <MobileChoiceSection />
+            <OurProjectsSection />
             <MobileMajorClients />
             <MobileTestimonials />
             <MobileReachUsSection />

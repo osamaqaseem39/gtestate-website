@@ -6,19 +6,22 @@ import Image from 'next/image'
 
 const CHOICE_CARDS = [
   {
-    id: '1/3',
-    label: 'PROJECTS EXECUTED',
-    value: '741+ SUCCESSFUL PROJECTS',
+    id: 'BOX 1',
+    primary: 'TRUST BUILT',
+    secondary: 'STRONG MARKET REPUTATION',
+    detail: 'Delivering reliable guidance with complete transparency in every deal.',
   },
   {
-    id: '2/3',
-    label: 'YEARS OF EXPERIENCE',
-    value: '28+ YEARS',
+    id: 'BOX 2',
+    primary: 'SMART DECISIONS',
+    secondary: 'EXPERT CONSULTANCY',
+    detail: 'Helping clients choose the right opportunities with clarity and confidence.',
   },
   {
-    id: '3/3',
-    label: 'ENGINEERING',
-    value: '73+ PROFESSIONAL ENGINEERS',
+    id: 'BOX 3',
+    primary: 'CLIENT FIRST',
+    secondary: 'LONG-TERM RELATIONSHIPS',
+    detail: 'Focused on lasting partnerships, not just one-time transactions.',
   },
 ]
 
@@ -63,7 +66,9 @@ export default function ChoiceSection() {
               className="text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold tracking-tight uppercase"
               style={{ fontFamily: 'var(--font-spartan)' }}
             >
-              MAKE YOUR CHOICE
+              <span>DEFINED BY EXCELLENCE</span>
+              <br />
+              <span className="text-neon-green">WHERE TRUST MEETS EXPERTISE</span>
             </h2>
           </motion.div>
 
@@ -91,12 +96,13 @@ export default function ChoiceSection() {
                       {card.id}
                     </p>
                     <p className="text-[11px] md:text-xs font-semibold text-neon-green tracking-[0.35em] uppercase mb-3">
-                      {card.label}
+                      {card.primary}
                     </p>
                     <p className="text-xl md:text-2xl lg:text-3xl font-semibold uppercase leading-tight">
-                      {card.value}
+                      {card.secondary}
                     </p>
                   </div>
+                  <p className="text-sm md:text-base text-white/70 leading-relaxed">{card.detail}</p>
                 </motion.article>
               ))}
             </div>

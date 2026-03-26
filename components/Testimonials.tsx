@@ -11,43 +11,83 @@ import 'swiper/css'
 const testimonials = [
   {
     id: 1,
-    name: 'Yazan Kharouf',
-    role: 'Engineer',
+    name: 'GT Estates Client',
+    role: 'Investor',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
     rating: 5,
-    text: 'We recently hired the team for some engineering and maintenance work. The experience was outstanding—exceptional professionalism and quality from start to finish.',
+    text: 'GT Estates made my investment journey smooth and completely stress-free. Their guidance was honest, clear, and truly professional from start to finish.',
   },
   {
     id: 2,
-    name: 'Ahmad Kim',
-    role: 'Architect',
+    name: 'GT Estates Client',
+    role: 'Investor',
     image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     rating: 5,
-    text: 'We recently engaged the team for our fitout project, and the experience was outstanding from start to finish. Their team demonstrated exceptional professionalism, creativity, and attention to detail throughout the entire process. They truly listened to our vision and brought it to life with precision and style.',
+    text: 'I was impressed by their transparency and market knowledge. They helped me make the right decision with full confidence.',
   },
   {
     id: 3,
-    name: 'Akash M',
-    role: 'Project manager',
+    name: 'GT Estates Client',
+    role: 'Investor',
     image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
-    rating: 3,
-    text: 'In my experience the team has a wonderful group of people and delivered the project on time as per our requirements. Professionalism, organization, and attention to detail were excellent throughout.',
+    rating: 5,
+    text: 'Exceptional service and attention to detail. GT Estates understands client needs and delivers beyond expectations every time.',
   },
   {
     id: 4,
-    name: 'Sarah Chen',
-    role: 'Tech Entrepreneur',
+    name: 'GT Estates Client',
+    role: 'Investor',
     image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
     rating: 5,
-    text: 'The platform completely transformed how I view real estate. The matching found me the perfect property in just two weeks. The attention to detail is unmatched.',
+    text: 'A trustworthy team that values long-term relationships. Their professionalism really sets them apart in the real estate market.',
   },
   {
     id: 5,
-    name: 'Michael Rodriguez',
-    role: 'Investment Banker',
+    name: 'GT Estates Client',
+    role: 'Investor',
     image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
     rating: 5,
-    text: 'Transparent process and clear communication at every step. I could track the entire transaction in real time. This is how real estate should work.',
+    text: 'The entire process was handled with great care and efficiency. Highly recommended for anyone looking for reliable property consultation.',
+  },
+  {
+    id: 6,
+    name: 'GT Estates Client',
+    role: 'Investor',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+    rating: 5,
+    text: 'GT Estates provided me with expert advice and honest insights, making my investment secure and worthwhile.',
+  },
+  {
+    id: 7,
+    name: 'GT Estates Client',
+    role: 'Investor',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+    rating: 5,
+    text: 'From consultation to final deal, everything was seamless. Their commitment to quality service is truly remarkable.',
+  },
+  {
+    id: 8,
+    name: 'GT Estates Client',
+    role: 'Investor',
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+    rating: 5,
+    text: 'I appreciate their client-first approach and transparent dealings. It’s rare to find such dedication and integrity.',
+  },
+  {
+    id: 9,
+    name: 'GT Estates Client',
+    role: 'Investor',
+    image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
+    rating: 5,
+    text: 'A premium experience with a professional team. They made real estate investment simple and rewarding for me.',
+  },
+  {
+    id: 10,
+    name: 'GT Estates Client',
+    role: 'Investor',
+    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
+    rating: 5,
+    text: 'Highly satisfied with their services. GT Estates delivers trust, expertise, and long-term value in every interaction.',
   },
 ]
 
@@ -90,11 +130,11 @@ export default function Testimonials() {
             className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight uppercase text-white"
             style={{ fontFamily: 'var(--font-spartan)' }}
           >
-            People Who Trust
-            <span className="block text-[#fabb22] mt-1 text-xl md:text-2xl">GT Estate</span>
+            What Clients Say
+            <span className="block text-[#fabb22] mt-1 text-xl md:text-2xl">GT Estates</span>
           </h2>
           <p className="mt-2 md:mt-3 text-sm md:text-base text-white/70 max-w-2xl mx-auto">
-            Real feedback from clients who trusted us with their homes, investments, and fit‑out projects.
+            Real feedback from clients who trusted us with their residential and commercial plot investments.
           </p>
         </motion.div>
 

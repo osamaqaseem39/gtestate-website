@@ -96,8 +96,8 @@ export default function Contact() {
                       <span className="text-neon-blue">📞</span>
                     </div>
                     <div>
-                      <h4 className="text-white font-semibold">Phone</h4>
-                      <p className="text-white/60">+1 (555) 123-4567</p>
+                      <h4 className="text-white font-semibold">Call / WhatsApp</h4>
+                      <p className="text-white/60">+92 300 5999993</p>
                       <p className="text-white/60">Mon-Fri 9AM-6PM EST</p>
                     </div>
                   </div>
@@ -118,9 +118,9 @@ export default function Contact() {
                       <span className="text-neon-green">📍</span>
                     </div>
                     <div>
-                      <h4 className="text-white font-semibold">Office</h4>
-                      <p className="text-white/60">Lahore</p>
-                      <p className="text-white/60">Pakistan</p>
+                      <h4 className="text-white font-semibold">Visit Us</h4>
+                      <p className="text-white/60">GT Commercial Building #C43, 3rd Floor,</p>
+                      <p className="text-white/60">Near Tehzeeb Bakers, Lake City, Lahore</p>
                     </div>
                   </div>
                 </div>
