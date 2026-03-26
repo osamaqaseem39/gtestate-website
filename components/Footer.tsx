@@ -128,9 +128,7 @@ export default function Footer() {
                 <Phone className="w-4 h-4 text-[#fabb22] shrink-0" />
                 +92 300 5999993
               </a>
-              <a href="https://www.gtestate.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#fabb22] transition-colors">
-                www.gtestate.com
-              </a>
+              
             </div>
           </motion.div>
 
