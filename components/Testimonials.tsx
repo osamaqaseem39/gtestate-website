@@ -138,7 +138,7 @@ export default function Testimonials() {
           </p>
         </motion.div>
 
-        {/* Carousel – partial cards on sides, center full, with edge fade instead of hard cut */}
+        {/* Carousel – partial cards on sides, center sharp; sides blurred via CSS */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
@@ -167,16 +167,6 @@ export default function Testimonials() {
               transform: scale(1);
             }
           `}</style>
-
-          {/* Edge fade gradients */}
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-16 md:w-20 lg:w-24 bg-gradient-to-r from-black via-black/80 to-transparent z-20"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-16 md:w-20 lg:w-24 bg-gradient-to-l from-black via-black/80 to-transparent z-20"
-            aria-hidden
-          />
 
           <Swiper
             modules={[Autoplay]}
