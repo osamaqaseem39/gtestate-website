@@ -4,6 +4,7 @@ import './globals.css'
 import Navigation from '@/components/Navigation'
 import { GSAPProvider } from '@/components/GSAPContext'
 import Preloader from '@/components/Preloader'
+import GlobalInquiryForm from '@/components/GlobalInquiryForm'
 
 const spartan = localFont({
   src: [
@@ -123,6 +124,7 @@ export default function RootLayout({
         <GSAPProvider>
           <Navigation />
           {children}
+          <GlobalInquiryForm />
         </GSAPProvider>
       </body>
     </html>

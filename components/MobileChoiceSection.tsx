@@ -5,19 +5,19 @@ import { useInView } from 'react-intersection-observer'
 
 const CHOICE_ITEMS = [
   {
-    id: 'BOX 1',
+    id: 'trust',
     primary: 'TRUST BUILT',
     secondary: 'STRONG MARKET REPUTATION',
     detail: 'Delivering reliable guidance with complete transparency in every deal.',
   },
   {
-    id: 'BOX 2',
+    id: 'smart',
     primary: 'SMART DECISIONS',
     secondary: 'EXPERT CONSULTANCY',
     detail: 'Helping clients choose the right opportunities with clarity and confidence.',
   },
   {
-    id: 'BOX 3',
+    id: 'client',
     primary: 'CLIENT FIRST',
     secondary: 'LONG-TERM RELATIONSHIPS',
     detail: 'Focused on lasting partnerships, not just one-time transactions.',
@@ -69,14 +69,9 @@ export default function MobileChoiceSection() {
             }}
             className="rounded-xl border border-white/10 bg-white/5 px-4 py-4"
           >
-            <div className="flex items-baseline justify-between gap-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
-                {item.id}
-              </p>
-              <p className="text-[11px] font-semibold text-neon-green tracking-[0.35em] uppercase">
-                {item.primary}
-              </p>
-            </div>
+            <p className="text-[11px] font-semibold text-neon-green tracking-[0.35em] uppercase">
+              {item.primary}
+            </p>
             <p className="mt-3 text-xl font-semibold uppercase leading-tight">{item.secondary}</p>
             <p className="mt-2 text-xs text-white/75">{item.detail}</p>
           </motion.article>

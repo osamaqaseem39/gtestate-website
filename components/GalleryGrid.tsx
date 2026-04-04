@@ -2,7 +2,8 @@
 
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
+import { API_BASE_URL, fetchGalleryItems, resolveMediaUrl, type ApiGalleryItem } from '@/lib/api-public'
 
 type ImageShape = 'portrait' | 'landscape' | 'square'
 type ImageDisplay = 'grid' | 'full-original'
@@ -10,48 +11,73 @@ type ImageDisplay = 'grid' | 'full-original'
 export type GalleryImage = {
   src: string
   alt: string
-  /** How the image should be framed in the grid. */
   shape: ImageShape
-  /**
-   * How the image should be displayed:
-   * - 'grid' = cropped into a fixed aspect ratio tile
-   * - 'full-original' = span full width and respect original aspect ratio as much as possible
-   */
   display: ImageDisplay
 }
 
-// Example static data – replace with backend data mapping later
-const GALLERY_IMAGES: GalleryImage[] = [
+const FALLBACK_GALLERY: GalleryImage[] = [
   { src: '/house-1.jpeg', alt: 'Residential interior', shape: 'landscape', display: 'grid' },
   { src: '/house-2.jpeg', alt: 'Modern living room', shape: 'portrait', display: 'grid' },
   { src: '/house-3.jpeg', alt: 'Luxury villa exterior', shape: 'square', display: 'grid' },
   { src: '/house-4.jpeg', alt: 'Contemporary house facade', shape: 'landscape', display: 'full-original' },
 ]
 
+function mapApiItem(item: ApiGalleryItem): GalleryImage {
+  const src = resolveMediaUrl(item.imageUrl) || item.imageUrl
+  return {
+    src,
+    alt: item.alt || 'GT Estates project',
+    shape: item.shape,
+    display: item.display,
+  }
+}
+
 export default function GalleryGrid() {
+  const [baseImages, setBaseImages] = useState<GalleryImage[]>(FALLBACK_GALLERY)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
-  const openSlide = useCallback((index: number) => {
-    setActiveIndex(index)
+  useEffect(() => {
+    if (!API_BASE_URL) return
+    let cancelled = false
+    void (async () => {
+      try {
+        const api = await fetchGalleryItems()
+        if (cancelled || !api.length) return
+        setBaseImages(api.map(mapApiItem))
+      } catch {
+        /* keep fallback */
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
   }, [])
+
+  const displayImages = useMemo(() => {
+    if (!baseImages.length) return FALLBACK_GALLERY.concat(FALLBACK_GALLERY)
+    return baseImages.length < 4 ? [...baseImages, ...baseImages] : baseImages
+  }, [baseImages])
+
+  const n = baseImages.length || FALLBACK_GALLERY.length
+
+  const openSlide = useCallback(
+    (displayIndex: number) => {
+      setActiveIndex(displayIndex % n)
+    },
+    [n],
+  )
 
   const closeSlide = useCallback(() => {
     setActiveIndex(null)
   }, [])
 
   const showNext = useCallback(() => {
-    setActiveIndex((prev) =>
-      prev === null ? 0 : (prev + 1) % GALLERY_IMAGES.length,
-    )
-  }, [])
+    setActiveIndex((prev) => (prev === null ? 0 : (prev + 1) % n))
+  }, [n])
 
   const showPrev = useCallback(() => {
-    setActiveIndex((prev) =>
-      prev === null
-        ? 0
-        : (prev - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length,
-    )
-  }, [])
+    setActiveIndex((prev) => (prev === null ? 0 : (prev - 1 + n) % n))
+  }, [n])
 
   useEffect(() => {
     if (activeIndex === null) return
@@ -65,6 +91,8 @@ export default function GalleryGrid() {
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [activeIndex, closeSlide, showNext, showPrev])
+
+  const current = activeIndex !== null ? baseImages[activeIndex] ?? FALLBACK_GALLERY[activeIndex % FALLBACK_GALLERY.length] : null
 
   return (
     <section
@@ -87,28 +115,27 @@ export default function GalleryGrid() {
           </p>
         </div>
 
-        {/* Mixed layout: portrait, landscape, square and full-width/original images */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-          {GALLERY_IMAGES.concat(GALLERY_IMAGES).map((img, index) => {
+          {displayImages.map((img, index) => {
             const isFullOriginal = img.display === 'full-original'
             const colSpan = isFullOriginal ? 'md:col-span-2' : 'md:col-span-1'
 
-            // For cropped grid tiles, pick an aspect ratio based on shape.
-            // For full-original, let height adjust with content (no forced aspect).
             const aspectClass = isFullOriginal
               ? ''
               : img.shape === 'portrait'
-              ? 'aspect-[3/4]'
-              : img.shape === 'square'
-              ? 'aspect-square'
-              : 'aspect-[16/9]'
+                ? 'aspect-[3/4]'
+                : img.shape === 'square'
+                  ? 'aspect-square'
+                  : 'aspect-[16/9]'
+
+            const remote = img.src.startsWith('http')
 
             return (
               <motion.button
                 key={`${img.src}-${index}`}
                 type="button"
                 className={`relative w-full overflow-hidden bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${colSpan} ${aspectClass}`}
-                onClick={() => openSlide(index % GALLERY_IMAGES.length)}
+                onClick={() => openSlide(index)}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.25 }}
@@ -123,6 +150,7 @@ export default function GalleryGrid() {
                       height={900}
                       className="w-full h-auto object-contain md:object-cover transition-transform duration-700 ease-out hover:scale-[1.02]"
                       sizes="100vw"
+                      unoptimized={remote}
                     />
                   </div>
                 ) : (
@@ -132,6 +160,7 @@ export default function GalleryGrid() {
                     fill
                     className="object-cover transition-transform duration-700 ease-out hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 420px"
+                    unoptimized={remote}
                   />
                 )}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
@@ -141,9 +170,8 @@ export default function GalleryGrid() {
         </div>
       </div>
 
-      {/* Lightbox / slide viewer */}
       <AnimatePresence>
-        {activeIndex !== null && (
+        {activeIndex !== null && current && (
           <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
             initial={{ opacity: 0 }}
@@ -161,11 +189,12 @@ export default function GalleryGrid() {
             >
               <div className="relative w-full aspect-[16/9] overflow-hidden bg-black">
                 <Image
-                  src={GALLERY_IMAGES[activeIndex].src}
-                  alt={GALLERY_IMAGES[activeIndex].alt}
+                  src={current.src}
+                  alt={current.alt}
                   fill
                   className="object-cover"
                   sizes="100vw"
+                  unoptimized={current.src.startsWith('http')}
                 />
               </div>
 
@@ -193,7 +222,7 @@ export default function GalleryGrid() {
                     Next
                   </button>
                   <span className="text-xs text-white/60">
-                    {activeIndex + 1} / {GALLERY_IMAGES.length}
+                    {activeIndex + 1} / {n}
                   </span>
                 </div>
               </div>
@@ -204,6 +233,3 @@ export default function GalleryGrid() {
     </section>
   )
 }
-
-
-

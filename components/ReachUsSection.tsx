@@ -4,10 +4,13 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
 import { MapPin, Building2, Navigation } from 'lucide-react'
+import TrustMarquee from '@/components/TrustMarquee'
+import { MAP_EMBED_QUERY, MAP_PLACE_OPEN_URL } from '@/lib/site-content'
 
 const ADDRESS = 'GT Commercial Building #C43, 3rd Floor, Near Tehzeeb Bakers, Lake City, Lahore'
 const OFFICE = 'GT Estates Office'
-const MAP_SEARCH_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('GT Commercial Building C43 3rd Floor Near Tehzeeb Bakers Lake City Lahore')}`
+
+const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(MAP_EMBED_QUERY)}&output=embed`
 
 export default function ReachUsSection() {
   const [ref, inView] = useInView({
@@ -22,11 +25,10 @@ export default function ReachUsSection() {
       style={{ position: 'relative', zIndex: 50 }}
       aria-label="Reach us – location and map"
     >
-      {/* Full-width Google Map background in black & white */}
       <div className="absolute inset-0 -z-20">
         <iframe
-          title="GT Estates office on map"
-          src={`https://www.google.com/maps?q=${encodeURIComponent('GT Commercial Building C43 3rd Floor Near Tehzeeb Bakers Lake City Lahore')}&output=embed`}
+          title="GT Properties office on Google Maps"
+          src={mapEmbedSrc}
           width="100%"
           height="100%"
           className="w-full h-full border-0 grayscale"
@@ -35,12 +37,10 @@ export default function ReachUsSection() {
           referrerPolicy="no-referrer-when-downgrade"
         />
       </div>
-      {/* Dark overlay to ensure content readability on top of the map */}
       <div className="absolute inset-0 bg-black/70 -z-10" />
       <div className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-16 md:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 min-h-[480px] lg:min-h-[520px]">
-            {/* White info card – left, overlaps map on large screens */}
             <motion.div
               initial={{ opacity: 0, x: -24 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -48,7 +48,6 @@ export default function ReachUsSection() {
               className="lg:col-span-5 xl:col-span-4 relative z-20 flex flex-col"
             >
               <div className="bg-white text-black rounded-2xl shadow-xl overflow-hidden flex flex-col h-full max-w-md lg:max-w-none mx-auto lg:mx-0 w-full">
-                {/* Building image */}
                 <div className="relative w-full aspect-[16/10] bg-gray-200 shrink-0">
                   <Image
                     src="/house-2.jpeg"
@@ -76,27 +75,28 @@ export default function ReachUsSection() {
                       <span className="font-medium">{OFFICE}</span>
                     </div>
                     <p className="text-sm text-gray-600">
-                      Visiting us? Google Maps will get you here easily. Just search our location!
+                      Open the full map for directions to our GT Properties location.
                     </p>
                   </div>
-                    <a
-                      href={MAP_SEARCH_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-2 border-[#fabb22] text-black font-medium hover:bg-[#fabb22]/10 transition-colors duration-200"
-                    >
-                      <Navigation className="w-4 h-4 text-[#fabb22]" aria-hidden />
+                  <a
+                    href={MAP_PLACE_OPEN_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-2 border-[#fabb22] text-black font-medium hover:bg-[#fabb22]/10 transition-colors duration-200"
+                  >
+                    <Navigation className="w-4 h-4 text-[#fabb22]" aria-hidden />
                     Take me there
                   </a>
                 </div>
               </div>
             </motion.div>
 
-            {/* Spacer column on large screens – content sits over the map background */}
             <div className="hidden lg:block lg:col-span-7 xl:col-span-8" />
           </div>
         </div>
       </div>
+
+      <TrustMarquee inView={inView} />
     </section>
   )
 }

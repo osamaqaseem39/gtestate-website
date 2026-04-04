@@ -4,7 +4,8 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Diamond, X, Facebook, Instagram, Linkedin } from 'lucide-react'
+import { Diamond, X } from 'lucide-react'
+import SocialMediaLinks from '@/components/SocialMediaLinks'
 
 const TEAL = '#fabb22'
 
@@ -15,12 +16,7 @@ const menuItems = [
   { name: 'CONTACT US', href: '/contact' },
   { name: 'PROJECTS', href: '/projects' },
   { name: 'TEAM', href: '/team' },
-]
-
-const socialLinks = [
-  { icon: Facebook, href: '#', label: 'Facebook' },
-  { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
+  { name: 'CAREERS', href: '/careers' },
 ]
 
 type SideMenuProps = {
@@ -118,18 +114,7 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
                 {/* Social Media */}
                 <div>
                   <h3 className="text-white text-sm font-medium uppercase tracking-wider mb-4">Social Media</h3>
-                  <div className="flex gap-4">
-                    {socialLinks.map((social) => (
-                      <a
-                        key={social.label}
-                        href={social.href}
-                        className="text-white border border-white/40 rounded p-2 hover:border-[#fabb22] hover:text-[#fabb22] transition-colors"
-                        aria-label={social.label}
-                      >
-                        <social.icon className="w-5 h-5" />
-                      </a>
-                    ))}
-                  </div>
+                  <SocialMediaLinks variant="menu" />
                 </div>
 
                 {/* CTA + Contact */}

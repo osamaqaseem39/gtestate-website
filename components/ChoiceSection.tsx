@@ -6,19 +6,19 @@ import Image from 'next/image'
 
 const CHOICE_CARDS = [
   {
-    id: 'BOX 1',
+    id: 'trust',
     primary: 'TRUST BUILT',
     secondary: 'STRONG MARKET REPUTATION',
     detail: 'Delivering reliable guidance with complete transparency in every deal.',
   },
   {
-    id: 'BOX 2',
+    id: 'smart',
     primary: 'SMART DECISIONS',
     secondary: 'EXPERT CONSULTANCY',
     detail: 'Helping clients choose the right opportunities with clarity and confidence.',
   },
   {
-    id: 'BOX 3',
+    id: 'client',
     primary: 'CLIENT FIRST',
     secondary: 'LONG-TERM RELATIONSHIPS',
     detail: 'Focused on lasting partnerships, not just one-time transactions.',
@@ -92,9 +92,6 @@ export default function ChoiceSection() {
                   className="relative bg-black/85 backdrop-blur-md border border-white/8 px-8 py-10 md:px-10 md:py-12 flex flex-col justify-between shadow-[0_32px_80px_rgba(0,0,0,0.9)]"
                 >
                   <div className="mb-8">
-                    <p className="text-xs md:text-sm font-medium text-white/60 tracking-[0.25em] uppercase mb-4">
-                      {card.id}
-                    </p>
                     <p className="text-[11px] md:text-xs font-semibold text-neon-green tracking-[0.35em] uppercase mb-3">
                       {card.primary}
                     </p>

@@ -45,6 +45,7 @@ export default function Navigation() {
     { name: 'What We Do', href: '/what-we-do' },
     { name: 'Projects', href: '/projects' },
     { name: 'Gallery', href: '/gallery' },
+    { name: 'Careers', href: '/careers' },
   ]
 
   return (

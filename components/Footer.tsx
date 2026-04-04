@@ -4,14 +4,8 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
 import { useEffect } from 'react'
-import {
-  Phone,
-  Mail,
-  Facebook,
-  Instagram,
-  Linkedin,
-  ChevronUp,
-} from 'lucide-react'
+import { Phone, Mail, ChevronUp } from 'lucide-react'
+import SocialMediaLinks from '@/components/SocialMediaLinks'
 
 export default function Footer() {
   const [ref, inView] = useInView({
@@ -47,15 +41,10 @@ export default function Footer() {
 
   const navLinks = [
     { name: 'About Us', href: '/about' },
-    { name: 'Services', href: '/services' },
+    { name: 'What We Do', href: '/what-we-do' },
     { name: 'Team', href: '/team' },
     { name: 'Projects', href: '/projects' },
-  ]
-
-  const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
+    { name: 'Careers', href: '/careers' },
   ]
 
   const scrollToTop = () => {
@@ -120,9 +109,9 @@ export default function Footer() {
           >
             <h3 className="text-white font-semibold uppercase tracking-wider mb-4">Contact</h3>
             <div className="space-y-2 text-white/90 text-sm">
-              <a href="mailto:info@gtestate.com" className="flex items-center gap-2 hover:text-[#fabb22] transition-colors">
+              <a href="mailto:info@gtestates.com.pk" className="flex items-center gap-2 hover:text-[#fabb22] transition-colors">
                 <Mail className="w-4 h-4 text-[#fabb22] shrink-0" />
-                info@gtestate.com
+                info@gtestates.com.pk
               </a>
               <a href="tel:+923005999993" className="flex items-center gap-2 hover:text-[#fabb22] transition-colors">
                 <Phone className="w-4 h-4 text-[#fabb22] shrink-0" />
@@ -141,26 +130,20 @@ export default function Footer() {
           >
             <div>
               <h3 className="text-white font-semibold uppercase tracking-wider mb-4">Social Media</h3>
-              <div className="flex gap-4">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    className="text-white border border-white/40 rounded p-2 hover:border-[#fabb22] hover:text-[#fabb22] transition-colors"
-                    aria-label={social.label}
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </a>
-                ))}
-              </div>
+              <SocialMediaLinks variant="footer" />
             </div>
             <div>
               <h3 className="text-white font-semibold uppercase tracking-wider mb-4">Careers</h3>
-                <p className="text-white/90 text-sm">
-                  Apply on{' '}
-                  <a href="mailto:careers@gtestate.com" className="text-[#fabb22] hover:underline">
-                    careers@gtestate.com
+              <p className="text-white/90 text-sm">
+                View open roles on the{' '}
+                <Link href="/careers" className="text-[#fabb22] hover:underline">
+                  Careers
+                </Link>{' '}
+                page or email{' '}
+                <a href="mailto:careers@gtestate.com" className="text-[#fabb22] hover:underline">
+                  careers@gtestate.com
                 </a>
+                .
               </p>
             </div>
           </motion.div>

@@ -9,7 +9,7 @@ console.log('🚀 Setting up GT Estate Website...\n');
 const envPath = path.join(__dirname, '..', '.env.local');
 if (!fs.existsSync(envPath)) {
   const envContent = `# Environment variables for local development
-NEXT_PUBLIC_API_URL=https://gt-estate-server.vercel.app
+NEXT_PUBLIC_API_URL=https://estate-server-nine.vercel.app
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 `;
   fs.writeFileSync(envPath, envContent);
