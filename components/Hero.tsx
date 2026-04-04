@@ -1270,7 +1270,9 @@ export default function Hero() {
                   transition={{ duration: 0.9, ease: 'easeOut', delay: 0.25 }}
                   className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white uppercase tracking-tight leading-none relative"
                 >
-                  CREATING VALUE
+                  <span className="whitespace-nowrap">CREATING</span>
+                  <br />
+                  <span className="whitespace-nowrap">VALUE</span>
                 </motion.h1>
               </motion.div>
 

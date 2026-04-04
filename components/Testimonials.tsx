@@ -143,8 +143,31 @@ export default function Testimonials() {
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 0.61, 0.36, 1] }}
-          className="relative max-w-5xl mx-auto"
+          className="relative max-w-6xl mx-auto testimonials-carousel"
         >
+          <style jsx global>{`
+            .testimonials-carousel .swiper-slide {
+              height: auto;
+            }
+            .testimonials-carousel .swiper-slide .testimonial-card {
+              transition:
+                transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+                filter 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+            }
+            .testimonials-carousel .swiper-slide:not(.swiper-slide-active) .testimonial-card {
+              filter: blur(6px);
+              opacity: 0.42;
+              transform: scale(0.9);
+              pointer-events: none;
+            }
+            .testimonials-carousel .swiper-slide-active .testimonial-card {
+              filter: none;
+              opacity: 1;
+              transform: scale(1);
+            }
+          `}</style>
+
           {/* Edge fade gradients */}
           <div
             className="pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-16 md:w-20 lg:w-24 bg-gradient-to-r from-black via-black/80 to-transparent z-20"
@@ -157,22 +180,22 @@ export default function Testimonials() {
 
           <Swiper
             modules={[Autoplay]}
-            spaceBetween={24}
-            slidesPerView={1.05}
+            spaceBetween={20}
+            slidesPerView={1.15}
             centeredSlides
             loop
             autoplay={{ delay: 5000, disableOnInteraction: false }}
             breakpoints={{
-              640: { slidesPerView: 1.1 },
-              768: { slidesPerView: 1.2 },
-              1024: { slidesPerView: 1.3 },
-              1280: { slidesPerView: 1.35 },
+              640: { slidesPerView: 1.45, spaceBetween: 22 },
+              768: { slidesPerView: 1.65, spaceBetween: 24 },
+              1024: { slidesPerView: 1.9, spaceBetween: 28 },
+              1280: { slidesPerView: 2.1, spaceBetween: 32 },
             }}
             className="!overflow-visible"
           >
             {testimonials.map((t) => (
               <SwiperSlide key={t.id}>
-                <article className="bg-black/70 border border-white/10 rounded-2xl p-6 md:p-8 shadow-xl min-h-[320px] md:min-h-[340px] flex flex-col text-white/90 backdrop-blur-sm">
+                <article className="testimonial-card bg-black/70 border border-white/10 rounded-2xl p-6 md:p-8 shadow-xl min-h-[320px] md:min-h-[340px] flex flex-col text-white/90 backdrop-blur-sm">
                   {/* Large quote mark – teal */}
                   <span
                     className="text-6xl md:text-7xl font-serif leading-none select-none block -mb-2"

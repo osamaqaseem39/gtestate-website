@@ -463,7 +463,9 @@ export default function HeroLenisGsap() {
                   ref={buildingRef}
                   className="text-5xl font-bold uppercase tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl"
                 >
-                  CREATING VALUE
+                  <span className="whitespace-nowrap">CREATING</span>
+                  <br />
+                  <span className="whitespace-nowrap">VALUE</span>
                 </h1>
               </div>
 

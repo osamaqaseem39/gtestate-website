@@ -28,8 +28,9 @@ export default function MobileHero() {
           </p>
 
           <h1 className="text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl md:text-5xl">
-            <span className="block">Creating Value</span>
-            <span className="mt-1 block text-gradient-teal">Shaping Futures</span>
+            <span className="block leading-tight">Creating</span>
+            <span className="block leading-tight">Value</span>
+            <span className="mt-2 block text-gradient-teal leading-tight">Shaping Futures</span>
           </h1>
 
           <p className="mt-4 text-sm leading-relaxed text-white/80 md:text-base md:max-w-xl">

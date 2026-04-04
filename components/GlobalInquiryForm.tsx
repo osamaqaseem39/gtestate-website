@@ -28,7 +28,7 @@ export default function GlobalInquiryForm() {
           setOpen(true)
           setDone(false)
         }}
-        className="fixed bottom-6 right-6 z-[85] flex items-center gap-2 rounded-full border-2 border-[#fabb22] bg-black px-5 py-3 text-sm font-semibold uppercase tracking-wider text-white shadow-lg hover:bg-[#fabb22]/10 transition-colors"
+        className="fixed bottom-6 left-6 z-[85] flex items-center gap-2 rounded-full border-2 border-[#fabb22] bg-black px-5 py-3 text-sm font-semibold uppercase tracking-wider text-white shadow-lg hover:bg-[#fabb22]/10 transition-colors"
         aria-haspopup="dialog"
         aria-expanded={open}
       >
@@ -37,7 +37,7 @@ export default function GlobalInquiryForm() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[90] flex justify-end bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[90] flex justify-start bg-black/60 backdrop-blur-sm">
           <button
             type="button"
             className="absolute inset-0 cursor-default"
@@ -48,7 +48,7 @@ export default function GlobalInquiryForm() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="inquiry-form-title"
-            className="relative z-10 flex h-full w-full max-w-md flex-col border-l border-white/10 bg-zinc-950 shadow-2xl"
+            className="relative z-10 flex h-full w-full max-w-md flex-col border-r border-white/10 bg-zinc-950 shadow-2xl"
           >
             <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
               <h2 id="inquiry-form-title" className="text-lg font-semibold uppercase tracking-tight text-white">
