@@ -1,6 +1,5 @@
-/** Public website → GT Estate API (no auth). */
 export const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_URL || 'https://gt-estate-server-zhly.vercel.app'
+  process.env.NEXT_PUBLIC_API_URL || 'https://gt.osamaqaseem.online'
 ).replace(/\/$/, '')
 
 export function resolveMediaUrl(pathOrUrl: string): string {
