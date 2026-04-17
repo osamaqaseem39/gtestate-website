@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { MessageCircle, X } from 'lucide-react'
+import { submitInquiry } from '@/lib/submit-inquiry'
 
 const PROPERTY_TYPES = [
   'Residential Plot',
@@ -14,10 +15,37 @@ const PROPERTY_TYPES = [
 export default function GlobalInquiryForm() {
   const [open, setOpen] = useState(false)
   const [done, setDone] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setSubmitError(null)
+    const form = e.currentTarget
+    const fd = new FormData(form)
+    const fullName = String(fd.get('fullName') || '').trim()
+    const phone = String(fd.get('phone') || '').trim()
+    const email = String(fd.get('email') || '').trim()
+    const propertyType = String(fd.get('propertyType') || '').trim()
+    const message = String(fd.get('message') || '').trim()
+
+    setSubmitting(true)
+    const result = await submitInquiry({
+      name: fullName,
+      phone,
+      email: email || undefined,
+      message: message || undefined,
+      propertyType: propertyType || undefined,
+      source: 'global',
+    })
+    setSubmitting(false)
+
+    if (!result.ok) {
+      setSubmitError(result.error)
+      return
+    }
     setDone(true)
+    form.reset()
   }
 
   return (
@@ -27,6 +55,7 @@ export default function GlobalInquiryForm() {
         onClick={() => {
           setOpen(true)
           setDone(false)
+          setSubmitError(null)
         }}
         className="fixed bottom-6 left-6 z-[85] flex items-center gap-2 rounded-full border-2 border-[#fabb22] bg-black px-5 py-3 text-sm font-semibold uppercase tracking-wider text-white shadow-lg hover:bg-[#fabb22]/10 transition-colors"
         aria-haspopup="dialog"
@@ -71,6 +100,11 @@ export default function GlobalInquiryForm() {
                 </p>
               ) : (
                 <form className="space-y-4" onSubmit={handleSubmit}>
+                  {submitError ? (
+                    <p className="text-sm text-red-400" role="alert">
+                      {submitError}
+                    </p>
+                  ) : null}
                   <div>
                     <label className="mb-1 block text-xs font-medium uppercase tracking-wider text-white/70">
                       Full name
@@ -138,9 +172,10 @@ export default function GlobalInquiryForm() {
                   </div>
                   <button
                     type="submit"
-                    className="w-full border-2 border-[#fabb22] bg-[#fabb22] py-3 text-sm font-semibold uppercase tracking-wider text-black hover:bg-[#fabb22]/90 transition-colors"
+                    disabled={submitting}
+                    className="w-full border-2 border-[#fabb22] bg-[#fabb22] py-3 text-sm font-semibold uppercase tracking-wider text-black hover:bg-[#fabb22]/90 transition-colors disabled:opacity-60 disabled:pointer-events-none"
                   >
-                    Send inquiry
+                    {submitting ? 'Sending…' : 'Send inquiry'}
                   </button>
                 </form>
               )}

@@ -32,8 +32,17 @@ export type ApiGalleryItem = {
 }
 
 export async function fetchFeaturedProperties(): Promise<ApiProperty[]> {
+  return fetchProperties({ featured: true })
+}
+
+export async function fetchProperties(options?: { featured?: boolean }): Promise<ApiProperty[]> {
   if (!API_BASE_URL) return []
-  const res = await fetch(`${API_BASE_URL}/api/properties?featured=true`)
+  const query = new URLSearchParams()
+  if (typeof options?.featured === 'boolean') {
+    query.set('featured', String(options.featured))
+  }
+  const queryString = query.toString()
+  const res = await fetch(`${API_BASE_URL}/api/properties${queryString ? `?${queryString}` : ''}`)
   if (!res.ok) return []
   const data = (await res.json()) as ApiProperty[]
   return Array.isArray(data) ? data : []

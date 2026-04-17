@@ -22,14 +22,25 @@ const FALLBACK_GALLERY: GalleryImage[] = [
   { src: '/house-4.jpeg', alt: 'Contemporary house facade', shape: 'landscape', display: 'full-original' },
 ]
 
+function normalizeShape(shape: string | undefined): ImageShape {
+  if (shape === 'portrait' || shape === 'landscape' || shape === 'square') return shape
+  return 'landscape'
+}
+
 function mapApiItem(item: ApiGalleryItem): GalleryImage {
   const src = resolveMediaUrl(item.imageUrl) || item.imageUrl
   return {
     src,
     alt: item.alt || 'GT Estates project',
-    shape: item.shape,
-    display: item.display,
+    shape: normalizeShape(item.shape),
+    display: item.display === 'full-original' ? 'full-original' : 'grid',
   }
+}
+
+function lightboxAspectClass(shape: ImageShape): string {
+  if (shape === 'portrait') return 'aspect-[3/4] max-h-[85vh] w-full max-w-3xl mx-auto'
+  if (shape === 'square') return 'aspect-square max-h-[85vh] w-full max-w-3xl mx-auto'
+  return 'aspect-[16/9] w-full'
 }
 
 export default function GalleryGrid() {
@@ -128,13 +139,18 @@ export default function GalleryGrid() {
                   ? 'aspect-square'
                   : 'aspect-[16/9]'
 
+            const placementClass =
+              isFullOriginal || img.shape === 'landscape'
+                ? ''
+                : 'md:max-w-md md:mx-auto md:justify-self-center md:w-full'
+
             const remote = img.src.startsWith('http')
 
             return (
               <motion.button
                 key={`${img.src}-${index}`}
                 type="button"
-                className={`relative w-full overflow-hidden bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${colSpan} ${aspectClass}`}
+                className={`relative w-full overflow-hidden bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${colSpan} ${aspectClass} ${placementClass}`}
                 onClick={() => openSlide(index)}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -187,12 +203,14 @@ export default function GalleryGrid() {
               transition={{ duration: 0.25 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative w-full aspect-[16/9] overflow-hidden bg-black">
+              <div
+                className={`relative overflow-hidden bg-black ${lightboxAspectClass(current.shape)}`}
+              >
                 <Image
                   src={current.src}
                   alt={current.alt}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   sizes="100vw"
                   unoptimized={current.src.startsWith('http')}
                 />

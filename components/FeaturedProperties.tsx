@@ -8,6 +8,7 @@ import { MapPin, ArrowRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
   API_BASE_URL,
+  fetchProperties,
   fetchFeaturedProperties,
   resolveMediaUrl,
   type ApiProperty,
@@ -63,7 +64,12 @@ function mapApiProperty(p: ApiProperty): ProjectCard {
   }
 }
 
-export default function FeaturedProperties() {
+type FeaturedPropertiesProps = {
+  /** Fetch only featured items (default) or all properties. */
+  featuredOnly?: boolean
+}
+
+export default function FeaturedProperties({ featuredOnly = true }: FeaturedPropertiesProps) {
   const [projects, setProjects] = useState<ProjectCard[]>(FALLBACK_PROJECTS)
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -75,7 +81,7 @@ export default function FeaturedProperties() {
     let cancelled = false
     void (async () => {
       try {
-        const api = await fetchFeaturedProperties()
+        const api = featuredOnly ? await fetchFeaturedProperties() : await fetchProperties()
         if (cancelled || !api.length) return
         setProjects(api.map(mapApiProperty))
       } catch {
@@ -85,7 +91,7 @@ export default function FeaturedProperties() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [featuredOnly])
 
   return (
     <section

@@ -4,21 +4,49 @@ import { motion, useTransform, useMotionValue } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
 import { useRef, useEffect, useState } from 'react'
+import { API_BASE_URL, fetchGalleryItems, resolveMediaUrl, type ApiGalleryItem } from '@/lib/api-public'
 
-const GALLERY_IMAGES = [
+const FALLBACK_GALLERY_IMAGES = [
   { src: '/house-1.jpeg', alt: 'House 1' },
   { src: '/house-2.jpeg', alt: 'House 2' },
   { src: '/house-3.jpeg', alt: 'House 3' },
   { src: '/house-4.jpeg', alt: 'House 4' },
 ]
 
+function mapApiItem(item: ApiGalleryItem) {
+  return {
+    src: resolveMediaUrl(item.imageUrl) || item.imageUrl,
+    alt: item.alt || 'GT Estates project',
+  }
+}
+
 export default function HouseGallery() {
   const [mounted, setMounted] = useState(false)
+  const [images, setImages] = useState(FALLBACK_GALLERY_IMAGES)
   const sectionRef = useRef<HTMLElement | null>(null)
   const [galleryRef, galleryInView] = useInView({
     triggerOnce: true,
     threshold: 0.2,
   })
+
+  useEffect(() => {
+    if (!API_BASE_URL) return
+    let cancelled = false
+    void (async () => {
+      try {
+        const api = await fetchGalleryItems()
+        if (cancelled || !api.length) return
+        setImages(api.map(mapApiItem))
+      } catch {
+        /* keep fallback */
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const galleryImages = images.length < 4 ? [...images, ...images].slice(0, 4) : images.slice(0, 4)
 
   // Progress 0→1 based only on this section's position in the viewport (not whole page).
   // 0 = section top at viewport center; 1 = section bottom at viewport center.
@@ -144,11 +172,12 @@ export default function HouseGallery() {
                 style={{ aspectRatio: '3/4', y: leftImageY, x: leftImageX, rotate: leftImageRotate }}
               >
                 <Image
-                  src={GALLERY_IMAGES[2].src}
-                  alt={GALLERY_IMAGES[2].alt}
+                  src={galleryImages[2]?.src || FALLBACK_GALLERY_IMAGES[2].src}
+                  alt={galleryImages[2]?.alt || FALLBACK_GALLERY_IMAGES[2].alt}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 260px, (max-width: 1024px) 320px, 380px"
+                  unoptimized={(galleryImages[2]?.src || '').startsWith('http')}
                 />
                 <motion.div
                   className="absolute inset-0 pointer-events-none"
@@ -203,11 +232,12 @@ export default function HouseGallery() {
                     style={{ aspectRatio: '3/4', zIndex: 7, y: Home2Y, x: Home2X, rotate: home2Rotate, opacity: home2Opacity }}
                   >
                     <Image
-                      src={GALLERY_IMAGES[1].src}
-                      alt={GALLERY_IMAGES[1].alt}
+                      src={galleryImages[1]?.src || FALLBACK_GALLERY_IMAGES[1].src}
+                      alt={galleryImages[1]?.alt || FALLBACK_GALLERY_IMAGES[1].alt}
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 320px, (max-width: 1024px) 400px, 480px"
+                      unoptimized={(galleryImages[1]?.src || '').startsWith('http')}
                     />
                   </motion.div>
 
@@ -224,11 +254,12 @@ export default function HouseGallery() {
                     style={{ aspectRatio: '3/4', zIndex: 8, y: Home1Y, x: Home1X, rotate: home1Rotate }}
                   >
                     <Image
-                      src={GALLERY_IMAGES[0].src}
-                      alt={GALLERY_IMAGES[0].alt}
+                      src={galleryImages[0]?.src || FALLBACK_GALLERY_IMAGES[0].src}
+                      alt={galleryImages[0]?.alt || FALLBACK_GALLERY_IMAGES[0].alt}
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 320px, (max-width: 1024px) 400px, 480px"
+                      unoptimized={(galleryImages[0]?.src || '').startsWith('http')}
                     />
                   </motion.div>
                 </div>
@@ -261,11 +292,12 @@ export default function HouseGallery() {
                 style={{ aspectRatio: '3/4', y: rightImageY, x: rightImageX, rotate: rightImageRotate }}
               >
                 <Image
-                  src={GALLERY_IMAGES[3].src}
-                  alt={GALLERY_IMAGES[3].alt}
+                  src={galleryImages[3]?.src || FALLBACK_GALLERY_IMAGES[3].src}
+                  alt={galleryImages[3]?.alt || FALLBACK_GALLERY_IMAGES[3].alt}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 260px, (max-width: 1024px) 320px, 380px"
+                  unoptimized={(galleryImages[3]?.src || '').startsWith('http')}
                 />
                 <motion.div
                   className="absolute inset-0 pointer-events-none"

@@ -7,9 +7,13 @@ import PageHero from '@/components/PageHero'
 import MobilePageHero from '@/components/MobilePageHero'
 import MobileContactFormSection from '@/components/MobileContactFormSection'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
+import { submitInquiry } from '@/lib/submit-inquiry'
 
 export default function ContactPageClient() {
   const [isDesktop, setIsDesktop] = useState(false)
+  const [desktopSubmitting, setDesktopSubmitting] = useState(false)
+  const [desktopError, setDesktopError] = useState<string | null>(null)
+  const [desktopDone, setDesktopDone] = useState(false)
 
   useEffect(() => {
     const update = () => {
@@ -20,6 +24,41 @@ export default function ContactPageClient() {
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   }, [])
+
+  async function handleDesktopSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setDesktopError(null)
+    const form = e.currentTarget
+    const fd = new FormData(form)
+    const first = String(fd.get('firstName') || '').trim()
+    const last = String(fd.get('lastName') || '').trim()
+    const name = [first, last].filter(Boolean).join(' ').trim()
+    const email = String(fd.get('email') || '').trim()
+    const phone = String(fd.get('phone') || '').trim()
+    const message = String(fd.get('message') || '').trim()
+
+    if (!name) {
+      setDesktopError('Please enter your name.')
+      return
+    }
+
+    setDesktopSubmitting(true)
+    const result = await submitInquiry({
+      name,
+      email,
+      phone,
+      message: message || undefined,
+      source: 'contact',
+    })
+    setDesktopSubmitting(false)
+
+    if (!result.ok) {
+      setDesktopError(result.error)
+      return
+    }
+    setDesktopDone(true)
+    form.reset()
+  }
 
   return (
     <main className="min-h-screen bg-black">
@@ -45,64 +84,90 @@ export default function ContactPageClient() {
             <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-16 md:py-24">
               <div className="max-w-6xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <form className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
-                        First Name
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
-                        placeholder="Enter your first name"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
-                        Last Name
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
-                        placeholder="Enter your last name"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
-                      placeholder="Enter your email"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
-                      Phone
-                    </label>
-                    <input
-                      type="tel"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
-                      placeholder="Enter your phone number"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
-                      Message
-                    </label>
-                    <textarea
-                      rows={4}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 resize-none"
-                      placeholder="Tell us about your real estate needs"
-                    />
-                  </div>
-                  <span className="btn-hero-group w-full block">
-                    <button type="submit" className="btn-hero w-full">
-                      Send Message
-                    </button>
-                  </span>
+                <form className="space-y-6" onSubmit={handleDesktopSubmit}>
+                  {desktopDone ? (
+                    <p className="text-white/80 text-sm leading-relaxed">
+                      Thank you. Our team will get back to you shortly.
+                    </p>
+                  ) : (
+                    <>
+                      {desktopError ? (
+                        <p className="text-sm text-red-400" role="alert">
+                          {desktopError}
+                        </p>
+                      ) : null}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
+                            First Name
+                          </label>
+                          <input
+                            name="firstName"
+                            type="text"
+                            required
+                            className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
+                            placeholder="Enter your first name"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
+                            Last Name
+                          </label>
+                          <input
+                            name="lastName"
+                            type="text"
+                            required
+                            className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
+                            placeholder="Enter your last name"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
+                          Email
+                        </label>
+                        <input
+                          name="email"
+                          type="email"
+                          required
+                          className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
+                          placeholder="Enter your email"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
+                          Phone
+                        </label>
+                        <input
+                          name="phone"
+                          type="tel"
+                          required
+                          className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
+                          placeholder="Enter your phone number"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-white/80 text-sm font-medium uppercase tracking-wider mb-2">
+                          Message
+                        </label>
+                        <textarea
+                          name="message"
+                          rows={4}
+                          className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 resize-none"
+                          placeholder="Tell us about your real estate needs"
+                        />
+                      </div>
+                      <span className="btn-hero-group w-full block">
+                        <button
+                          type="submit"
+                          disabled={desktopSubmitting}
+                          className="btn-hero w-full disabled:opacity-60 disabled:pointer-events-none"
+                        >
+                          {desktopSubmitting ? 'Sending…' : 'Send Message'}
+                        </button>
+                      </span>
+                    </>
+                  )}
                 </form>
 
                 <div className="space-y-8">

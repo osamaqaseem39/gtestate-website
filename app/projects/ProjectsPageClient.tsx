@@ -42,7 +42,7 @@ export default function ProjectsPageClient() {
 
         <section className="relative bg-black text-white">
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
-            <FeaturedProperties />
+            <FeaturedProperties featuredOnly={false} />
           </div>
         </section>
 
