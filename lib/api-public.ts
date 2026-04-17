@@ -1,13 +1,17 @@
 export const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_URL || 'https://gt.osamaqaseem.online'
+  process.env.NEXT_PUBLIC_API_URL || 'https://gt-estate-server-zhly.vercel.app'
+).replace(/\/$/, '')
+
+export const MEDIA_BASE_URL = (
+  process.env.NEXT_PUBLIC_MEDIA_URL || 'https://gt.osamaqaseem.online'
 ).replace(/\/$/, '')
 
 export function resolveMediaUrl(pathOrUrl: string): string {
   if (!pathOrUrl) return ''
   if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) return pathOrUrl
-  if (!API_BASE_URL) return pathOrUrl
+  if (!MEDIA_BASE_URL) return pathOrUrl
   const path = pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`
-  return `${API_BASE_URL}${path}`
+  return `${MEDIA_BASE_URL}${path}`
 }
 
 export type ApiProperty = {
