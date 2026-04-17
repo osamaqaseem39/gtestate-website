@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 function apiUploadsPattern() {
   const raw =
-    process.env.NEXT_PUBLIC_API_URL || 'https://estate-server-nine.vercel.app'
+    process.env.NEXT_PUBLIC_API_URL || 'https://gt-estate-server-zhly.vercel.app'
   if (!raw) return null
   try {
     const u = new URL(raw)

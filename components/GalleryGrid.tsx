@@ -44,7 +44,8 @@ function lightboxAspectClass(shape: ImageShape): string {
 }
 
 export default function GalleryGrid() {
-  const [baseImages, setBaseImages] = useState<GalleryImage[]>(FALLBACK_GALLERY)
+  const [baseImages, setBaseImages] = useState<GalleryImage[]>([])
+  const [loading, setLoading] = useState(true)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   useEffect(() => {
@@ -52,11 +53,16 @@ export default function GalleryGrid() {
     let cancelled = false
     void (async () => {
       try {
+        setLoading(true)
         const api = await fetchGalleryItems()
-        if (cancelled || !api.length) return
-        setBaseImages(api.map(mapApiItem))
-      } catch {
-        /* keep fallback */
+        if (cancelled) return
+        if (api.length > 0) {
+          setBaseImages(api.map(mapApiItem))
+        }
+      } catch (err) {
+        console.error('Gallery fetch error:', err)
+      } finally {
+        if (!cancelled) setLoading(false)
       }
     })()
     return () => {
@@ -65,11 +71,14 @@ export default function GalleryGrid() {
   }, [])
 
   const displayImages = useMemo(() => {
-    if (!baseImages.length) return FALLBACK_GALLERY.concat(FALLBACK_GALLERY)
-    return baseImages.length < 4 ? [...baseImages, ...baseImages] : baseImages
-  }, [baseImages])
+    if (loading) return []
+    // If no images from dashboard, we can either show nothing or fallback. 
+    // User said "images will be from the dashboard", so let's show an empty state or fallback if they prefer.
+    // For now, let's keep it clean: if there are no images, return empty.
+    return baseImages
+  }, [baseImages, loading])
 
-  const n = baseImages.length || FALLBACK_GALLERY.length
+  const n = displayImages.length
 
   const openSlide = useCallback(
     (displayIndex: number) => {
@@ -126,63 +135,79 @@ export default function GalleryGrid() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-          {displayImages.map((img, index) => {
-            const isFullOriginal = img.display === 'full-original'
-            const colSpan = isFullOriginal ? 'md:col-span-2' : 'md:col-span-1'
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 min-h-[400px]">
+          {loading ? (
+            <div className="col-span-1 md:col-span-2 flex items-center justify-center py-20">
+              <div className="flex flex-col items-center gap-4">
+                <div className="h-10 w-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+                <p className="text-white/40 text-sm animate-pulse">Loading gallery...</p>
+              </div>
+            </div>
+          ) : displayImages.length > 0 ? (
+            displayImages.map((img, index) => {
+              const isFullOriginal = img.display === 'full-original'
+              const colSpan = isFullOriginal ? 'md:col-span-2' : 'md:col-span-1'
 
-            const aspectClass = isFullOriginal
-              ? ''
-              : img.shape === 'portrait'
-                ? 'aspect-[3/4]'
-                : img.shape === 'square'
-                  ? 'aspect-square'
-                  : 'aspect-[16/9]'
-
-            const placementClass =
-              isFullOriginal || img.shape === 'landscape'
+              const aspectClass = isFullOriginal
                 ? ''
-                : 'md:max-w-md md:mx-auto md:justify-self-center md:w-full'
+                : img.shape === 'portrait'
+                  ? 'aspect-[3/4]'
+                  : img.shape === 'square'
+                    ? 'aspect-square'
+                    : 'aspect-[16/9]'
 
-            const remote = img.src.startsWith('http')
+              const placementClass =
+                isFullOriginal || img.shape === 'landscape'
+                  ? ''
+                  : 'md:max-w-md md:mx-auto md:justify-self-center md:w-full'
 
-            return (
-              <motion.button
-                key={`${img.src}-${index}`}
-                type="button"
-                className={`relative w-full overflow-hidden bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${colSpan} ${aspectClass} ${placementClass}`}
-                onClick={() => openSlide(index)}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 0.6, delay: (index % 4) * 0.08 }}
-              >
-                {isFullOriginal ? (
-                  <div className="relative w-full">
+              const remote = img.src.startsWith('http')
+
+              return (
+                <motion.button
+                  key={`${img.src}-${index}`}
+                  type="button"
+                  className={`relative w-full overflow-hidden bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${colSpan} ${aspectClass} ${placementClass}`}
+                  onClick={() => openSlide(index)}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ duration: 0.6, delay: (index % 4) * 0.08 }}
+                >
+                  {isFullOriginal ? (
+                    <div className="relative w-full">
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        width={1600}
+                        height={900}
+                        className="w-full h-auto object-contain md:object-cover transition-transform duration-700 ease-out hover:scale-[1.02]"
+                        sizes="100vw"
+                        unoptimized={remote}
+                      />
+                    </div>
+                  ) : (
                     <Image
                       src={img.src}
                       alt={img.alt}
-                      width={1600}
-                      height={900}
-                      className="w-full h-auto object-contain md:object-cover transition-transform duration-700 ease-out hover:scale-[1.02]"
-                      sizes="100vw"
+                      fill
+                      className="object-cover transition-transform duration-700 ease-out hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 420px"
                       unoptimized={remote}
                     />
-                  </div>
-                ) : (
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    className="object-cover transition-transform duration-700 ease-out hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 420px"
-                    unoptimized={remote}
-                  />
-                )}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
-              </motion.button>
-            )
-          })}
+                  )}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+                </motion.button>
+              )
+            })
+          ) : (
+            <div className="col-span-1 md:col-span-2 text-center py-20 px-6 border border-dashed border-white/10 rounded-2xl bg-white/[0.02]">
+              <p className="text-white/60 text-lg mb-2">Our gallery is being updated</p>
+              <p className="text-white/40 text-sm max-w-md mx-auto">
+                We are currently photographing our latest projects. Check back soon to see our premium real estate portfolio.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
