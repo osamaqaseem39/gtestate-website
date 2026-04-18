@@ -15,7 +15,7 @@ function mediaUploadsPattern(url) {
 }
 
 const mediaPattern = mediaUploadsPattern(process.env.NEXT_PUBLIC_MEDIA_URL || 'https://gt.osamaqaseem.online')
-const apiPattern = mediaUploadsPattern(process.env.NEXT_PUBLIC_API_URL || 'https://gt-estate-server-zhly.vercel.app')
+const apiPattern = mediaUploadsPattern(process.env.NEXT_PUBLIC_API_URL || 'https://gt-estate-server.vercel.app')
 
 const nextConfig = {
   images: {
