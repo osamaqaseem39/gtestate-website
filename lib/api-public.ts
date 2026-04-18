@@ -1,5 +1,5 @@
 export const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_URL || 'https://gt-estate-server.vercel.app'
+  process.env.NEXT_PUBLIC_API_URL || 'https://estate-server-nine.vercel.app'
 ).replace(/\/$/, '')
 
 export const MEDIA_BASE_URL = (
