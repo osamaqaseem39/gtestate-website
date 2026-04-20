@@ -192,6 +192,7 @@ export default function ContactPageClient() {
                         <div className="w-12 h-12 bg-amber-400/10 border border-amber-400/30 flex items-center justify-center shrink-0 text-amber-400">
                           ◆
                         </div>
+                        <div>
                           <h4 className="text-white font-semibold uppercase tracking-wider">
                             Email
                           </h4>
