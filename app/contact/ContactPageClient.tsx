@@ -192,11 +192,10 @@ export default function ContactPageClient() {
                         <div className="w-12 h-12 bg-amber-400/10 border border-amber-400/30 flex items-center justify-center shrink-0 text-amber-400">
                           ◆
                         </div>
-                        <div>
                           <h4 className="text-white font-semibold uppercase tracking-wider">
                             Email
                           </h4>
-                          <p className="text-white/60">info@gtestate.com</p>
+                          <p className="text-white/60">info@synovolabs.com</p>
                           <p className="text-white/60 text-sm">
                             We&apos;ll respond within 24 hours
                           </p>

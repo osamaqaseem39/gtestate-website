@@ -45,7 +45,7 @@ export async function fetchProperties(options?: { featured?: boolean }): Promise
     query.set('featured', String(options.featured))
   }
   const queryString = query.toString()
-  const res = await fetch(`${API_BASE_URL}/api/properties${queryString ? `?${queryString}` : ''}`)
+  const res = await fetch(`${API_BASE_URL}/properties${queryString ? `?${queryString}` : ''}`)
   if (!res.ok) return []
   const data = (await res.json()) as ApiProperty[]
   return Array.isArray(data) ? data : []
@@ -53,7 +53,7 @@ export async function fetchProperties(options?: { featured?: boolean }): Promise
 
 export async function fetchGalleryItems(): Promise<ApiGalleryItem[]> {
   if (!API_BASE_URL) return []
-  const res = await fetch(`${API_BASE_URL}/api/gallery`)
+  const res = await fetch(`${API_BASE_URL}/gallery`)
   if (!res.ok) return []
   const data = (await res.json()) as ApiGalleryItem[]
   return Array.isArray(data) ? data : []
