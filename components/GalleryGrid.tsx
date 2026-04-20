@@ -13,13 +13,14 @@ export type GalleryImage = {
   alt: string
   shape: ImageShape
   display: ImageDisplay
+  category: string
 }
 
 const FALLBACK_GALLERY: GalleryImage[] = [
-  { src: '/house-1.jpeg', alt: 'Residential interior', shape: 'landscape', display: 'grid' },
-  { src: '/house-2.jpeg', alt: 'Modern living room', shape: 'portrait', display: 'grid' },
-  { src: '/house-3.jpeg', alt: 'Luxury villa exterior', shape: 'square', display: 'grid' },
-  { src: '/house-4.jpeg', alt: 'Contemporary house facade', shape: 'landscape', display: 'full-original' },
+  { src: '/house-1.jpeg', alt: 'Residential interior', shape: 'landscape', display: 'grid', category: 'interior' },
+  { src: '/house-2.jpeg', alt: 'Modern living room', shape: 'portrait', display: 'grid', category: 'interior' },
+  { src: '/house-3.jpeg', alt: 'Luxury villa exterior', shape: 'square', display: 'grid', category: 'exterior' },
+  { src: '/house-4.jpeg', alt: 'Contemporary house facade', shape: 'landscape', display: 'full-original', category: 'exterior' },
 ]
 
 function normalizeShape(shape: string | undefined): ImageShape {
@@ -34,6 +35,7 @@ function mapApiItem(item: ApiGalleryItem): GalleryImage {
     alt: item.alt || 'GT Estates project',
     shape: normalizeShape(item.shape),
     display: item.display === 'full-original' ? 'full-original' : 'grid',
+    category: item.category || 'all',
   }
 }
 
@@ -47,6 +49,7 @@ export default function GalleryGrid() {
   const [baseImages, setBaseImages] = useState<GalleryImage[]>([])
   const [loading, setLoading] = useState(true)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [activeCategory, setActiveCategory] = useState<string>('all')
 
   useEffect(() => {
     if (!API_BASE_URL) return
@@ -70,13 +73,21 @@ export default function GalleryGrid() {
     }
   }, [])
 
+  const categories = useMemo(() => {
+    const set = new Set<string>(['all'])
+    baseImages.forEach((img) => {
+      if (img.category && img.category !== 'all') {
+        set.add(img.category)
+      }
+    })
+    return Array.from(set)
+  }, [baseImages])
+
   const displayImages = useMemo(() => {
     if (loading) return []
-    // If no images from dashboard, we can either show nothing or fallback. 
-    // User said "images will be from the dashboard", so let's show an empty state or fallback if they prefer.
-    // For now, let's keep it clean: if there are no images, return empty.
-    return baseImages
-  }, [baseImages, loading])
+    if (activeCategory === 'all') return baseImages
+    return baseImages.filter((img) => img.category === activeCategory)
+  }, [baseImages, loading, activeCategory])
 
   const n = displayImages.length
 
@@ -112,27 +123,51 @@ export default function GalleryGrid() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [activeIndex, closeSlide, showNext, showPrev])
 
-  const current = activeIndex !== null ? baseImages[activeIndex] ?? FALLBACK_GALLERY[activeIndex % FALLBACK_GALLERY.length] : null
+  const current = activeIndex !== null ? displayImages[activeIndex] : null
 
   return (
     <section
       className="bg-black text-white px-0 py-16 sm:px-0"
       aria-label="Property gallery"
     >
-      <div className="space-y-10">
-        <div className="space-y-2 text-center px-4 sm:px-6 lg:px-8 xl:px-12">
-          <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.35em] text-white/60">
-            Gallery
-          </p>
-          <h2
-            className="text-2xl md:text-3xl font-semibold uppercase tracking-tight text-white"
-            style={{ fontFamily: 'var(--font-spartan)' }}
-          >
-            Explore our properties
-          </h2>
-          <p className="text-sm md:text-base text-white/75 max-w-2xl mx-auto">
-            A curated selection of interiors and exteriors from GT Estates projects in Lahore and beyond.
-          </p>
+      <div className="space-y-12">
+        <div className="space-y-4 text-center px-4 sm:px-6 lg:px-8 xl:px-12">
+          <div className="space-y-2">
+            <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.35em] text-white/60">
+              Gallery
+            </p>
+            <h2
+              className="text-2xl md:text-3xl font-semibold uppercase tracking-tight text-white"
+              style={{ fontFamily: 'var(--font-spartan)' }}
+            >
+              Explore our properties
+            </h2>
+            <p className="text-sm md:text-base text-white/75 max-w-2xl mx-auto">
+              A curated selection of interiors and exteriors from GT Estates projects in Lahore and beyond.
+            </p>
+          </div>
+
+          {/* Category Tabs */}
+          {!loading && categories.length > 1 && (
+            <div className="flex flex-wrap justify-center gap-4 pt-6">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setActiveCategory(cat)
+                    setActiveIndex(null)
+                  }}
+                  className={`px-6 py-2 text-[10px] uppercase tracking-widest transition-all duration-300 border-2 ${
+                    activeCategory === cat
+                      ? 'bg-white text-black border-white'
+                      : 'bg-transparent text-white/60 border-white/20 hover:border-white/60'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 min-h-[400px]">

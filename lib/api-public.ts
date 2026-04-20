@@ -32,6 +32,7 @@ export type ApiGalleryItem = {
   alt: string
   shape: 'portrait' | 'landscape' | 'square'
   display: 'grid' | 'full-original'
+  category?: string
 }
 
 export async function fetchFeaturedProperties(): Promise<ApiProperty[]> {
