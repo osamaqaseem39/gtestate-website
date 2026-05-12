@@ -108,7 +108,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h4 className="text-white font-semibold">Email</h4>
-                      <p className="text-white/60">info@gtestate.com</p>
+                      <p className="text-white/60">info@gtestates.com.pk</p>
                       <p className="text-white/60">We'll respond within 24 hours</p>
                     </div>
                   </div>

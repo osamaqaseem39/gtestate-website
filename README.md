@@ -135,5 +135,5 @@ This project is licensed under the MIT License.
 
 ## Support
 
-For support and questions, please contact us at info@gtestate.com
+For support and questions, please contact us at info@gtestates.com.pk
 

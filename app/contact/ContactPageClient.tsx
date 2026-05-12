@@ -196,7 +196,7 @@ export default function ContactPageClient() {
                           <h4 className="text-white font-semibold uppercase tracking-wider">
                             Email
                           </h4>
-                          <p className="text-white/60">info@synovolabs.com</p>
+                          <p className="text-white/60">info@gtestates.com.pk</p>
                           <p className="text-white/60 text-sm">
                             We&apos;ll respond within 24 hours
                           </p>

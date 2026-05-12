@@ -129,8 +129,8 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
                     Got a project in mind?
                   </Link>
                   <div className="text-white text-sm space-y-1 text-left sm:text-right">
-                    <a href="mailto:info@gtestate.com" className="block hover:opacity-80 transition-opacity">
-                      info@gtestate.com
+                    <a href="mailto:info@gtestates.com.pk" className="block hover:opacity-80 transition-opacity">
+                      info@gtestates.com.pk
                     </a>
                     <a href="tel:+923005999993" className="block hover:opacity-80 transition-opacity">
                       +92 300 5999993

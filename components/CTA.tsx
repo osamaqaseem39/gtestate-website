@@ -109,7 +109,7 @@ export default function CTA() {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-neon-purple" />
-                <span>info@gtestate.com</span>
+                <span>info@gtestates.com.pk</span>
               </div>
             </div>
           </motion.div>

@@ -12,8 +12,8 @@ export async function sendInquiryEmail(data: {
   const port = parseInt(process.env.SMTP_PORT || '587', 10)
   const user = process.env.SMTP_USER
   const pass = process.env.SMTP_PASS
-  const from = process.env.SMTP_FROM || 'GT Estate <noreply@gtestate.com>'
-  const to = process.env.INQUIRY_NOTIFY_EMAIL || 'info@synovolabs.com'
+  const from = process.env.SMTP_FROM || 'GT Estate <noreply@gtestates.com.pk>'
+  const to = process.env.INQUIRY_NOTIFY_EMAIL || 'info@gtestates.com.pk'
   const secureEnv = process.env.SMTP_SECURE
 
   if (!host || !user || !pass) {

@@ -109,9 +109,9 @@ export default function Footer() {
           >
             <h3 className="text-white font-semibold uppercase tracking-wider mb-4">Contact</h3>
             <div className="space-y-2 text-white/90 text-sm">
-              <a href="mailto:info@synovolabs.com" className="flex items-center gap-2 hover:text-[#fabb22] transition-colors">
+              <a href="mailto:info@gtestates.com.pk" className="flex items-center gap-2 hover:text-[#fabb22] transition-colors">
                 <Mail className="w-4 h-4 text-[#fabb22] shrink-0" />
-                info@synovolabs.com
+                info@gtestates.com.pk
               </a>
               <a href="tel:+923005999993" className="flex items-center gap-2 hover:text-[#fabb22] transition-colors">
                 <Phone className="w-4 h-4 text-[#fabb22] shrink-0" />
@@ -140,8 +140,8 @@ export default function Footer() {
                   Careers
                 </Link>{' '}
                 page or email{' '}
-                <a href="mailto:careers@gtestate.com" className="text-[#fabb22] hover:underline">
-                  careers@gtestate.com
+                <a href="mailto:careers@gtestates.com.pk" className="text-[#fabb22] hover:underline">
+                  careers@gtestates.com.pk
                 </a>
                 .
               </p>
