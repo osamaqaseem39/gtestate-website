@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 import ContactPageClient from './ContactPageClient'
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function Contact() {
-  return <ContactPageClient />
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-black" />}>
+      <ContactPageClient />
+    </Suspense>
+  )
 }

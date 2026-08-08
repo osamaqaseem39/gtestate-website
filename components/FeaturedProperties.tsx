@@ -64,6 +64,10 @@ function mapApiProperty(p: ApiProperty): ProjectCard {
   }
 }
 
+function isPropertyId(id: string): boolean {
+  return /^[a-f\d]{24}$/i.test(id)
+}
+
 type FeaturedPropertiesProps = {
   /** Fetch only featured items (default) or all properties. */
   featuredOnly?: boolean
@@ -137,7 +141,11 @@ export default function FeaturedProperties({ featuredOnly = true }: FeaturedProp
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 max-w-5xl mx-auto">
-            {projects.map((project, index) => (
+            {projects.map((project, index) => {
+              const detailHref = isPropertyId(project.id) ? `/projects/${project.id}` : null
+              const inquireHref = `/contact?project=${encodeURIComponent(project.title)}`
+
+              return (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 50 }}
@@ -146,40 +154,74 @@ export default function FeaturedProperties({ featuredOnly = true }: FeaturedProp
                 className="group h-full"
               >
                 <article className="relative h-full flex flex-col bg-black/85 backdrop-blur-md border border-white/10 rounded-none md:rounded-[18px] shadow-[0_32px_80px_rgba(0,0,0,0.9)] overflow-hidden">
-                  <div className="relative h-52 md:h-56 overflow-hidden">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      unoptimized={project.image.startsWith('http')}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                    <span className="absolute top-4 left-4 px-3 py-1 bg-neon-green text-black text-[11px] font-semibold tracking-[0.18em] uppercase">
-                      {project.marla}
-                    </span>
-                  </div>
+                  {detailHref ? (
+                    <Link href={detailHref} className="relative h-52 md:h-56 overflow-hidden block">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        unoptimized={project.image.startsWith('http')}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                      <span className="absolute top-4 left-4 px-3 py-1 bg-neon-green text-black text-[11px] font-semibold tracking-[0.18em] uppercase">
+                        {project.marla}
+                      </span>
+                    </Link>
+                  ) : (
+                    <div className="relative h-52 md:h-56 overflow-hidden">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        unoptimized={project.image.startsWith('http')}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                      <span className="absolute top-4 left-4 px-3 py-1 bg-neon-green text-black text-[11px] font-semibold tracking-[0.18em] uppercase">
+                        {project.marla}
+                      </span>
+                    </div>
+                  )}
                   <div className="px-5 md:px-6 pt-5 pb-6 flex-1 flex flex-col">
-                    <h3 className="text-lg md:text-xl font-semibold uppercase tracking-tight mb-2 group-hover:text-neon-green transition-colors">
-                      {project.title}
-                    </h3>
+                    {detailHref ? (
+                      <Link href={detailHref}>
+                        <h3 className="text-lg md:text-xl font-semibold uppercase tracking-tight mb-2 group-hover:text-neon-green transition-colors">
+                          {project.title}
+                        </h3>
+                      </Link>
+                    ) : (
+                      <h3 className="text-lg md:text-xl font-semibold uppercase tracking-tight mb-2 group-hover:text-neon-green transition-colors">
+                        {project.title}
+                      </h3>
+                    )}
                     <div className="flex items-center text-white/60 mb-4 text-xs md:text-sm">
                       <MapPin className="h-4 w-4 mr-2 text-neon-green shrink-0" />
                       <span>{project.location}</span>
                     </div>
-                    <div className="mt-auto pt-2">
+                    <div className="mt-auto pt-2 flex flex-col gap-2">
                       <motion.span className="btn-hero-group w-full block" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                        <Link href="/contact" className="btn-hero w-full">
-                          <span>Inquire</span>
+                        <Link href={detailHref || inquireHref} className="btn-hero w-full">
+                          <span>{detailHref ? 'View details' : 'Inquire'}</span>
                           <ArrowRight className="h-4 w-4 text-black" />
                         </Link>
                       </motion.span>
+                      {detailHref ? (
+                        <Link
+                          href={inquireHref}
+                          className="inline-flex items-center justify-center gap-2 px-4 py-3 text-xs font-medium uppercase tracking-wider text-white/65 hover:text-neon-green transition-colors"
+                        >
+                          Inquire
+                        </Link>
+                      ) : null}
                     </div>
                   </div>
                 </article>
               </motion.div>
-            ))}
+              )
+            })}
           </div>
         </motion.div>
 

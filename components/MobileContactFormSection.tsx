@@ -3,7 +3,13 @@
 import { useState } from 'react'
 import { submitInquiry } from '@/lib/submit-inquiry'
 
-export default function MobileContactFormSection() {
+type MobileContactFormSectionProps = {
+  initialMessage?: string
+}
+
+export default function MobileContactFormSection({
+  initialMessage = '',
+}: MobileContactFormSectionProps) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(false)
@@ -109,6 +115,8 @@ export default function MobileContactFormSection() {
                 <textarea
                   name="message"
                   rows={4}
+                  defaultValue={initialMessage}
+                  key={initialMessage || 'message'}
                   className="w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/40 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/60"
                   placeholder="Tell us briefly what you need help with"
                 />

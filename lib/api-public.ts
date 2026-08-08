@@ -24,6 +24,9 @@ export type ApiProperty = {
   description?: string
   status?: string
   type?: string
+  price?: number | null
+  gallery?: string[]
+  sortOrder?: number
 }
 
 export type ApiGalleryItem = {
@@ -50,6 +53,16 @@ export async function fetchProperties(options?: { featured?: boolean }): Promise
   if (!res.ok) return []
   const data = (await res.json()) as ApiProperty[]
   return Array.isArray(data) ? data : []
+}
+
+export async function fetchPropertyById(id: string): Promise<ApiProperty | null> {
+  if (!API_BASE_URL || !id) return null
+  const res = await fetch(`${API_BASE_URL}/properties/${encodeURIComponent(id)}`, {
+    next: { revalidate: 60 },
+  })
+  if (!res.ok) return null
+  const data = (await res.json()) as ApiProperty
+  return data?._id ? data : null
 }
 
 export async function fetchGalleryItems(): Promise<ApiGalleryItem[]> {

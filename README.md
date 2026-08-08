@@ -1,139 +1,95 @@
 # GT Estate Website
 
-A modern, next-generation real estate website built with Next.js 14, featuring AI-powered property matching, virtual reality tours, and smart home integration.
+Public marketing site for **GT Estates** ([gtestates.com.pk](https://gtestates.com.pk)): brand pages, projects, gallery, contact inquiries, and career applications. Backed by the Express API in `../server` (or a deployed API URL).
 
-## Features
+## Scope (accurate)
 
-- 🏠 **AI-Powered Property Search** - Intelligent property matching based on your preferences
-- 🥽 **Virtual Reality Tours** - Immersive 360° property tours from anywhere
-- 🏡 **Smart Home Integration** - Connect with IoT devices and smart home systems
-- 🔒 **Blockchain Security** - Secure transactions with blockchain technology
-- 📱 **Responsive Design** - Optimized for all devices and screen sizes
-- ⚡ **Modern UI/UX** - Sleek, futuristic design with smooth animations
+**Implemented**
 
-## Tech Stack
+- Next.js App Router marketing pages
+- Properties/projects and gallery data loaded from the API
+- Inquiry submission and careers CV application
+- Responsive layouts; desktop (≥1024px) GSAP + Lenis hero path
+- Framer Motion, Swiper, Lucide icons, Tailwind CSS
 
-- **Framework**: Next.js 14 with App Router
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **TypeScript**: Full type safety
-- **Responsive**: Mobile-first design
+**Not implemented — do not advertise**
 
-## Getting Started
+The previous version of this README claimed AI-powered property matching, virtual reality tours, smart-home IoT integration, and blockchain security. **Those features are not in this codebase** and must not be listed as product capabilities.
 
-### Prerequisites
+Also out of scope for this package: user login, booking, payments, MLS.
 
-- Node.js 18+ 
-- npm or yarn
+## Tech stack
 
-### Installation
+| Area | Choice |
+|------|--------|
+| Framework | Next.js `^16.1` (App Router), React 18 |
+| Styling | Tailwind CSS |
+| Motion | Framer Motion, GSAP, Lenis |
+| Carousels / icons | Swiper, Lucide React |
+| Mail helper | nodemailer (optional; see `.env.example`) |
+| Language | TypeScript |
 
-1. Navigate to the website directory:
+## Getting started
+
+**Prerequisites:** Node.js 18+, npm.
+
 ```bash
 cd website
-```
-
-2. Install dependencies:
-```bash
+cp .env.example .env.local
 npm install
-# or
-yarn install
-```
-
-3. Run the development server:
-```bash
 npm run dev
-# or
-yarn dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Project Structure
+### Environment
+
+| Variable | Role |
+|----------|------|
+| `NEXT_PUBLIC_API_URL` | API origin (example default: `https://estate-server-nine.vercel.app`) |
+| `NEXT_PUBLIC_MEDIA_URL` | Media host (default used in code: `https://gt.osamaqaseem.online`) |
+| `NEXT_PUBLIC_APP_URL` | Public site URL |
+| `SMTP_*` / `INQUIRY_NOTIFY_EMAIL` | Optional site-side email |
+
+Ensure the API CORS configuration allows this site’s origin (`gtestates.com.pk` is handled in the server by default).
+
+## Routes (`app/`)
+
+| Path | Page |
+|------|------|
+| `/` | Home |
+| `/about` | About |
+| `/what-we-do` | What we do |
+| `/projects` | Projects |
+| `/gallery` | Gallery |
+| `/team` | Team |
+| `/contact` | Contact |
+| `/careers` | Careers |
+| `/hero-alt` | Alternate hero |
+
+Legacy files under `src/app/` (including `/properties`) are not the primary App Router tree. Some CTAs may still point at `/properties` even though `app/properties` is absent.
+
+## Project layout
 
 ```
 website/
-├── app/                    # Next.js App Router
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
-│   ├── page.tsx          # Home page
-│   ├── about/            # About page
-│   ├── properties/        # Properties page
-│   └── contact/          # Contact page
-├── components/           # React components
-│   ├── Hero.tsx          # Hero section
-│   ├── Navigation.tsx    # Navigation bar
-│   ├── Footer.tsx        # Footer
-│   ├── QuickSearch.tsx   # Property search
-│   ├── FeaturedProperties.tsx # Property listings
-│   ├── TechFeatures.tsx # Technology features
-│   ├── Testimonials.tsx  # Customer testimonials
-│   ├── CTA.tsx          # Call-to-action
-│   └── ...              # Other components
-├── package.json         # Dependencies
-├── tailwind.config.js  # Tailwind configuration
-├── next.config.js      # Next.js configuration
-└── tsconfig.json       # TypeScript configuration
+├── app/                 # Active App Router pages
+├── components/          # UI (hero, nav, sections, …)
+├── lib/                 # api-public, submit-inquiry, mail, …
+├── src/app/             # Legacy / duplicate pages
+├── public/
+├── next.config.js
+└── package.json
 ```
 
-## Pages
+## Related packages
 
-- **Home** (`/`) - Landing page with hero, features, and testimonials
-- **Properties** (`/properties`) - Property search and listings
-- **About** (`/about`) - Company information and mission
-- **Contact** (`/contact`) - Contact form and information
+| Path | Role |
+|------|------|
+| `../server` | `gt-estate-api` — properties, gallery, inquiries, careers, auth |
+| `../dashboard` | Staff CMS (port 3001) |
+| `../docs` | Full workspace documentation |
 
-## Customization
+## License / support
 
-### Colors
-The website uses a custom color palette defined in `tailwind.config.js`:
-- `neon-blue`: #00D4FF
-- `neon-purple`: #8B5CF6
-- `neon-green`: #10B981
-- `neon-pink`: #EC4899
-
-### Components
-All components are built with:
-- TypeScript for type safety
-- Framer Motion for animations
-- Tailwind CSS for styling
-- Responsive design principles
-
-## Deployment
-
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Deploy automatically
-
-### Other Platforms
-The website can be deployed to any platform that supports Next.js:
-- Netlify
-- AWS Amplify
-- Railway
-- DigitalOcean App Platform
-
-## Performance
-
-- ⚡ **Fast Loading** - Optimized images and code splitting
-- 📱 **Mobile Optimized** - Responsive design for all devices
-- 🔍 **SEO Ready** - Meta tags and structured data
-- ♿ **Accessible** - WCAG compliant design
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License.
-
-## Support
-
-For support and questions, please contact us at info@gtestates.com.pk
-
+Contact: info@gtestates.com.pk

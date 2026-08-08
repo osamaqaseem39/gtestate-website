@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Footer from '@/components/Footer'
 import ReachUsSection from '@/components/ReachUsSection'
 import PageHero from '@/components/PageHero'
@@ -10,6 +11,13 @@ import PageLoadAnimation from '@/components/PageLoadAnimation'
 import { submitInquiry } from '@/lib/submit-inquiry'
 
 export default function ContactPageClient() {
+  const searchParams = useSearchParams()
+  const projectName = searchParams.get('project')?.trim() || ''
+  const projectMessage = useMemo(
+    () => (projectName ? `I am interested in: ${projectName}` : ''),
+    [projectName]
+  )
+
   const [isDesktop, setIsDesktop] = useState(false)
   const [desktopSubmitting, setDesktopSubmitting] = useState(false)
   const [desktopError, setDesktopError] = useState<string | null>(null)
@@ -153,6 +161,8 @@ export default function ContactPageClient() {
                         <textarea
                           name="message"
                           rows={4}
+                          defaultValue={projectMessage}
+                          key={projectMessage || 'message'}
                           className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 resize-none"
                           placeholder="Tell us about your real estate needs"
                         />
@@ -245,7 +255,7 @@ export default function ContactPageClient() {
           </div>
         </section>
         ) : (
-          <MobileContactFormSection />
+          <MobileContactFormSection initialMessage={projectMessage} />
         )}
 
         <ReachUsSection />
