@@ -8,25 +8,29 @@ import MobilePageHero from '@/components/MobilePageHero'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { fetchTeamMembers, resolveMediaUrl, type ApiTeamMember } from '@/lib/api-public'
 
-/** Add photos as public/team/nasir.jpg and public/team/usman.jpg — recommended 800×1000px (4:5) or 800×800px square, JPG/WebP, under ~500KB each. */
-const LEADERSHIP = [
+/** Fallback shown if the API has no team members yet, so the page never renders empty. */
+const fallbackLeadership: ApiTeamMember[] = [
   {
+    id: 'fallback-nasir',
     name: 'Sir Nasir Sahib',
-    role: 'Leadership',
+    designation: 'Leadership',
     image: '/team/nasir.jpg',
-    area: 'Strategic direction & investment oversight',
+    bio: 'Strategic direction & investment oversight',
   },
   {
+    id: 'fallback-usman',
     name: 'Sir Usman Sahib',
-    role: 'Leadership',
+    designation: 'Leadership',
     image: '/team/usman.jpg',
-    area: 'Operations & business growth',
+    bio: 'Operations & business growth',
   },
-] as const
+]
 
 export default function TeamPageClient() {
   const [isDesktop, setIsDesktop] = useState(false)
+  const [team, setTeam] = useState<ApiTeamMember[]>(fallbackLeadership)
 
   useEffect(() => {
     const update = () => {
@@ -36,6 +40,17 @@ export default function TeamPageClient() {
     update()
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    fetchTeamMembers().then((members) => {
+      if (cancelled || members.length === 0) return
+      setTeam(members)
+    })
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   return (
@@ -64,32 +79,38 @@ export default function TeamPageClient() {
                 Leadership
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
-                {LEADERSHIP.map((member) => (
-                  <article
-                    key={member.name}
-                    className="flex flex-col border border-white/10 bg-white/5 overflow-hidden hover:border-amber-400/40 transition-colors"
-                  >
-                    <div className="relative aspect-[4/5] w-full bg-zinc-800">
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="object-cover object-top"
-                        sizes="(max-width: 768px) 100vw, 400px"
-                      />
-                    </div>
-                    <div className="p-6 space-y-2">
-                      <h3
-                        className="text-xl font-semibold text-white uppercase tracking-tight"
-                        style={{ fontFamily: 'var(--font-spartan)' }}
-                      >
-                        {member.name}
-                      </h3>
-                      <p className="text-amber-400 text-sm font-medium uppercase tracking-wider">{member.role}</p>
-                      <p className="text-white/60 text-sm leading-relaxed">{member.area}</p>
-                    </div>
-                  </article>
-                ))}
+                {team.map((member) => {
+                  const src = member.image ? resolveMediaUrl(member.image) : '/team/nasir.jpg'
+                  return (
+                    <article
+                      key={member.id}
+                      className="flex flex-col border border-white/10 bg-white/5 overflow-hidden hover:border-amber-400/40 transition-colors"
+                    >
+                      <div className="relative aspect-[4/5] w-full bg-zinc-800">
+                        <Image
+                          src={src}
+                          alt={member.name}
+                          fill
+                          className="object-cover object-top"
+                          sizes="(max-width: 768px) 100vw, 400px"
+                          unoptimized={src.startsWith('http')}
+                        />
+                      </div>
+                      <div className="p-6 space-y-2">
+                        <h3
+                          className="text-xl font-semibold text-white uppercase tracking-tight"
+                          style={{ fontFamily: 'var(--font-spartan)' }}
+                        >
+                          {member.name}
+                        </h3>
+                        <p className="text-amber-400 text-sm font-medium uppercase tracking-wider">
+                          {member.designation}
+                        </p>
+                        {member.bio && <p className="text-white/60 text-sm leading-relaxed">{member.bio}</p>}
+                      </div>
+                    </article>
+                  )
+                })}
               </div>
             </div>
 

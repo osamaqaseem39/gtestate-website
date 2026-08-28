@@ -1,9 +1,21 @@
  'use client'
 
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Star } from 'lucide-react'
+import { fetchTestimonials, resolveMediaUrl } from '@/lib/api-public'
 
-const testimonials = [
+interface Testimonial {
+  id: string | number
+  name: string
+  role: string
+  text: string
+  image: string
+  rating: number
+}
+
+/** Fallback shown if the API has no reviews yet, so the homepage never renders empty. */
+const fallbackTestimonials: Testimonial[] = [
   {
     id: 1,
     name: 'GT Estates Client',
@@ -97,6 +109,28 @@ const testimonials = [
 ]
 
 export default function MobileTestimonials() {
+  const [testimonials, setTestimonials] = useState(fallbackTestimonials)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchTestimonials().then((reviews) => {
+      if (cancelled || reviews.length === 0) return
+      setTestimonials(
+        reviews.map((r) => ({
+          id: r.id,
+          name: r.name,
+          role: r.role || 'Investor',
+          text: r.text,
+          image: r.image ? resolveMediaUrl(r.image) : fallbackTestimonials[0].image,
+          rating: r.rating,
+        }))
+      )
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   return (
     <section
       className="bg-black text-white px-4 py-12 sm:px-6 md:py-16"
@@ -131,6 +165,7 @@ export default function MobileTestimonials() {
                     fill
                     className="object-cover"
                     sizes="40px"
+                    unoptimized={t.image.startsWith('http')}
                   />
                 </div>
                 <div>

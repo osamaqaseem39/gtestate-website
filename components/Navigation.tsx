@@ -59,11 +59,13 @@ export default function Navigation() {
         duration: 0.35,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      className="fixed top-0 left-0 right-0 z-50"
+      className={`fixed top-0 left-0 right-0 z-[60] transition-colors duration-300 ${
+        scrolled ? 'bg-black/70 backdrop-blur-md' : 'bg-transparent'
+      }`}
     >
       {/* Thin horizontal line separator */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gray-300/30" />
-      
+
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Navigation Links (Left) */}

@@ -1,14 +1,26 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper/modules'
 import { Star } from 'lucide-react'
 import Image from 'next/image'
+import { fetchTestimonials, resolveMediaUrl } from '@/lib/api-public'
 import 'swiper/css'
 
-const testimonials = [
+interface Testimonial {
+  id: string | number
+  name: string
+  role: string
+  image: string
+  rating: number
+  text: string
+}
+
+/** Fallback shown if the API has no reviews yet, so the homepage never renders empty. */
+const fallbackTestimonials: Testimonial[] = [
   {
     id: 1,
     name: 'GT Estates Client',
@@ -96,6 +108,27 @@ export default function Testimonials() {
     triggerOnce: true,
     threshold: 0.1,
   })
+  const [testimonials, setTestimonials] = useState(fallbackTestimonials)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchTestimonials().then((reviews) => {
+      if (cancelled || reviews.length === 0) return
+      setTestimonials(
+        reviews.map((r) => ({
+          id: r.id,
+          name: r.name,
+          role: r.role || 'Investor',
+          image: r.image ? resolveMediaUrl(r.image) : fallbackTestimonials[0].image,
+          rating: r.rating,
+          text: r.text,
+        }))
+      )
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   return (
     <section
@@ -206,6 +239,7 @@ export default function Testimonials() {
                           fill
                           className="object-cover"
                           sizes="48px"
+                          unoptimized={t.image.startsWith('http')}
                         />
                       </div>
                       <div>
