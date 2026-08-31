@@ -1,13 +1,13 @@
 import { Metadata } from 'next'
-import { fetchSiteContent } from '@/lib/api-public'
+import { fetchPageBySlug } from '@/lib/api-public'
 import GalleryPageClient from './GalleryPageClient'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const content = await fetchSiteContent('gallery')
+  const page = await fetchPageBySlug('gallery')
   return {
-    title: content.metaTitle || 'Gallery - GT Estate',
+    title: page?.metaTitle || 'Gallery - GT Estate',
     description:
-      content.metaDescription || 'Explore our curated gallery of premium properties and real estate projects.',
+      page?.metaDescription || 'Explore our curated gallery of premium properties and real estate projects.',
   }
 }
 

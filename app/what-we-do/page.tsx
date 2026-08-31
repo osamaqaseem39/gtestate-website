@@ -1,13 +1,13 @@
 import { Metadata } from 'next'
-import { fetchSiteContent } from '@/lib/api-public'
+import { fetchPageBySlug } from '@/lib/api-public'
 import WhatWeDoPageClient from './WhatWeDoPageClient'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const content = await fetchSiteContent('what-we-do')
+  const page = await fetchPageBySlug('what-we-do')
   return {
-    title: content.metaTitle || 'What We Do - GT Estate',
+    title: page?.metaTitle || 'What We Do - GT Estate',
     description:
-      content.metaDescription ||
+      page?.metaDescription ||
       'Discover our comprehensive real estate services including AI-powered matching, virtual tours, and smart home integration.',
   }
 }

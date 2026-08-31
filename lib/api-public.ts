@@ -1,5 +1,5 @@
 export const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_URL || 'https://estate-server-nine.vercel.app'
+  process.env.NEXT_PUBLIC_API_URL || 'https://gt-estate-server.vercel.app'
 ).replace(/\/$/, '')
 
 export const MEDIA_BASE_URL = (
@@ -93,66 +93,86 @@ export async function fetchGalleryItems(): Promise<ApiGalleryItem[]> {
   return Array.isArray(data) ? data : []
 }
 
+export type ApiReview = {
+  id: string
+  name: string
+  role?: string
+  image?: string
+  rating: number
+  text: string
+  published?: boolean
+}
+
 export type ApiTeamMember = {
-  _id: string
+  id: string
   name: string
   designation: string
-  imageUrl?: string
+  image?: string
   bio?: string
+  published?: boolean
+}
+
+export type ApiWhatWeDoContent = {
+  missionTitle: string
+  missionBody: string
+  visionTitle: string
+  visionBody: string
+  qualitiesTitle: string
+  qualitiesBody: string
+  projectsTitle: string
+  projectsBody: string
+  services: string[]
+  quote: string
+  ctaHeading: string
+  ctaBody: string
+}
+
+export type ApiPage = {
+  id: string
+  slug: string
+  title: string
+  content: string
+  metaTitle?: string
+  metaDescription?: string
+  metaKeywords?: string
+  published?: boolean
+}
+
+/** Normalizes Mongoose-style `_id` or Prisma-style `id` into `id`, whichever the backend returns. */
+function withId<T extends { id?: string; _id?: string }>(row: T): T & { id: string } {
+  return { ...row, id: row.id ?? row._id ?? '' }
+}
+
+export async function fetchTestimonials(): Promise<ApiReview[]> {
+  if (!API_BASE_URL) return []
+  const res = await fetch(`${API_BASE_URL}/reviews?published=true`, { next: { revalidate: 60 } })
+  if (!res.ok) return []
+  const data = (await res.json()) as ApiReview[]
+  return Array.isArray(data) ? data.map(withId) : []
 }
 
 export async function fetchTeamMembers(): Promise<ApiTeamMember[]> {
   if (!API_BASE_URL) return []
-  try {
-    const res = await fetch(`${API_BASE_URL}/team`)
-    if (!res.ok) return []
-    const data = (await res.json()) as ApiTeamMember[]
-    return Array.isArray(data) ? data : []
-  } catch {
-    return []
-  }
+  const res = await fetch(`${API_BASE_URL}/team?published=true`, { next: { revalidate: 60 } })
+  if (!res.ok) return []
+  const data = (await res.json()) as ApiTeamMember[]
+  return Array.isArray(data) ? data.map(withId) : []
 }
 
-export type ApiSiteContent = {
-  pageKey: string
-  label: string
-  metaTitle: string
-  metaDescription: string
-  body: string
+export async function fetchWhatWeDoContent(): Promise<ApiWhatWeDoContent | null> {
+  if (!API_BASE_URL) return null
+  const res = await fetch(`${API_BASE_URL}/what-we-do`, { next: { revalidate: 60 } })
+  if (!res.ok) return null
+  const data = (await res.json()) as ApiWhatWeDoContent
+  return data ?? null
 }
 
-export async function fetchSiteContent(pageKey: string): Promise<ApiSiteContent> {
-  const empty: ApiSiteContent = { pageKey, label: '', metaTitle: '', metaDescription: '', body: '' }
-  if (!API_BASE_URL) return empty
-  try {
-    const res = await fetch(`${API_BASE_URL}/site-content/${encodeURIComponent(pageKey)}`, {
-      next: { revalidate: 60 },
-    })
-    if (!res.ok) return empty
-    const data = (await res.json()) as ApiSiteContent
-    return { ...empty, ...data }
-  } catch {
-    return empty
-  }
-}
-
-export type ApiReview = {
-  _id: string
-  name: string
-  role?: string
-  avatarUrl?: string
-  rating?: number
-  text: string
-}
-
-export async function fetchReviews(): Promise<ApiReview[]> {
-  if (!API_BASE_URL) return []
-  try {
-    const res = await fetch(`${API_BASE_URL}/reviews`)
-    if (!res.ok) return []
-    const data = (await res.json()) as ApiReview[]
-    return Array.isArray(data) ? data : []
-  } catch {
-    return []
-  }
+export async function fetchPageBySlug(slug: string): Promise<ApiPage | null> {
+  if (!API_BASE_URL || !slug) return null
+  const res = await fetch(`${API_BASE_URL}/pages/slug/${encodeURIComponent(slug)}`, {
+    next: { revalidate: 60 },
+  })
+  if (!res.ok) return null
+  const data = (await res.json()) as ApiPage
+  return data ? withId(data) : null
 }

@@ -65,7 +65,7 @@ export default function Navigation() {
     >
       {/* Thin horizontal line separator */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gray-300/30" />
-      
+
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Navigation Links (Left) */}

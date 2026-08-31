@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Star } from 'lucide-react'
-import { fetchReviews, resolveMediaUrl } from '@/lib/api-public'
+import { fetchTestimonials, resolveMediaUrl } from '@/lib/api-public'
 
-type TestimonialItem = {
+interface Testimonial {
   id: string | number
   name: string
   role: string
@@ -14,7 +14,8 @@ type TestimonialItem = {
   rating: number
 }
 
-const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
+/** Fallback shown if the API has no reviews yet, so the homepage never renders empty. */
+const fallbackTestimonials: Testimonial[] = [
   {
     id: 1,
     name: 'GT Estates Client',
@@ -108,25 +109,23 @@ const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
 ]
 
 export default function MobileTestimonials() {
-  const [testimonials, setTestimonials] = useState<TestimonialItem[]>(FALLBACK_TESTIMONIALS)
+  const [testimonials, setTestimonials] = useState(fallbackTestimonials)
 
   useEffect(() => {
     let cancelled = false
-    fetchReviews()
-      .then((reviews) => {
-        if (cancelled || !reviews.length) return
-        setTestimonials(
-          reviews.map((r) => ({
-            id: r._id,
-            name: r.name,
-            role: r.role || 'Client',
-            text: r.text,
-            image: r.avatarUrl ? resolveMediaUrl(r.avatarUrl) : FALLBACK_TESTIMONIALS[0].image,
-            rating: r.rating ?? 5,
-          })),
-        )
-      })
-      .catch(() => {})
+    fetchTestimonials().then((reviews) => {
+      if (cancelled || reviews.length === 0) return
+      setTestimonials(
+        reviews.map((r) => ({
+          id: r.id,
+          name: r.name,
+          role: r.role || 'Investor',
+          text: r.text,
+          image: r.image ? resolveMediaUrl(r.image) : fallbackTestimonials[0].image,
+          rating: r.rating,
+        }))
+      )
+    })
     return () => {
       cancelled = true
     }
@@ -166,6 +165,7 @@ export default function MobileTestimonials() {
                     fill
                     className="object-cover"
                     sizes="40px"
+                    unoptimized={t.image.startsWith('http')}
                   />
                 </div>
                 <div>

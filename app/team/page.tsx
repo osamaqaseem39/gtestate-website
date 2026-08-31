@@ -1,14 +1,14 @@
 import { Metadata } from 'next'
-import { fetchSiteContent } from '@/lib/api-public'
+import { fetchPageBySlug } from '@/lib/api-public'
 // @ts-ignore - local client component resolved by Next.js
 import TeamPageClient from './TeamPageClient'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const content = await fetchSiteContent('team')
+  const page = await fetchPageBySlug('team')
   return {
-    title: content.metaTitle || 'Team - GT Estate',
+    title: page?.metaTitle || 'Team - GT Estate',
     description:
-      content.metaDescription ||
+      page?.metaDescription ||
       'Meet the experts behind GT Estate – dedicated professionals delivering exceptional real estate services.',
   }
 }

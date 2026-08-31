@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import { fetchSiteContent } from '@/lib/api-public'
+import { fetchPageBySlug } from '@/lib/api-public'
 import HomePageClient from './HomePageClient'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const content = await fetchSiteContent('home')
+  const page = await fetchPageBySlug('home')
   return {
-    title: content.metaTitle || 'GT Estate | Next‑Gen Real Estate Platform',
+    title: page?.metaTitle || 'GT Estate | Next‑Gen Real Estate Platform',
     description:
-      content.metaDescription ||
+      page?.metaDescription ||
       'GT Estates is a trusted real estate consultancy in Pakistan offering residential and commercial plots, farmhouses, and investment opportunities.',
   }
 }
