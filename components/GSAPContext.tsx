@@ -54,12 +54,25 @@ export function GSAPProvider({ children }: { children: ReactNode }) {
     requestAnimationFrame(raf)
 
     ScrollTrigger.config({
-      autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load',
+      autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load,resize',
     })
+
+    let resizeTimer: ReturnType<typeof setTimeout> | null = null
+    const onResize = () => {
+      if (resizeTimer) clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        lenis.resize()
+        ScrollTrigger.refresh()
+      }, 150)
+    }
+
+    window.addEventListener('resize', onResize)
 
     setIsReady(true)
 
     return () => {
+      if (resizeTimer) clearTimeout(resizeTimer)
+      window.removeEventListener('resize', onResize)
       lenis.off('scroll', onLenisScroll)
       lenis.destroy()
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())

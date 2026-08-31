@@ -13,10 +13,14 @@ const menuItems = [
   { name: 'HOME', href: '/' },
   { name: 'ABOUT US', href: '/about' },
   { name: 'WHAT WE DO', href: '/what-we-do' },
-  { name: 'CONTACT US', href: '/contact' },
   { name: 'PROJECTS', href: '/projects' },
+  { name: 'GALLERY', href: '/gallery' },
+  { name: 'EVENTS', href: '/events' },
+  { name: 'BLOG', href: '/blog' },
+  { name: 'PM LOAN', href: '/pm-loan-scheme' },
   { name: 'TEAM', href: '/team' },
   { name: 'CAREERS', href: '/careers' },
+  { name: 'CONTACT US', href: '/contact' },
 ]
 
 type SideMenuProps = {
@@ -56,7 +60,7 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm"
             onClick={onClose}
             aria-hidden
           />
@@ -66,7 +70,7 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="fixed top-0 right-0 bottom-0 z-[101] w-full max-w-md bg-black/90 shadow-2xl flex flex-col"
+            className="fixed top-0 right-0 bottom-0 z-[111] w-full max-w-md bg-black/90 shadow-2xl flex flex-col"
             role="dialog"
             aria-modal="true"
             aria-label="Menu"

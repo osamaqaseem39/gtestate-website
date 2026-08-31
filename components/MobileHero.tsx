@@ -8,15 +8,17 @@ export default function MobileHero() {
   return (
     <section className="relative min-h-[90vh] w-full overflow-hidden bg-black">
       {/* Background image */}
-      <div className="absolute inset-0">
-        <Image
-          src="/hero-landscape.jpeg"
-          alt="Luxurious interior design"
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="relative h-full w-full">
+          <Image
+            src="/hero-landscape.jpeg"
+            alt="Luxurious interior design"
+            fill
+            priority
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+        </div>
         <div className="absolute inset-0 bg-black/60" />
       </div>
 

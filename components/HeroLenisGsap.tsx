@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronDown, Diamond } from 'lucide-react'
@@ -34,6 +34,20 @@ export default function HeroLenisGsap() {
   const centerImageTwoRef = useRef<HTMLDivElement | null>(null)
 
   const { scrollTo } = useGSAP()
+  const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 })
+
+  useEffect(() => {
+    const updateViewportSize = () => {
+      setViewportSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
+    }
+
+    updateViewportSize()
+    window.addEventListener('resize', updateViewportSize)
+    return () => window.removeEventListener('resize', updateViewportSize)
+  }, [])
 
   useEffect(() => {
     if (!sectionRef.current) return
@@ -269,7 +283,14 @@ export default function HeroLenisGsap() {
       }
     }, sectionRef)
 
+    const onResize = () => {
+      ScrollTrigger.refresh()
+    }
+
+    window.addEventListener('resize', onResize)
+
     return () => {
+      window.removeEventListener('resize', onResize)
       ctx.revert()
     }
   }, [])
@@ -285,15 +306,17 @@ export default function HeroLenisGsap() {
       className="relative min-h-screen overflow-hidden bg-black text-white"
     >
       {/* Background image */}
-      <div ref={bgRef} className="absolute inset-0 -z-10">
-        <Image
-          src="/hero-landscape.jpeg"
-          alt="Luxurious interior design"
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
+      <div ref={bgRef} className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="relative h-[120%] w-full -top-[10%]">
+          <Image
+            src="/hero-landscape.jpeg"
+            alt="Luxurious interior design"
+            fill
+            priority
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+        </div>
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
@@ -328,10 +351,10 @@ export default function HeroLenisGsap() {
                   position: 'absolute',
                   left: '50%',
                   top: '50%',
-                  width: '100vw',
-                  height: '100vh',
-                  marginLeft: '-50vw',
-                  marginTop: '-50vh',
+                  width: viewportSize.width > 0 ? `${viewportSize.width}px` : '100vw',
+                  height: viewportSize.height > 0 ? `${viewportSize.height}px` : '100vh',
+                  marginLeft: viewportSize.width > 0 ? `-${viewportSize.width / 2}px` : '-50vw',
+                  marginTop: viewportSize.height > 0 ? `-${viewportSize.height / 2}px` : '-50vh',
                   transform: 'rotate(-45deg)',
                   transformOrigin: 'center center',
                 }}
