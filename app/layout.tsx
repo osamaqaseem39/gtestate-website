@@ -124,7 +124,7 @@ export default function RootLayout({
         <GSAPProvider>
           <Navigation />
           {children}
-          <GlobalInquiryForm />
+          <WhatsAppButton />
         </GSAPProvider>
       </body>
     </html>
