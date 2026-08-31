@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Footer from '@/components/Footer'
-import ReachUsSection from '@/components/ReachUsSection'
+import SitePageFooter from '@/components/SitePageFooter'
 import PageHero from '@/components/PageHero'
 import MobilePageHero from '@/components/MobilePageHero'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
@@ -125,8 +124,7 @@ export default function TeamPageClient() {
           </div>
         </section>
 
-        <ReachUsSection />
-        <Footer />
+        <SitePageFooter />
       </PageLoadAnimation>
     </main>
   )

@@ -41,6 +41,7 @@ export type ApiPropertyGalleryEntry = {
 export type ApiProperty = {
   _id: string
   title: string
+  slug?: string
   location: string
   marla: string
   primaryImage?: string
@@ -51,7 +52,74 @@ export type ApiProperty = {
   type?: string
   price?: number | null
   gallery?: Array<string | ApiPropertyGalleryEntry>
+  inventory?: ApiInventoryItem[]
+  paymentPlan?: ApiPaymentPlan
   sortOrder?: number
+}
+
+export type ApiInventoryItem = {
+  _id?: string
+  category?: string
+  label?: string
+  size?: string
+  price?: string
+  status?: string
+  notes?: string
+}
+
+export type ApiPaymentPlanRow = {
+  milestone?: string
+  percentage?: string
+  amount?: string
+  dueOn?: string
+  notes?: string
+}
+
+export type ApiPaymentPlan = {
+  enabled?: boolean
+  title?: string
+  rows?: ApiPaymentPlanRow[]
+}
+
+export type ApiNewsArticle = {
+  id: string
+  title: string
+  slug: string
+  content: string
+  excerpt?: string
+  imageUrl?: string
+  metaTitle?: string
+  metaDescription?: string
+  published?: boolean
+  featured?: boolean
+  createdAt?: string
+}
+
+export type ApiEvent = {
+  id: string
+  title: string
+  slug: string
+  description?: string
+  images?: Array<{ url: string; alt?: string; title?: string }>
+  videos?: Array<{ url: string; title?: string }>
+  metaTitle?: string
+  metaDescription?: string
+  published?: boolean
+}
+
+export type ApiPaymentPlanTab = {
+  id: string
+  title: string
+  slug: string
+  description?: string
+  rows?: Array<{ label?: string; percentage?: string; amount?: string; dueOn?: string; notes?: string }>
+  published?: boolean
+  sortOrder?: number
+}
+
+export function propertyHref(property: { _id: string; slug?: string }): string {
+  if (property.slug) return `/project/${property.slug}`
+  return `/projects/${property._id}`
 }
 
 /** Normalizes a raw property gallery entry (legacy string or {url,alt,title}) into a resolved, renderable shape. */
@@ -101,6 +169,78 @@ export async function fetchPropertyById(id: string): Promise<ApiProperty | null>
   if (!res.ok) return null
   const data = (await res.json()) as ApiProperty
   return data?._id ? data : null
+}
+
+export async function fetchPropertyBySlug(slug: string): Promise<ApiProperty | null> {
+  if (!API_BASE_URL || !slug) return null
+  const res = await fetch(`${API_BASE_URL}/properties/slug/${encodeURIComponent(slug)}`, {
+    next: { revalidate: 60 },
+  })
+  if (!res.ok) return null
+  const data = (await res.json()) as ApiProperty
+  return data?._id ? data : null
+}
+
+export async function fetchNewsArticles(): Promise<ApiNewsArticle[]> {
+  if (!API_BASE_URL) return []
+  const res = await fetch(`${API_BASE_URL}/news?published=true`, { next: { revalidate: 60 } })
+  if (!res.ok) return []
+  const data = (await res.json()) as ApiNewsArticle[]
+  return Array.isArray(data) ? data.map(withId) : []
+}
+
+export async function fetchNewsBySlug(slug: string): Promise<ApiNewsArticle | null> {
+  if (!API_BASE_URL || !slug) return null
+  const res = await fetch(`${API_BASE_URL}/news/slug/${encodeURIComponent(slug)}`, {
+    next: { revalidate: 60 },
+  })
+  if (!res.ok) return null
+  const data = (await res.json()) as ApiNewsArticle
+  return data ? withId(data) : null
+}
+
+export async function fetchEvents(): Promise<ApiEvent[]> {
+  if (!API_BASE_URL) return []
+  const res = await fetch(`${API_BASE_URL}/events?published=true`, { next: { revalidate: 60 } })
+  if (!res.ok) return []
+  const data = (await res.json()) as ApiEvent[]
+  return Array.isArray(data) ? data.map(withId) : []
+}
+
+export async function fetchEventBySlug(slug: string): Promise<ApiEvent | null> {
+  if (!API_BASE_URL || !slug) return null
+  const res = await fetch(`${API_BASE_URL}/events/slug/${encodeURIComponent(slug)}`, {
+    next: { revalidate: 60 },
+  })
+  if (!res.ok) return null
+  const data = (await res.json()) as ApiEvent
+  return data ? withId(data) : null
+}
+
+export async function fetchPaymentPlanTabs(): Promise<ApiPaymentPlanTab[]> {
+  if (!API_BASE_URL) return []
+  const res = await fetch(`${API_BASE_URL}/payment-plans?published=true`, { next: { revalidate: 60 } })
+  if (!res.ok) return []
+  const data = (await res.json()) as ApiPaymentPlanTab[]
+  return Array.isArray(data) ? data.map(withId) : []
+}
+
+export async function submitLoanApplication(payload: Record<string, string>): Promise<{ ok: boolean; error?: string }> {
+  if (!API_BASE_URL) return { ok: false, error: 'API not configured' }
+  try {
+    const res = await fetch(`${API_BASE_URL}/loan-applications`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+    if (!res.ok) {
+      const err = (await res.json().catch(() => ({}))) as { error?: string }
+      return { ok: false, error: err.error || 'Submission failed' }
+    }
+    return { ok: true }
+  } catch {
+    return { ok: false, error: 'Network error' }
+  }
 }
 
 export async function fetchGalleryItems(): Promise<ApiGalleryItem[]> {

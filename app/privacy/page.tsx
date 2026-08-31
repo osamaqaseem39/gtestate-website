@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Footer from '@/components/Footer'
+import SitePageFooter from '@/components/SitePageFooter'
 import { fetchPageBySlug } from '@/lib/api-public'
 
 const SLUG = 'privacy-policy'
@@ -37,7 +37,7 @@ export default async function PrivacyPolicyPage() {
           />
         </div>
       </div>
-      <Footer />
+      <SitePageFooter />
     </main>
   )
 }

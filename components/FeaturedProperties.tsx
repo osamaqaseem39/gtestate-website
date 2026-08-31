@@ -11,11 +11,13 @@ import {
   fetchProperties,
   fetchFeaturedProperties,
   resolvePropertyPrimaryImage,
+  propertyHref,
   type ApiProperty,
 } from '@/lib/api-public'
 
 type ProjectCard = {
   id: string
+  slug?: string
   title: string
   location: string
   marla: string
@@ -57,6 +59,7 @@ function mapApiProperty(p: ApiProperty): ProjectCard {
   const img = resolvePropertyPrimaryImage(p)
   return {
     id: p._id,
+    slug: p.slug,
     title: p.title,
     location: p.location,
     marla: p.marla,
@@ -66,6 +69,12 @@ function mapApiProperty(p: ApiProperty): ProjectCard {
 
 function isPropertyId(id: string): boolean {
   return /^[a-f\d]{24}$/i.test(id)
+}
+
+function projectDetailHref(project: ProjectCard): string | null {
+  if (project.slug) return propertyHref({ _id: project.id, slug: project.slug })
+  if (isPropertyId(project.id)) return propertyHref({ _id: project.id })
+  return null
 }
 
 type FeaturedPropertiesProps = {
@@ -146,7 +155,7 @@ export default function FeaturedProperties({ featuredOnly = true }: FeaturedProp
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 max-w-5xl mx-auto">
             {projects.map((project, index) => {
-              const detailHref = isPropertyId(project.id) ? `/projects/${project.id}` : null
+              const detailHref = projectDetailHref(project)
               const inquireHref = `/contact?project=${encodeURIComponent(project.title)}`
 
               return (
