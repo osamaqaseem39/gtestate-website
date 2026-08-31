@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import DarkSelect from '@/components/DarkSelect'
 import { submitLoanApplication } from '@/lib/api-public'
 
 const APPLICANT_TYPES = ['Salaried Person', 'Self-Employed / Business', 'Informal Income', 'Overseas Pakistani']
@@ -43,8 +44,6 @@ function Field({
 const inputClass =
   'w-full bg-white/5 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/30 focus:border-[#fabb22] focus:outline-none'
 
-const selectClass = `${inputClass} appearance-none`
-
 export default function PmLoanSchemeForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [error, setError] = useState('')
@@ -84,135 +83,55 @@ export default function PmLoanSchemeForm() {
     <form onSubmit={onSubmit} className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Field label="Applicant type" required>
-          <select name="applicantType" required className={selectClass}>
-            <option value="">Select</option>
-            {APPLICANT_TYPES.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="applicantType" options={APPLICANT_TYPES} required />
         </Field>
         <Field label="CNIC status">
-          <select name="cnicStatus" className={selectClass}>
-            <option value="">Select</option>
-            {CNIC_STATUS.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="cnicStatus" options={CNIC_STATUS} />
         </Field>
         <Field label="Marital status">
-          <select name="maritalStatus" className={selectClass}>
-            <option value="">Select</option>
-            {MARITAL.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="maritalStatus" options={MARITAL} />
         </Field>
         <Field label="Gender">
-          <select name="gender" className={selectClass}>
-            <option value="">Select</option>
-            {GENDER.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="gender" options={GENDER} />
         </Field>
         <Field label="Employment status">
-          <select name="employmentStatus" className={selectClass}>
-            <option value="">Select</option>
-            {EMPLOYMENT.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="employmentStatus" options={EMPLOYMENT} />
         </Field>
         <Field label="Monthly income range">
-          <select name="monthlyIncomeRange" className={selectClass}>
-            <option value="">Select</option>
-            {INCOME_RANGES.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="monthlyIncomeRange" options={INCOME_RANGES} />
         </Field>
         <Field label="Purpose of financing">
-          <select name="purposeOfFinancing" className={selectClass}>
-            <option value="">Select</option>
-            {PURPOSE.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="purposeOfFinancing" options={PURPOSE} />
         </Field>
         <Field label="Property type">
-          <select name="propertyType" className={selectClass}>
-            <option value="">Select</option>
-            {PROPERTY_TYPES.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="propertyType" options={PROPERTY_TYPES} />
         </Field>
         <Field label="Property status">
-          <select name="propertyStatus" className={selectClass}>
-            <option value="">Select</option>
-            {PROPERTY_STATUS.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="propertyStatus" options={PROPERTY_STATUS} />
         </Field>
         <Field label="Property ownership">
-          <select name="propertyOwnership" className={selectClass}>
-            <option value="">Select</option>
-            {OWNERSHIP.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="propertyOwnership" options={OWNERSHIP} />
         </Field>
         <Field label="Property size">
-          <select name="propertySize" className={selectClass}>
-            <option value="">Select</option>
-            {SIZE.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="propertySize" options={SIZE} />
         </Field>
         <Field label="Required loan amount">
-          <select name="requiredLoanAmount" className={selectClass}>
-            <option value="">Select</option>
-            {LOAN_AMOUNTS.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="requiredLoanAmount" options={LOAN_AMOUNTS} />
         </Field>
         <Field label="Custom loan amount (if Other)">
           <input name="requiredLoanAmountCustom" className={inputClass} placeholder="PKR amount" />
         </Field>
         <Field label="Preferred loan tenure">
-          <select name="preferredLoanTenure" className={selectClass}>
-            <option value="">Select</option>
-            {TENURE.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="preferredLoanTenure" options={TENURE} />
         </Field>
         <Field label="Current home ownership">
-          <select name="currentHomeOwnership" className={selectClass}>
-            <option value="">Select</option>
-            {HOME_OWNERSHIP.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="currentHomeOwnership" options={HOME_OWNERSHIP} />
         </Field>
         <Field label="Preferred bank">
-          <select name="preferredBank" className={selectClass}>
-            <option value="">Select</option>
-            {BANKS.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="preferredBank" options={BANKS} />
         </Field>
         <Field label="City">
-          <select name="city" className={selectClass}>
-            <option value="">Select</option>
-            {CITIES.map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
+          <DarkSelect name="city" options={CITIES} />
         </Field>
       </div>
 
