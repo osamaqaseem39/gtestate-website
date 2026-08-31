@@ -4,7 +4,7 @@ import './globals.css'
 import Navigation from '@/components/Navigation'
 import { GSAPProvider } from '@/components/GSAPContext'
 import Preloader from '@/components/Preloader'
-import GlobalInquiryForm from '@/components/GlobalInquiryForm'
+import WhatsAppButton from '@/components/WhatsAppButton'
 
 const spartan = localFont({
   src: [
