@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Footer from '@/components/Footer'
+import InquiryForm from '@/components/InquiryForm'
 import ReachUsSection from '@/components/ReachUsSection'
 import PageHero from '@/components/PageHero'
 import MobilePageHero from '@/components/MobilePageHero'
@@ -45,6 +46,7 @@ export default function GalleryPageClient() {
         </section>
 
         <ReachUsSection />
+        <InquiryForm />
         <Footer />
       </PageLoadAnimation>
     </main>

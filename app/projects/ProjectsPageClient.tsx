@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Footer from '@/components/Footer'
+import InquiryForm from '@/components/InquiryForm'
 import ReachUsSection from '@/components/ReachUsSection'
 import FeaturedProperties from '@/components/FeaturedProperties'
 import PageHero from '@/components/PageHero'
@@ -47,6 +48,7 @@ export default function ProjectsPageClient() {
         </section>
 
         <ReachUsSection />
+        <InquiryForm />
         <Footer />
       </PageLoadAnimation>
     </main>

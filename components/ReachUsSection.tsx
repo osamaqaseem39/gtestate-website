@@ -22,7 +22,7 @@ export default function ReachUsSection() {
     <section
       ref={ref}
       className="relative text-white overflow-hidden"
-      style={{ position: 'relative', zIndex: 50 }}
+      style={{ position: 'relative', zIndex: 10 }}
       aria-label="Reach us – location and map"
     >
       <div className="absolute inset-0 -z-20">

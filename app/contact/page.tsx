@@ -1,10 +1,15 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
+import { fetchSiteContent } from '@/lib/api-public'
 import ContactPageClient from './ContactPageClient'
 
-export const metadata: Metadata = {
-  title: 'Contact Us - GT Estate',
-  description: 'Get in touch with our team for personalized real estate assistance and support.',
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await fetchSiteContent('contact')
+  return {
+    title: content.metaTitle || 'Contact Us - GT Estate',
+    description:
+      content.metaDescription || 'Get in touch with our team for personalized real estate assistance and support.',
+  }
 }
 
 export default function Contact() {

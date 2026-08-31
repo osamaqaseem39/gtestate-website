@@ -2,15 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import Footer from '@/components/Footer'
+import InquiryForm from '@/components/InquiryForm'
 import ReachUsSection from '@/components/ReachUsSection'
 import PageHero from '@/components/PageHero'
 import MobilePageHero from '@/components/MobilePageHero'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { fetchTeamMembers, resolveMediaUrl } from '@/lib/api-public'
 
 /** Add photos as public/team/nasir.jpg and public/team/usman.jpg — recommended 800×1000px (4:5) or 800×800px square, JPG/WebP, under ~500KB each. */
-const LEADERSHIP = [
+const FALLBACK_LEADERSHIP = [
   {
     name: 'Sir Nasir Sahib',
     role: 'Leadership',
@@ -25,8 +27,16 @@ const LEADERSHIP = [
   },
 ] as const
 
+type TeamCardMember = {
+  name: string
+  role: string
+  image: string
+  area: string
+}
+
 export default function TeamPageClient() {
   const [isDesktop, setIsDesktop] = useState(false)
+  const [members, setMembers] = useState<TeamCardMember[]>([])
 
   useEffect(() => {
     const update = () => {
@@ -37,6 +47,30 @@ export default function TeamPageClient() {
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    fetchTeamMembers()
+      .then((data) => {
+        if (cancelled) return
+        const mapped: TeamCardMember[] = data.map((m) => ({
+          name: m.name,
+          role: m.designation,
+          image: m.imageUrl ? resolveMediaUrl(m.imageUrl) : '',
+          area: m.bio?.trim() ? m.bio.trim() : '',
+        }))
+        setMembers(mapped)
+      })
+      .catch(() => {
+        if (!cancelled) setMembers([])
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const LEADERSHIP: TeamCardMember[] =
+    members.length > 0 ? members : FALLBACK_LEADERSHIP.map((m) => ({ ...m }))
 
   return (
     <main className="min-h-screen bg-black">
@@ -64,19 +98,21 @@ export default function TeamPageClient() {
                 Leadership
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
-                {LEADERSHIP.map((member) => (
+                {LEADERSHIP.map((member, index) => (
                   <article
-                    key={member.name}
+                    key={`${member.name}-${index}`}
                     className="flex flex-col border border-white/10 bg-white/5 overflow-hidden hover:border-amber-400/40 transition-colors"
                   >
                     <div className="relative aspect-[4/5] w-full bg-zinc-800">
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="object-cover object-top"
-                        sizes="(max-width: 768px) 100vw, 400px"
-                      />
+                      {member.image ? (
+                        <Image
+                          src={member.image}
+                          alt={member.name}
+                          fill
+                          className="object-cover object-top"
+                          sizes="(max-width: 768px) 100vw, 400px"
+                        />
+                      ) : null}
                     </div>
                     <div className="p-6 space-y-2">
                       <h3
@@ -86,7 +122,9 @@ export default function TeamPageClient() {
                         {member.name}
                       </h3>
                       <p className="text-amber-400 text-sm font-medium uppercase tracking-wider">{member.role}</p>
-                      <p className="text-white/60 text-sm leading-relaxed">{member.area}</p>
+                      {member.area ? (
+                        <p className="text-white/60 text-sm leading-relaxed">{member.area}</p>
+                      ) : null}
                     </div>
                   </article>
                 ))}
@@ -105,6 +143,7 @@ export default function TeamPageClient() {
         </section>
 
         <ReachUsSection />
+        <InquiryForm />
         <Footer />
       </PageLoadAnimation>
     </main>

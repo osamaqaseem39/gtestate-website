@@ -1,9 +1,20 @@
  'use client'
 
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Star } from 'lucide-react'
+import { fetchReviews, resolveMediaUrl } from '@/lib/api-public'
 
-const testimonials = [
+type TestimonialItem = {
+  id: string | number
+  name: string
+  role: string
+  text: string
+  image: string
+  rating: number
+}
+
+const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
   {
     id: 1,
     name: 'GT Estates Client',
@@ -97,6 +108,30 @@ const testimonials = [
 ]
 
 export default function MobileTestimonials() {
+  const [testimonials, setTestimonials] = useState<TestimonialItem[]>(FALLBACK_TESTIMONIALS)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchReviews()
+      .then((reviews) => {
+        if (cancelled || !reviews.length) return
+        setTestimonials(
+          reviews.map((r) => ({
+            id: r._id,
+            name: r.name,
+            role: r.role || 'Client',
+            text: r.text,
+            image: r.avatarUrl ? resolveMediaUrl(r.avatarUrl) : FALLBACK_TESTIMONIALS[0].image,
+            rating: r.rating ?? 5,
+          })),
+        )
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   return (
     <section
       className="bg-black text-white px-4 py-12 sm:px-6 md:py-16"

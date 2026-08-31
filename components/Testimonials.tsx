@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -7,8 +8,18 @@ import { Autoplay } from 'swiper/modules'
 import { Star } from 'lucide-react'
 import Image from 'next/image'
 import 'swiper/css'
+import { fetchReviews, resolveMediaUrl } from '@/lib/api-public'
 
-const testimonials = [
+type TestimonialItem = {
+  id: string | number
+  name: string
+  role: string
+  image: string
+  rating: number
+  text: string
+}
+
+const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
   {
     id: 1,
     name: 'GT Estates Client',
@@ -96,6 +107,29 @@ export default function Testimonials() {
     triggerOnce: true,
     threshold: 0.1,
   })
+  const [testimonials, setTestimonials] = useState<TestimonialItem[]>(FALLBACK_TESTIMONIALS)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchReviews()
+      .then((reviews) => {
+        if (cancelled || !reviews.length) return
+        setTestimonials(
+          reviews.map((r) => ({
+            id: r._id,
+            name: r.name,
+            role: r.role || 'Client',
+            image: r.avatarUrl ? resolveMediaUrl(r.avatarUrl) : FALLBACK_TESTIMONIALS[0].image,
+            rating: r.rating ?? 5,
+            text: r.text,
+          })),
+        )
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   return (
     <section

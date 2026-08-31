@@ -6,9 +6,10 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, MapPin, Ruler, Building2, Tag } from 'lucide-react'
 import Footer from '@/components/Footer'
+import InquiryForm from '@/components/InquiryForm'
 import ReachUsSection from '@/components/ReachUsSection'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
-import { resolveMediaUrl, type ApiProperty } from '@/lib/api-public'
+import { resolveMediaUrl, normalizePropertyGalleryEntry, type ApiProperty } from '@/lib/api-public'
 
 type ProjectDetailPageClientProps = {
   property: ApiProperty
@@ -40,11 +41,10 @@ function formatPrice(price: number | null | undefined): string | null {
 export default function ProjectDetailPageClient({ property }: ProjectDetailPageClientProps) {
   const primaryImage = resolveMediaUrl(property.primaryImage || '') || '/house-1.jpeg'
   const galleryImages = useMemo(() => {
-    const urls = (property.gallery || [])
-      .map((src) => resolveMediaUrl(src))
-      .filter(Boolean)
-    const unique = urls.filter((url) => url !== primaryImage)
-    return unique
+    const entries = (property.gallery || [])
+      .map(normalizePropertyGalleryEntry)
+      .filter((e): e is { url: string; alt: string; title: string } => e !== null)
+    return entries.filter((e) => e.url !== primaryImage)
   }, [property.gallery, primaryImage])
 
   const [activeImage, setActiveImage] = useState(primaryImage)
@@ -69,7 +69,11 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
   const priceLabel = formatPrice(property.price)
   const contactHref = `/contact?project=${encodeURIComponent(property.title)}`
 
-  const thumbs = [primaryImage, ...galleryImages]
+  const thumbs = [
+    { url: primaryImage, alt: property.title, title: property.title },
+    ...galleryImages,
+  ]
+  const activeEntry = thumbs.find((t) => t.url === activeImage) ?? thumbs[0]
 
   return (
     <main className="min-h-screen bg-black text-white">
@@ -114,7 +118,8 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
                 <div className="relative aspect-[4/3] md:aspect-[16/11] overflow-hidden bg-white/5 border border-white/10">
                   <Image
                     src={activeImage}
-                    alt={property.title}
+                    alt={activeEntry.alt || property.title}
+                    title={activeEntry.title || undefined}
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 60vw"
@@ -129,27 +134,28 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
 
                 {thumbs.length > 1 && (
                   <div className="mt-4 grid grid-cols-4 sm:grid-cols-5 gap-2 md:gap-3">
-                    {thumbs.map((src) => {
-                      const selected = src === activeImage
+                    {thumbs.map((thumb) => {
+                      const selected = thumb.url === activeImage
                       return (
                         <button
-                          key={src}
+                          key={thumb.url}
                           type="button"
-                          onClick={() => setActiveImage(src)}
+                          onClick={() => setActiveImage(thumb.url)}
                           className={`relative aspect-square overflow-hidden border transition-colors ${
                             selected
                               ? 'border-neon-green'
                               : 'border-white/15 hover:border-white/40'
                           }`}
-                          aria-label="View gallery image"
+                          aria-label={thumb.alt ? `View image: ${thumb.alt}` : 'View gallery image'}
                         >
                           <Image
-                            src={src}
-                            alt=""
+                            src={thumb.url}
+                            alt={thumb.alt}
+                            title={thumb.title || undefined}
                             fill
                             sizes="120px"
                             className="object-cover"
-                            unoptimized={src.startsWith('http')}
+                            unoptimized={thumb.url.startsWith('http')}
                           />
                         </button>
                       )
@@ -242,6 +248,7 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
         </section>
 
         <ReachUsSection />
+        <InquiryForm />
         <Footer />
       </PageLoadAnimation>
     </main>

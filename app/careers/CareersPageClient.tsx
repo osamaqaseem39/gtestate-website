@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Footer from '@/components/Footer'
+import InquiryForm from '@/components/InquiryForm'
 import PageHero from '@/components/PageHero'
 import MobilePageHero from '@/components/MobilePageHero'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
@@ -224,6 +225,7 @@ export default function CareersPageClient() {
           </div>
         </section>
 
+        <InquiryForm />
         <Footer />
       </PageLoadAnimation>
     </main>
