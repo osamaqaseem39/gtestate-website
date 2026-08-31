@@ -1,5 +1,5 @@
 export const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_URL || 'https://gt-estate-server.vercel.app'
+  process.env.NEXT_PUBLIC_API_URL || 'https://estate-server-nine.vercel.app'
 ).replace(/\/$/, '')
 
 export const MEDIA_BASE_URL = (
@@ -8,10 +8,27 @@ export const MEDIA_BASE_URL = (
 
 export function resolveMediaUrl(pathOrUrl: string): string {
   if (!pathOrUrl) return ''
-  if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) return pathOrUrl
-  if (!MEDIA_BASE_URL) return pathOrUrl
-  const path = pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`
+  const raw = pathOrUrl.trim()
+  if (!raw) return ''
+  // Browser-only blob: preview URLs must never be persisted or rendered on the public site
+  if (raw.startsWith('blob:') || raw.startsWith('data:')) return ''
+  if (raw.startsWith('http://') || raw.startsWith('https://')) return raw
+  if (!MEDIA_BASE_URL) return raw
+  const path = raw.startsWith('/') ? raw : `/${raw}`
   return `${MEDIA_BASE_URL}${path}`
+}
+
+/** Prefer Express `primaryImage` / Nest `images[]` primary entry. */
+export function resolvePropertyPrimaryImage(property: {
+  primaryImage?: string
+  images?: Array<{ url?: string; isPrimary?: boolean }>
+}): string {
+  const direct = resolveMediaUrl(property.primaryImage || '')
+  if (direct) return direct
+  const images = property.images
+  if (!Array.isArray(images) || images.length === 0) return ''
+  const primary = images.find((img) => img?.isPrimary && img.url) || images.find((img) => img?.url)
+  return resolveMediaUrl(primary?.url || '')
 }
 
 /** A property gallery image. Legacy docs store a plain URL string; newer ones store this object with alt/title. */
@@ -27,6 +44,7 @@ export type ApiProperty = {
   location: string
   marla: string
   primaryImage?: string
+  images?: Array<{ url?: string; isPrimary?: boolean }>
   featured?: boolean
   description?: string
   status?: string
@@ -98,6 +116,7 @@ export type ApiReview = {
   name: string
   role?: string
   image?: string
+  avatarUrl?: string
   rating: number
   text: string
   published?: boolean
@@ -108,6 +127,7 @@ export type ApiTeamMember = {
   name: string
   designation: string
   image?: string
+  imageUrl?: string
   bio?: string
   published?: boolean
 }
@@ -143,12 +163,28 @@ function withId<T extends { id?: string; _id?: string }>(row: T): T & { id: stri
   return { ...row, id: row.id ?? row._id ?? '' }
 }
 
+function normalizeReview(row: ApiReview & { _id?: string }): ApiReview {
+  const withIds = withId(row)
+  return {
+    ...withIds,
+    image: withIds.image || withIds.avatarUrl || '',
+  }
+}
+
+function normalizeTeamMember(row: ApiTeamMember & { _id?: string }): ApiTeamMember {
+  const withIds = withId(row)
+  return {
+    ...withIds,
+    image: withIds.image || withIds.imageUrl || '',
+  }
+}
+
 export async function fetchTestimonials(): Promise<ApiReview[]> {
   if (!API_BASE_URL) return []
   const res = await fetch(`${API_BASE_URL}/reviews?published=true`, { next: { revalidate: 60 } })
   if (!res.ok) return []
   const data = (await res.json()) as ApiReview[]
-  return Array.isArray(data) ? data.map(withId) : []
+  return Array.isArray(data) ? data.map(normalizeReview) : []
 }
 
 export async function fetchTeamMembers(): Promise<ApiTeamMember[]> {
@@ -156,7 +192,7 @@ export async function fetchTeamMembers(): Promise<ApiTeamMember[]> {
   const res = await fetch(`${API_BASE_URL}/team?published=true`, { next: { revalidate: 60 } })
   if (!res.ok) return []
   const data = (await res.json()) as ApiTeamMember[]
-  return Array.isArray(data) ? data.map(withId) : []
+  return Array.isArray(data) ? data.map(normalizeTeamMember) : []
 }
 
 export async function fetchWhatWeDoContent(): Promise<ApiWhatWeDoContent | null> {

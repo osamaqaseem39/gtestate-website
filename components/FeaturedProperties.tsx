@@ -10,7 +10,7 @@ import {
   API_BASE_URL,
   fetchProperties,
   fetchFeaturedProperties,
-  resolveMediaUrl,
+  resolvePropertyPrimaryImage,
   type ApiProperty,
 } from '@/lib/api-public'
 
@@ -54,7 +54,7 @@ const FALLBACK_PROJECTS: ProjectCard[] = [
 ]
 
 function mapApiProperty(p: ApiProperty): ProjectCard {
-  const img = resolveMediaUrl(p.primaryImage || '')
+  const img = resolvePropertyPrimaryImage(p)
   return {
     id: p._id,
     title: p.title,
@@ -85,7 +85,11 @@ export default function FeaturedProperties({ featuredOnly = true }: FeaturedProp
     let cancelled = false
     void (async () => {
       try {
-        const api = featuredOnly ? await fetchFeaturedProperties() : await fetchProperties()
+        let api = featuredOnly ? await fetchFeaturedProperties() : await fetchProperties()
+        // Homepage "featured" can be empty in CMS — still show real properties with media
+        if (featuredOnly && api.length === 0) {
+          api = await fetchProperties()
+        }
         if (cancelled || !api.length) return
         setProjects(api.map(mapApiProperty))
       } catch {

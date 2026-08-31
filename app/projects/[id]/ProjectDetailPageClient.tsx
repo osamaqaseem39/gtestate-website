@@ -9,7 +9,7 @@ import Footer from '@/components/Footer'
 import InquiryForm from '@/components/InquiryForm'
 import ReachUsSection from '@/components/ReachUsSection'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
-import { resolveMediaUrl, normalizePropertyGalleryEntry, type ApiProperty } from '@/lib/api-public'
+import { resolvePropertyPrimaryImage, normalizePropertyGalleryEntry, type ApiProperty } from '@/lib/api-public'
 
 type ProjectDetailPageClientProps = {
   property: ApiProperty
@@ -39,7 +39,7 @@ function formatPrice(price: number | null | undefined): string | null {
 }
 
 export default function ProjectDetailPageClient({ property }: ProjectDetailPageClientProps) {
-  const primaryImage = resolveMediaUrl(property.primaryImage || '') || '/house-1.jpeg'
+  const primaryImage = resolvePropertyPrimaryImage(property) || '/house-1.jpeg'
   const galleryImages = useMemo(() => {
     const entries = (property.gallery || [])
       .map(normalizePropertyGalleryEntry)
