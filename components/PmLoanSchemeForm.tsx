@@ -47,6 +47,7 @@ const inputClass =
 export default function PmLoanSchemeForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [error, setError] = useState('')
+  const [formKey, setFormKey] = useState(0)
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -57,10 +58,20 @@ export default function PmLoanSchemeForm() {
     fd.forEach((v, k) => {
       payload[k] = String(v)
     })
+    if (!payload.applicantType?.trim()) {
+      setStatus('error')
+      setError('Please select an applicant type.')
+      return
+    }
+    if (!payload.fullName?.trim() || !payload.mobileNumber?.trim()) {
+      setStatus('error')
+      setError('Full name and mobile number are required.')
+      return
+    }
     const result = await submitLoanApplication(payload)
     if (result.ok) {
       setStatus('success')
-      e.currentTarget.reset()
+      setFormKey((k) => k + 1)
     } else {
       setStatus('error')
       setError(result.error || 'Submission failed')
@@ -80,7 +91,7 @@ export default function PmLoanSchemeForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-8">
+    <form key={formKey} onSubmit={onSubmit} className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Field label="Applicant type" required>
           <DarkSelect name="applicantType" options={APPLICANT_TYPES} required />

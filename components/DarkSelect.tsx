@@ -45,22 +45,7 @@ export default function DarkSelect({
 
   return (
     <div ref={rootRef} className="relative">
-      <select
-        name={name}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        required={required}
-        className="sr-only"
-        tabIndex={-1}
-        aria-hidden="true"
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+      <input type="hidden" name={name} value={value} required={required} />
 
       <button
         type="button"
@@ -69,6 +54,7 @@ export default function DarkSelect({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listboxId}
+        aria-required={required || undefined}
       >
         <span className={value ? 'text-white' : 'text-white/30'}>{value || placeholder}</span>
         <ChevronDown
