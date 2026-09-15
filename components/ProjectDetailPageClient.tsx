@@ -74,6 +74,17 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
   const paymentPlan = property.paymentPlan
   const showPaymentPlan = paymentPlan?.enabled && (paymentPlan.rows?.length ?? 0) > 0
 
+  const floors = property.floors || []
+  const [activeFloorIndex, setActiveFloorIndex] = useState(0)
+  const activeFloor = floors[activeFloorIndex] ?? floors[0]
+  const activeFloorImages = useMemo(
+    () =>
+      (activeFloor?.images || [])
+        .map(normalizePropertyGalleryEntry)
+        .filter((e): e is { url: string; alt: string; title: string } => e !== null),
+    [activeFloor],
+  )
+
   const [activeImage, setActiveImage] = useState(primaryImage)
   const [isDesktop, setIsDesktop] = useState(false)
 
@@ -250,6 +261,76 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
             </div>
           </div>
         </section>
+
+        {floors.length > 0 && activeFloor && (
+          <section className="border-b border-white/10 py-14 md:py-20">
+            <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 max-w-6xl mx-auto">
+              <p className="text-[11px] md:text-xs font-semibold text-neon-green tracking-[0.35em] uppercase mb-3">
+                Layout
+              </p>
+              <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-tight mb-8" style={{ fontFamily: 'var(--font-spartan)' }}>
+                Floor by floor
+              </h2>
+
+              <div className="flex gap-2 overflow-x-auto pb-4 mb-8 border-b border-white/10" role="tablist">
+                {floors.map((floor, i) => (
+                  <button
+                    key={floor._id || `${floor.name}-${i}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === activeFloorIndex}
+                    onClick={() => setActiveFloorIndex(i)}
+                    className={`shrink-0 px-4 py-2 text-xs md:text-sm uppercase tracking-wider transition-colors ${
+                      i === activeFloorIndex
+                        ? 'bg-neon-green text-black font-semibold'
+                        : 'border border-white/20 text-white/70 hover:text-white hover:border-white/40'
+                    }`}
+                  >
+                    {floor.name}
+                  </button>
+                ))}
+              </div>
+
+              <div className={`grid grid-cols-1 gap-8 lg:gap-12 ${activeFloorImages.length > 0 ? 'lg:grid-cols-12' : ''}`} role="tabpanel">
+                {activeFloorImages.length > 0 && (
+                  <div className="lg:col-span-7 space-y-3">
+                    {activeFloorImages.map((img, i) => (
+                      <figure key={`${img.url}-${i}`} className="border border-white/10 bg-white/[0.03]">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={img.url} alt={img.alt || `${activeFloor.name} — ${property.title}`} title={img.title || undefined} loading="lazy" className="block w-full h-auto" />
+                        {img.title && <figcaption className="px-4 py-2 text-xs text-white/55">{img.title}</figcaption>}
+                      </figure>
+                    ))}
+                  </div>
+                )}
+                <div className={activeFloorImages.length > 0 ? 'lg:col-span-5' : 'max-w-3xl'}>
+                  <h3 className="text-xl md:text-2xl font-semibold uppercase tracking-tight mb-2">{activeFloor.name}</h3>
+                  {activeFloor.area?.trim() && (
+                    <p className="flex items-center gap-2 text-sm text-white/60 mb-5">
+                      <Ruler className="h-4 w-4 text-neon-green" />
+                      {activeFloor.area}
+                    </p>
+                  )}
+                  {activeFloor.description?.trim() && (
+                    <p className="text-white/75 text-sm md:text-base leading-relaxed whitespace-pre-line mb-6">
+                      {activeFloor.description.trim()}
+                    </p>
+                  )}
+                  {(activeFloor.features?.length ?? 0) > 0 && (
+                    <ul className="divide-y divide-white/10 border-y border-white/10">
+                      {activeFloor.features!.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3 py-3 text-sm md:text-base text-white/85">
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-neon-green" aria-hidden />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {inventoryGroups.size > 0 && (
           <section className="border-b border-white/10 py-14 md:py-20">

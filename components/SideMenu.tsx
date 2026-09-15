@@ -14,6 +14,7 @@ const menuItems = [
   { name: 'ABOUT US', href: '/about' },
   { name: 'WHAT WE DO', href: '/what-we-do' },
   { name: 'PROJECTS', href: '/projects' },
+  { name: 'PAYMENT PLANS', href: '/payment-plans' },
   { name: 'GALLERY', href: '/gallery' },
   { name: 'EVENTS', href: '/events' },
   { name: 'BLOG', href: '/blog' },

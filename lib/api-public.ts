@@ -54,7 +54,18 @@ export type ApiProperty = {
   gallery?: Array<string | ApiPropertyGalleryEntry>
   inventory?: ApiInventoryItem[]
   paymentPlan?: ApiPaymentPlan
+  floors?: ApiPropertyFloor[]
   sortOrder?: number
+}
+
+/** One floor of a townhouse/home layout, in display order. */
+export type ApiPropertyFloor = {
+  _id?: string
+  name: string
+  area?: string
+  description?: string
+  features?: string[]
+  images?: ApiPropertyGalleryEntry[]
 }
 
 export type ApiInventoryItem = {
@@ -113,6 +124,7 @@ export type ApiPaymentPlanTab = {
   slug: string
   description?: string
   rows?: Array<{ label?: string; percentage?: string; amount?: string; dueOn?: string; notes?: string }>
+  images?: Array<{ url: string; alt?: string; title?: string }>
   published?: boolean
   sortOrder?: number
 }
@@ -205,6 +217,29 @@ export async function fetchEvents(): Promise<ApiEvent[]> {
   if (!res.ok) return []
   const data = (await res.json()) as ApiEvent[]
   return Array.isArray(data) ? data.map(withId) : []
+}
+
+export type ApiJobPosting = {
+  id: string
+  title: string
+  department?: string
+  location?: string
+  employmentType?: string
+  experience?: string
+  description?: string
+  requirements?: string[]
+}
+
+export async function fetchJobPostings(): Promise<ApiJobPosting[]> {
+  if (!API_BASE_URL) return []
+  try {
+    const res = await fetch(`${API_BASE_URL}/careers/jobs?published=true`, { cache: 'no-store' })
+    if (!res.ok) return []
+    const data = (await res.json()) as ApiJobPosting[]
+    return Array.isArray(data) ? data.map(withId) : []
+  } catch {
+    return []
+  }
 }
 
 export async function fetchEventBySlug(slug: string): Promise<ApiEvent | null> {

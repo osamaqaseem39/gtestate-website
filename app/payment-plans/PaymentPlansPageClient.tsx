@@ -5,7 +5,7 @@ import PageHero from '@/components/PageHero'
 import MobilePageHero from '@/components/MobilePageHero'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
 import SitePageFooter from '@/components/SitePageFooter'
-import { fetchPaymentPlanTabs, type ApiPaymentPlanTab } from '@/lib/api-public'
+import { fetchPaymentPlanTabs, resolveMediaUrl, type ApiPaymentPlanTab } from '@/lib/api-public'
 
 export default function PaymentPlansPageClient() {
   const [isDesktop, setIsDesktop] = useState(false)
@@ -27,6 +27,9 @@ export default function PaymentPlansPageClient() {
   }, [])
 
   const current = tabs[active]
+  const currentImages = (current?.images || [])
+    .map((img) => ({ src: resolveMediaUrl(img.url), alt: img.alt || current.title, title: img.title || '' }))
+    .filter((img) => img.src)
 
   return (
     <main className="min-h-screen bg-black text-white">
@@ -58,6 +61,24 @@ export default function PaymentPlansPageClient() {
                   ))}
                 </div>
                 {current?.description && <p className="text-white/70 mb-6 text-sm">{current.description}</p>}
+                {currentImages.length > 0 && (
+                  <div className="space-y-4 mb-8">
+                    {currentImages.map((img, i) => (
+                      <a
+                        key={`${img.src}-${i}`}
+                        href={img.src}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block border border-white/10 hover:border-[#fabb22]/50 transition-colors"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={img.src} alt={img.alt} className="block w-full h-auto" loading={i === 0 ? 'eager' : 'lazy'} />
+                        {img.title && <p className="px-4 py-2 text-xs text-white/60">{img.title}</p>}
+                      </a>
+                    ))}
+                  </div>
+                )}
+                {(current?.rows?.length ?? 0) > 0 && (
                 <div className="overflow-x-auto border border-white/10">
                   <table className="w-full min-w-[480px] text-left text-sm">
                     <thead className="bg-white/5 text-white/60 uppercase tracking-wider text-xs">
@@ -82,6 +103,10 @@ export default function PaymentPlansPageClient() {
                     </tbody>
                   </table>
                 </div>
+                )}
+                {currentImages.length === 0 && (current?.rows?.length ?? 0) === 0 && (
+                  <p className="text-white/50 text-sm">Details for this plan will be available soon.</p>
+                )}
               </>
             )}
           </div>

@@ -47,9 +47,7 @@ export default function Navigation() {
     { name: 'Projects', href: '/projects' },
     { name: 'Gallery', href: '/gallery' },
     { name: 'Events', href: '/events' },
-    { name: 'Blog', href: '/blog' },
     { name: 'PM Loan', href: '/pm-loan-scheme' },
-    { name: 'Careers', href: '/careers' },
   ]
 
   return (

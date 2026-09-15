@@ -6,9 +6,10 @@ import InquiryForm from '@/components/InquiryForm'
 import PageHero from '@/components/PageHero'
 import MobilePageHero from '@/components/MobilePageHero'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
-import { API_BASE_URL } from '@/lib/api-public'
+import { API_BASE_URL, fetchJobPostings, type ApiJobPosting } from '@/lib/api-public'
 
-const POSITIONS = [
+/** Used only until jobs are posted from the dashboard ("Post a Job"). */
+const FALLBACK_POSITIONS = [
   'Sales Executive',
   'Marketing Officer',
   'Tele Sales Representative',
@@ -19,11 +20,24 @@ const POSITIONS = [
 
 const EXPERIENCE = ['Fresher', '1–2 Years', '3–5 Years', '5+ Years'] as const
 
+const CV_ACCEPT = '.pdf,.doc,.docx,.jpg,.jpeg,.png'
+const CV_EXTENSIONS = /.(pdf|doc|docx|jpe?g|png)$/i
+/** Hosting caps request bodies at ~4.5 MB, so keep uploads comfortably below that. */
+const MAX_CV_BYTES = 4 * 1024 * 1024
+
 export default function CareersPageClient() {
   const [isDesktop, setIsDesktop] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [jobs, setJobs] = useState<ApiJobPosting[]>([])
+  const [selectedPosition, setSelectedPosition] = useState('')
+
+  useEffect(() => {
+    fetchJobPostings().then(setJobs)
+  }, [])
+
+  const positions = jobs.length > 0 ? [...jobs.map((j) => j.title), 'Other'] : [...FALLBACK_POSITIONS]
 
   useEffect(() => {
     const update = () => {
@@ -40,6 +54,17 @@ export default function CareersPageClient() {
     setSubmitError(null)
 
     const form = e.currentTarget
+    const cv = (form.elements.namedItem('cv') as HTMLInputElement | null)?.files?.[0]
+    if (cv) {
+      if (!CV_EXTENSIONS.test(cv.name)) {
+        setSubmitError('CV must be a PDF, DOC, DOCX, JPG, JPEG, or PNG file.')
+        return
+      }
+      if (cv.size > MAX_CV_BYTES) {
+        setSubmitError('CV file is too large. Please upload a file under 4 MB.')
+        return
+      }
+    }
 
     if (!API_BASE_URL) {
       setSubmitted(true)
@@ -55,11 +80,16 @@ export default function CareersPageClient() {
       })
       const data = (await res.json().catch(() => ({}))) as { error?: string; message?: string }
       if (!res.ok) {
-        setSubmitError(data.error || 'Something went wrong. Please try again or contact us directly.')
+        setSubmitError(
+          res.status === 413
+            ? 'CV file is too large. Please upload a file under 4 MB.'
+            : data.error || 'Something went wrong. Please try again or contact us directly.',
+        )
         return
       }
       setSubmitted(true)
       form.reset()
+      setSelectedPosition('')
     } catch {
       setSubmitError('Network error. Check your connection or try again later.')
     } finally {
@@ -88,7 +118,38 @@ export default function CareersPageClient() {
 
         <section className="relative border-t border-white/10">
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-16 md:py-24">
-            <div className="max-w-2xl mx-auto">
+            {jobs.length > 0 && (
+              <div className="max-w-4xl mx-auto mb-16">
+                <h2 className="text-xs font-semibold uppercase tracking-[0.3em] text-[#fabb22] mb-6">Open positions</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {jobs.map((job) => {
+                    const meta = [job.department, job.location, job.employmentType, job.experience].filter(Boolean)
+                    return (
+                      <article key={job.id} className="flex flex-col border border-white/10 bg-white/[0.03] p-5">
+                        <h3 className="text-lg font-semibold uppercase tracking-tight">{job.title}</h3>
+                        {meta.length > 0 && <p className="mt-1 text-xs uppercase tracking-wider text-white/50">{meta.join(' · ')}</p>}
+                        {job.description && <p className="mt-3 text-sm text-white/70 whitespace-pre-line">{job.description}</p>}
+                        {(job.requirements?.length ?? 0) > 0 && (
+                          <ul className="mt-3 list-disc pl-5 space-y-1 text-sm text-white/65">
+                            {job.requirements!.map((r, i) => (
+                              <li key={i}>{r}</li>
+                            ))}
+                          </ul>
+                        )}
+                        <a
+                          href="#apply"
+                          onClick={() => setSelectedPosition(job.title)}
+                          className="mt-5 self-start text-xs font-semibold uppercase tracking-wider text-[#fabb22] hover:underline"
+                        >
+                          Apply for this role →
+                        </a>
+                      </article>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+            <div id="apply" className="max-w-2xl mx-auto scroll-mt-28">
               {submitted ? (
                 <p className="text-white/80 text-center leading-relaxed">
                   Thank you for applying. Our HR team will contact you if your profile matches our requirements.
@@ -143,12 +204,13 @@ export default function CareersPageClient() {
                       name="position"
                       required
                       className="w-full px-4 py-3 bg-white/5 border border-white/20 text-white focus:outline-none focus:border-[#fabb22]"
-                      defaultValue=""
+                      value={selectedPosition}
+                      onChange={(e) => setSelectedPosition(e.target.value)}
                     >
                       <option value="" disabled className="bg-black">
                         Select position
                       </option>
-                      {POSITIONS.map((p) => (
+                      {positions.map((p) => (
                         <option key={p} value={p} className="bg-black">
                           {p}
                         </option>
@@ -188,12 +250,12 @@ export default function CareersPageClient() {
                   </div>
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-white/70 mb-2">
-                      Upload CV / resume (PDF, DOC)
+                      Upload CV / resume (PDF, DOC, DOCX, JPG, PNG — max 4 MB)
                     </label>
                     <input
                       name="cv"
                       type="file"
-                      accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                      accept={CV_ACCEPT}
                       className="w-full text-sm text-white/80 file:mr-4 file:border-0 file:bg-[#fabb22] file:px-4 file:py-2 file:text-black file:font-medium"
                     />
                   </div>

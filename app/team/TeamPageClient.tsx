@@ -6,7 +6,6 @@ import PageHero from '@/components/PageHero'
 import MobilePageHero from '@/components/MobilePageHero'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
 import Link from 'next/link'
-import Image from 'next/image'
 import { fetchTeamMembers, resolveMediaUrl, type ApiTeamMember } from '@/lib/api-public'
 
 /** Fallback shown if the API has no team members yet, so the page never renders empty. */
@@ -85,15 +84,10 @@ export default function TeamPageClient() {
                       key={member.id}
                       className="flex flex-col border border-white/10 bg-white/5 overflow-hidden hover:border-amber-400/40 transition-colors"
                     >
-                      <div className="relative aspect-[4/5] w-full bg-zinc-800">
-                        <Image
-                          src={src}
-                          alt={member.name}
-                          fill
-                          className="object-cover object-top"
-                          sizes="(max-width: 768px) 100vw, 400px"
-                          unoptimized={src.startsWith('http')}
-                        />
+                      <div className="w-full bg-zinc-800">
+                        {/* Natural dimensions (width/height auto) so portraits of any ratio aren't cropped or stretched */}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={src} alt={member.name} loading="lazy" className="block w-full h-auto" />
                       </div>
                       <div className="p-6 space-y-2">
                         <h3
