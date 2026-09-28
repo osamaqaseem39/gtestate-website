@@ -21,9 +21,15 @@ const FALLBACK_POSITIONS = [
 const EXPERIENCE = ['Fresher', '1–2 Years', '3–5 Years', '5+ Years'] as const
 
 const CV_ACCEPT = '.pdf,.doc,.docx,.jpg,.jpeg,.png'
-const CV_EXTENSIONS = /.(pdf|doc|docx|jpe?g|png)$/i
+const CV_EXTENSIONS = /\.(pdf|doc|docx|jpe?g|png)$/i
 /** Hosting caps request bodies at ~4.5 MB, so keep uploads comfortably below that. */
 const MAX_CV_BYTES = 4 * 1024 * 1024
+
+function fieldValue(form: HTMLFormElement, name: string): string {
+  const el = form.elements.namedItem(name)
+  if (!el || !('value' in el)) return ''
+  return String((el as HTMLInputElement).value || '').trim()
+}
 
 export default function CareersPageClient() {
   const [isDesktop, setIsDesktop] = useState(false)
@@ -54,6 +60,24 @@ export default function CareersPageClient() {
     setSubmitError(null)
 
     const form = e.currentTarget
+    const fullName = fieldValue(form, 'fullName')
+    const email = fieldValue(form, 'email')
+    const phone = fieldValue(form, 'phone')
+    const position = selectedPosition.trim() || fieldValue(form, 'position')
+    const city = fieldValue(form, 'city')
+    const experience = fieldValue(form, 'experience')
+    const coverNote = fieldValue(form, 'coverNote')
+    const consent = (form.elements.namedItem('consent') as HTMLInputElement | null)?.checked
+
+    if (!fullName || !email || !phone || !position || !city || !experience) {
+      setSubmitError('Please fill in all required fields.')
+      return
+    }
+    if (!consent) {
+      setSubmitError('Please agree that your information may be used for recruitment.')
+      return
+    }
+
     const cv = (form.elements.namedItem('cv') as HTMLInputElement | null)?.files?.[0]
     if (cv) {
       if (!CV_EXTENSIONS.test(cv.name)) {
@@ -67,14 +91,25 @@ export default function CareersPageClient() {
     }
 
     if (!API_BASE_URL) {
-      setSubmitted(true)
+      setSubmitError('Application service is not configured. Please email careers@gtestates.com.pk.')
       return
     }
 
     setSubmitting(true)
     try {
-      const fd = new FormData(form)
-      const res = await fetch(`${API_BASE_URL}/api/careers/applications`, {
+      // Build FormData manually so empty file inputs and stray fields don't break multer/validation.
+      const fd = new FormData()
+      fd.set('fullName', fullName)
+      fd.set('email', email)
+      fd.set('phone', phone)
+      fd.set('position', position)
+      fd.set('city', city)
+      fd.set('experience', experience)
+      if (coverNote) fd.set('coverNote', coverNote)
+      fd.set('consent', 'true')
+      if (cv) fd.set('cv', cv, cv.name)
+
+      const res = await fetch(`${API_BASE_URL}/careers/applications`, {
         method: 'POST',
         body: fd,
       })
@@ -83,7 +118,7 @@ export default function CareersPageClient() {
         setSubmitError(
           res.status === 413
             ? 'CV file is too large. Please upload a file under 4 MB.'
-            : data.error || 'Something went wrong. Please try again or contact us directly.',
+            : data.error || data.message || 'Something went wrong. Please try again or contact us directly.',
         )
         return
       }
