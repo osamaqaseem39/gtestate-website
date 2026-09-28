@@ -57,6 +57,26 @@ export type ApiProperty = {
   paymentPlan?: ApiPaymentPlan
   floors?: ApiPropertyFloor[]
   sortOrder?: number
+  /** Construction stage: on_ground | under_construction | planned. */
+  developmentStatus?: string | null
+  /** Set when this record is a block / sub-project of a main development. */
+  parentId?: string | null
+  parent?: ApiPropertyParent | null
+  /** Blocks of a main development (only on detail responses), sorted by sortOrder. */
+  children?: ApiProperty[]
+}
+
+export type ApiPropertyParent = {
+  id?: string
+  _id?: string
+  title: string
+  slug?: string
+}
+
+export const DEVELOPMENT_STATUS_LABELS: Record<string, string> = {
+  on_ground: 'On ground',
+  under_construction: 'Under construction',
+  planned: 'Planned',
 }
 
 /** One floor of a townhouse/home layout, in display order. */
@@ -130,7 +150,7 @@ export type ApiPaymentPlanTab = {
   sortOrder?: number
 }
 
-export function propertyHref(property: { _id?: string; id?: string; slug?: string }): string {
+export function propertyHref(property: { _id?: string; id?: string; slug?: string | null }): string {
   if (property.slug) return `/project/${property.slug}`
   return `/projects/${property._id || property.id}`
 }
@@ -347,7 +367,12 @@ function withId<T extends { id?: string; _id?: string }>(row: T): T & { id: stri
 
 function normalizeProperty(row: ApiProperty & { id?: string; _id?: string }): ApiProperty {
   const withIds = withId(row)
-  return { ...withIds, _id: withIds._id || withIds.id }
+  return {
+    ...withIds,
+    _id: withIds._id || withIds.id,
+    parent: withIds.parent ? withId(withIds.parent) : withIds.parent,
+    children: Array.isArray(withIds.children) ? withIds.children.map(normalizeProperty) : undefined,
+  }
 }
 
 function normalizeReview(row: ApiReview & { _id?: string }): ApiReview {

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowLeft, ArrowRight, MapPin, Ruler, Building2, Tag } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ChevronRight, HardHat, MapPin, Ruler, Building2, Tag } from 'lucide-react'
 import Footer from '@/components/Footer'
 import InquiryForm from '@/components/InquiryForm'
 import ReachUsSection from '@/components/ReachUsSection'
@@ -12,6 +12,8 @@ import PageLoadAnimation from '@/components/PageLoadAnimation'
 import {
   resolvePropertyPrimaryImage,
   normalizePropertyGalleryEntry,
+  propertyHref,
+  DEVELOPMENT_STATUS_LABELS,
   type ApiProperty,
   type ApiInventoryItem,
 } from '@/lib/api-public'
@@ -105,6 +107,9 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
   const statusLabel = STATUS_LABELS[property.status || ''] || property.status || 'Available'
   const typeLabel = TYPE_LABELS[property.type || ''] || property.type || 'Residential'
   const priceLabel = formatPrice(property.price)
+  const developmentLabel = DEVELOPMENT_STATUS_LABELS[property.developmentStatus || '']
+  const parent = property.parent ?? null
+  const blocks = property.children ?? []
   const contactHref = `/contact?project=${encodeURIComponent(property.title)}`
 
   const thumbs = [
@@ -131,15 +136,28 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
           />
 
           <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-12 pt-24 md:pt-28 pb-10 md:pb-14">
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+            <motion.nav
+              aria-label="Breadcrumb"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8 flex flex-wrap items-center gap-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60"
+            >
               <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60 hover:text-neon-green transition-colors"
+                href={parent ? propertyHref(parent) : '/projects'}
+                className="inline-flex items-center gap-2 hover:text-neon-green transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
-                All projects
+                {parent ? parent.title : 'All projects'}
               </Link>
-            </motion.div>
+              {parent && (
+                <>
+                  <ChevronRight className="h-3.5 w-3.5 text-white/30" aria-hidden />
+                  <span className="text-white/85" aria-current="page">
+                    {property.title}
+                  </span>
+                </>
+              )}
+            </motion.nav>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="lg:col-span-7">
@@ -193,7 +211,7 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
                 className="lg:col-span-5 flex flex-col"
               >
                 <p className="text-[11px] md:text-xs font-semibold text-neon-green tracking-[0.35em] uppercase mb-3">
-                  Project detail
+                  {parent ? `Block of ${parent.title}` : 'Project detail'}
                 </p>
                 <h1
                   className={`font-bold uppercase tracking-tight leading-tight mb-4 ${isDesktop ? 'text-3xl xl:text-4xl' : 'text-2xl'}`}
@@ -226,6 +244,14 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
                     </dt>
                     <dd className="text-sm md:text-base font-medium">{statusLabel}</dd>
                   </div>
+                  {developmentLabel && (
+                    <div className="border border-white/10 bg-white/[0.03] px-4 py-3">
+                      <dt className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-white/45 mb-1">
+                        <HardHat className="h-3.5 w-3.5 text-neon-green" /> Development
+                      </dt>
+                      <dd className="text-sm md:text-base font-medium">{developmentLabel}</dd>
+                    </div>
+                  )}
                   {priceLabel && (
                     <div className="border border-white/10 bg-white/[0.03] px-4 py-3">
                       <dt className="text-[10px] uppercase tracking-[0.2em] text-white/45 mb-1">Price</dt>
@@ -261,6 +287,70 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
             </div>
           </div>
         </section>
+
+        {blocks.length > 0 && (
+          <section className="border-b border-white/10 py-14 md:py-20">
+            <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 max-w-6xl mx-auto">
+              <p className="text-[11px] md:text-xs font-semibold text-neon-green tracking-[0.35em] uppercase mb-3">
+                Inside {property.title}
+              </p>
+              <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-tight mb-8" style={{ fontFamily: 'var(--font-spartan)' }}>
+                Blocks / sub-projects
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {blocks.map((block) => {
+                  const image = resolvePropertyPrimaryImage(block) || primaryImage
+                  const blockDevelopment = DEVELOPMENT_STATUS_LABELS[block.developmentStatus || '']
+                  return (
+                    <Link
+                      key={block._id || block.id}
+                      href={propertyHref(block)}
+                      className="group border border-white/10 bg-white/[0.03] hover:border-neon-green transition-colors"
+                    >
+                      <div className="relative aspect-[4/3] overflow-hidden bg-white/5">
+                        <Image
+                          src={image}
+                          alt={block.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          unoptimized={image.startsWith('http')}
+                        />
+                        {block.marla && (
+                          <span className="absolute top-3 left-3 px-2.5 py-1 bg-neon-green text-black text-[10px] font-semibold tracking-[0.18em] uppercase">
+                            {block.marla}
+                          </span>
+                        )}
+                      </div>
+                      <div className="p-5">
+                        <h3 className="text-lg font-semibold uppercase tracking-tight mb-2 group-hover:text-neon-green transition-colors">
+                          {block.title}
+                        </h3>
+                        {block.location && (
+                          <p className="flex items-start text-white/60 text-sm mb-3">
+                            <MapPin className="h-4 w-4 mr-2 mt-0.5 text-neon-green shrink-0" />
+                            {block.location}
+                          </p>
+                        )}
+                        <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-wider">
+                          {blockDevelopment && (
+                            <span className="px-2 py-1 border border-white/20 text-white/80">{blockDevelopment}</span>
+                          )}
+                          {block.paymentPlan?.enabled && (block.paymentPlan.rows?.length ?? 0) > 0 && (
+                            <span className="px-2 py-1 border border-neon-green/40 text-neon-green">Payment plan</span>
+                          )}
+                          <span className="ml-auto inline-flex items-center gap-1 text-white/60 group-hover:text-neon-green">
+                            View <ArrowRight className="h-3.5 w-3.5" />
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          </section>
+        )}
 
         {floors.length > 0 && activeFloor && (
           <section className="border-b border-white/10 py-14 md:py-20">
