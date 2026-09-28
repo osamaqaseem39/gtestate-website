@@ -46,7 +46,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Variable | Role |
 |----------|------|
-| `NEXT_PUBLIC_API_URL` | API origin (example default: `https://estate-server-nine.vercel.app`) |
+| `NEXT_PUBLIC_API_URL` | API origin (example default: `https://gt-estate-server.vercel.app`) |
 | `NEXT_PUBLIC_MEDIA_URL` | Media host (default used in code: `https://gt.osamaqaseem.online`) |
 | `NEXT_PUBLIC_APP_URL` | Public site URL |
 | `SMTP_*` / `INQUIRY_NOTIFY_EMAIL` | Optional site-side email |

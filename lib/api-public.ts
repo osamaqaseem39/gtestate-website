@@ -1,5 +1,5 @@
 export const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_URL || 'https://estate-server-nine.vercel.app'
+  process.env.NEXT_PUBLIC_API_URL || 'https://gt-estate-server.vercel.app'
 ).replace(/\/$/, '')
 
 export const MEDIA_BASE_URL = (
@@ -39,6 +39,7 @@ export type ApiPropertyGalleryEntry = {
 }
 
 export type ApiProperty = {
+  id?: string
   _id: string
   title: string
   slug?: string
@@ -129,9 +130,9 @@ export type ApiPaymentPlanTab = {
   sortOrder?: number
 }
 
-export function propertyHref(property: { _id: string; slug?: string }): string {
+export function propertyHref(property: { _id?: string; id?: string; slug?: string }): string {
   if (property.slug) return `/project/${property.slug}`
-  return `/projects/${property._id}`
+  return `/projects/${property._id || property.id}`
 }
 
 /** Normalizes a raw property gallery entry (legacy string or {url,alt,title}) into a resolved, renderable shape. */
@@ -148,6 +149,7 @@ export function normalizePropertyGalleryEntry(
 }
 
 export type ApiGalleryItem = {
+  id?: string
   _id: string
   imageUrl: string
   alt: string
@@ -170,7 +172,7 @@ export async function fetchProperties(options?: { featured?: boolean }): Promise
   const res = await fetch(`${API_BASE_URL}/properties${queryString ? `?${queryString}` : ''}`)
   if (!res.ok) return []
   const data = (await res.json()) as ApiProperty[]
-  return Array.isArray(data) ? data : []
+  return Array.isArray(data) ? data.map(normalizeProperty) : []
 }
 
 export async function fetchPropertyById(id: string): Promise<ApiProperty | null> {
@@ -180,7 +182,9 @@ export async function fetchPropertyById(id: string): Promise<ApiProperty | null>
   })
   if (!res.ok) return null
   const data = (await res.json()) as ApiProperty
-  return data?._id ? data : null
+  if (!data) return null
+  const property = normalizeProperty(data)
+  return property._id || property.id ? property : null
 }
 
 export async function fetchPropertyBySlug(slug: string): Promise<ApiProperty | null> {
@@ -190,7 +194,9 @@ export async function fetchPropertyBySlug(slug: string): Promise<ApiProperty | n
   })
   if (!res.ok) return null
   const data = (await res.json()) as ApiProperty
-  return data?._id ? data : null
+  if (!data) return null
+  const property = normalizeProperty(data)
+  return property._id || property.id ? property : null
 }
 
 export async function fetchNewsArticles(): Promise<ApiNewsArticle[]> {
@@ -283,7 +289,7 @@ export async function fetchGalleryItems(): Promise<ApiGalleryItem[]> {
   const res = await fetch(`${API_BASE_URL}/gallery`)
   if (!res.ok) return []
   const data = (await res.json()) as ApiGalleryItem[]
-  return Array.isArray(data) ? data : []
+  return Array.isArray(data) ? data.map((row) => withId(row)) : []
 }
 
 export type ApiReview = {
@@ -333,9 +339,15 @@ export type ApiPage = {
   published?: boolean
 }
 
-/** Normalizes Mongoose-style `_id` or Prisma-style `id` into `id`, whichever the backend returns. */
-function withId<T extends { id?: string; _id?: string }>(row: T): T & { id: string } {
-  return { ...row, id: row.id ?? row._id ?? '' }
+/** Normalizes Mongoose-style `_id` or Prisma-style `id` into both fields. */
+function withId<T extends { id?: string; _id?: string }>(row: T): T & { id: string; _id: string } {
+  const id = row.id ?? row._id ?? ''
+  return { ...row, id, _id: row._id ?? id }
+}
+
+function normalizeProperty(row: ApiProperty & { id?: string; _id?: string }): ApiProperty {
+  const withIds = withId(row)
+  return { ...withIds, _id: withIds._id || withIds.id }
 }
 
 function normalizeReview(row: ApiReview & { _id?: string }): ApiReview {

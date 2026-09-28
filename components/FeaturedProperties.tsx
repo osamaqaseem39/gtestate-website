@@ -58,7 +58,7 @@ const FALLBACK_PROJECTS: ProjectCard[] = [
 function mapApiProperty(p: ApiProperty): ProjectCard {
   const img = resolvePropertyPrimaryImage(p)
   return {
-    id: p._id,
+    id: p._id || p.id || '',
     slug: p.slug,
     title: p.title,
     location: p.location,
