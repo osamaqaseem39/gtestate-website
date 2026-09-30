@@ -68,3 +68,80 @@ ${data.message || 'No message provided'}
     return { success: false, error: 'Failed to send email.' }
   }
 }
+
+/** Same SMTP credentials as contact/inquiry mail. */
+export async function sendCareerApplicationEmail(data: {
+  fullName: string
+  email: string
+  phone: string
+  position: string
+  city: string
+  experience: string
+  coverNote?: string
+  cv?: { filename: string; content: Buffer; contentType: string }
+}) {
+  const host = process.env.SMTP_HOST
+  const port = parseInt(process.env.SMTP_PORT || '587', 10)
+  const user = process.env.SMTP_USER
+  const pass = process.env.SMTP_PASS
+  const from = process.env.SMTP_FROM || 'GT Estate <noreply@gtestates.com.pk>'
+  const to =
+    process.env.CAREERS_NOTIFY_EMAIL ||
+    process.env.INQUIRY_NOTIFY_EMAIL ||
+    'info@gtestates.com.pk'
+  const secureEnv = process.env.SMTP_SECURE
+
+  if (!host || !user || !pass) {
+    console.error('SMTP Error: Configuration missing.', { host: !!host, user: !!user, pass: !!pass })
+    return { success: false, error: 'SMTP configuration missing.' }
+  }
+
+  const secure = secureEnv === 'true' || secureEnv === '1' || port === 465
+
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure,
+    auth: { user, pass },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+  })
+
+  const subject = `[GT Estate Careers] ${data.position}: ${data.fullName}`
+  const text = `
+New Career Application
+
+Name: ${data.fullName}
+Email: ${data.email}
+Phone: ${data.phone}
+Position: ${data.position}
+City: ${data.city}
+Experience: ${data.experience}
+
+Cover note:
+${data.coverNote || 'No cover note provided'}
+  `.trim()
+
+  try {
+    await transporter.sendMail({
+      from,
+      to,
+      subject,
+      text,
+      replyTo: data.email,
+      attachments: data.cv
+        ? [
+            {
+              filename: data.cv.filename,
+              content: data.cv.content,
+              contentType: data.cv.contentType,
+            },
+          ]
+        : undefined,
+    })
+    return { success: true }
+  } catch (error) {
+    console.error('Failed to send career application email:', error)
+    return { success: false, error: 'Failed to send email.' }
+  }
+}

@@ -6,7 +6,8 @@ import InquiryForm from '@/components/InquiryForm'
 import PageHero from '@/components/PageHero'
 import MobilePageHero from '@/components/MobilePageHero'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
-import { API_BASE_URL, fetchJobPostings, type ApiJobPosting } from '@/lib/api-public'
+import { fetchJobPostings, type ApiJobPosting } from '@/lib/api-public'
+import { submitCareerApplication } from '@/lib/submit-career-application'
 
 /** Used only until jobs are posted from the dashboard ("Post a Job"). */
 const FALLBACK_POSITIONS = [
@@ -90,14 +91,9 @@ export default function CareersPageClient() {
       }
     }
 
-    if (!API_BASE_URL) {
-      setSubmitError('Application service is not configured. Please email careers@gtestates.com.pk.')
-      return
-    }
-
     setSubmitting(true)
     try {
-      // Build FormData manually so empty file inputs and stray fields don't break multer/validation.
+      // Same path as contact: server action uses website SMTP + NEXT_PUBLIC_API_URL
       const fd = new FormData()
       fd.set('fullName', fullName)
       fd.set('email', email)
@@ -109,17 +105,9 @@ export default function CareersPageClient() {
       fd.set('consent', 'true')
       if (cv) fd.set('cv', cv, cv.name)
 
-      const res = await fetch(`${API_BASE_URL}/careers/applications`, {
-        method: 'POST',
-        body: fd,
-      })
-      const data = (await res.json().catch(() => ({}))) as { error?: string; message?: string }
-      if (!res.ok) {
-        setSubmitError(
-          res.status === 413
-            ? 'CV file is too large. Please upload a file under 4 MB.'
-            : data.error || data.message || 'Something went wrong. Please try again or contact us directly.',
-        )
+      const result = await submitCareerApplication(fd)
+      if (!result.ok) {
+        setSubmitError(result.error)
         return
       }
       setSubmitted(true)

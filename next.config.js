@@ -18,6 +18,12 @@ const mediaPattern = mediaUploadsPattern(process.env.NEXT_PUBLIC_MEDIA_URL || 'h
 const apiPattern = mediaUploadsPattern(process.env.NEXT_PUBLIC_API_URL || 'https://gt-estate-server.vercel.app')
 
 const nextConfig = {
+  // Careers form uploads CV via server action (same SMTP/API path as contact).
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '5mb',
+    },
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' },
