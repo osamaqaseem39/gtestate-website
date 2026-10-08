@@ -146,6 +146,8 @@ export type ApiPaymentPlanTab = {
   description?: string
   rows?: Array<{ label?: string; percentage?: string; amount?: string; dueOn?: string; notes?: string }>
   images?: Array<{ url: string; alt?: string; title?: string }>
+  /** Project or block the plan belongs to; empty for general plans. */
+  propertyId?: string | null
   published?: boolean
   sortOrder?: number
 }
@@ -278,9 +280,12 @@ export async function fetchEventBySlug(slug: string): Promise<ApiEvent | null> {
   return data ? withId(data) : null
 }
 
-export async function fetchPaymentPlanTabs(): Promise<ApiPaymentPlanTab[]> {
+/** Published plan tabs; pass a property id to get only the plans linked to that project/block. */
+export async function fetchPaymentPlanTabs(propertyId?: string): Promise<ApiPaymentPlanTab[]> {
   if (!API_BASE_URL) return []
-  const res = await fetch(`${API_BASE_URL}/payment-plans?published=true`, { next: { revalidate: 60 } })
+  const query = new URLSearchParams({ published: 'true' })
+  if (propertyId) query.set('propertyId', propertyId)
+  const res = await fetch(`${API_BASE_URL}/payment-plans?${query}`, { next: { revalidate: 60 } })
   if (!res.ok) return []
   const data = (await res.json()) as ApiPaymentPlanTab[]
   return Array.isArray(data) ? data.map(withId) : []

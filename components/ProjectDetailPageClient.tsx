@@ -11,11 +11,14 @@ import ReachUsSection from '@/components/ReachUsSection'
 import PageLoadAnimation from '@/components/PageLoadAnimation'
 import {
   resolvePropertyPrimaryImage,
+  resolveMediaUrl,
+  fetchPaymentPlanTabs,
   normalizePropertyGalleryEntry,
   propertyHref,
   DEVELOPMENT_STATUS_LABELS,
   type ApiProperty,
   type ApiInventoryItem,
+  type ApiPaymentPlanTab,
 } from '@/lib/api-public'
 
 type ProjectDetailPageClientProps = {
@@ -75,6 +78,22 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
   const inventoryGroups = useMemo(() => groupInventory(property.inventory), [property.inventory])
   const paymentPlan = property.paymentPlan
   const showPaymentPlan = paymentPlan?.enabled && (paymentPlan.rows?.length ?? 0) > 0
+
+  // Plan tabs created under Dashboard → Payment Plans and linked to this project/block.
+  const propertyKey = property._id || property.id || ''
+  const [planTabs, setPlanTabs] = useState<ApiPaymentPlanTab[]>([])
+  useEffect(() => {
+    if (!propertyKey) return
+    let cancelled = false
+    fetchPaymentPlanTabs(propertyKey)
+      .then((tabs) => {
+        if (!cancelled) setPlanTabs(tabs)
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
+  }, [propertyKey])
 
   const floors = property.floors || []
   const [activeFloorIndex, setActiveFloorIndex] = useState(0)
@@ -492,6 +511,59 @@ export default function ProjectDetailPageClient({ property }: ProjectDetailPageC
             </div>
           </section>
         )}
+
+        {planTabs.map((tab) => (
+          <section key={tab.id} className="border-b border-white/10 py-14 md:py-20">
+            <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 max-w-4xl mx-auto">
+              <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-tight mb-6" style={{ fontFamily: 'var(--font-spartan)' }}>
+                {tab.title}
+              </h2>
+              {tab.description && <p className="text-white/70 mb-6 text-sm">{tab.description}</p>}
+              {(tab.images || [])
+                .map((img) => ({ ...img, src: resolveMediaUrl(img.url) }))
+                .filter((img) => img.src)
+                .map((img, i) => (
+                  <a
+                    key={`${img.src}-${i}`}
+                    href={img.src}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block mb-4 border border-white/10 hover:border-[#fabb22]/50 transition-colors"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={img.src} alt={img.alt || tab.title} className="block w-full h-auto" loading="lazy" />
+                    {img.title && <p className="px-4 py-2 text-xs text-white/60">{img.title}</p>}
+                  </a>
+                ))}
+              {(tab.rows?.length ?? 0) > 0 && (
+                <div className="overflow-x-auto border border-white/10">
+                  <table className="w-full min-w-[480px] text-left text-sm">
+                    <thead className="bg-white/5 text-white/60 uppercase tracking-wider text-xs">
+                      <tr>
+                        <th className="px-4 py-3">Milestone</th>
+                        <th className="px-4 py-3">%</th>
+                        <th className="px-4 py-3">Amount</th>
+                        <th className="px-4 py-3">Due</th>
+                        <th className="px-4 py-3">Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(tab.rows || []).map((row, i) => (
+                        <tr key={i} className="border-t border-white/10">
+                          <td className="px-4 py-3">{row.label || '—'}</td>
+                          <td className="px-4 py-3">{row.percentage || '—'}</td>
+                          <td className="px-4 py-3">{row.amount || '—'}</td>
+                          <td className="px-4 py-3">{row.dueOn || '—'}</td>
+                          <td className="px-4 py-3">{row.notes || '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </section>
+        ))}
 
         <ReachUsSection />
         <InquiryForm />
