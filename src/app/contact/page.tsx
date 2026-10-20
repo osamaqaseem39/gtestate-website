@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: 'Get in touch with our team for personalized real estate assistance and support.',
 }
 
+
 export default function Contact() {
   return (
     <main className="min-h-screen">
