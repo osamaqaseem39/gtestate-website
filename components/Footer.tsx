@@ -140,8 +140,8 @@ export default function Footer() {
                   Careers
                 </Link>{' '}
                 page or email{' '}
-                <a href="mailto:careers@gtestates.com.pk" className="text-[#fabb22] hover:underline">
-                  careers@gtestates.com.pk
+                <a href="mailto:hr@gtestates.com.pk" className="text-[#fabb22] hover:underline">
+                  hr@gtestates.com.pk
                 </a>
                 .
               </p>

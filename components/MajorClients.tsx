@@ -39,15 +39,20 @@ export default function MajorClients() {
               </span>
             </div>
             <h2
-              className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight uppercase mb-4"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight uppercase mb-4"
               style={{ fontFamily: 'var(--font-spartan)' }}
             >
-              Jannat Homes
+              Your Dream Home on Easy Installments
             </h2>
-            <p className="text-white/90 text-sm md:text-base leading-relaxed mb-6">
-              A thoughtfully planned residential community offering modern living, prime location benefits, and a
-              peaceful environment. Designed for comfort and long-term value, making it an ideal choice for both
-              living and secure investment.
+            <p className="text-white/90 text-sm md:text-base leading-relaxed mb-4">
+              Own your modern townhouse with GT Estates! Get possession within 1 year, pay easy installments over 3
+              years, and live in your own home while paying.
+            </p>
+            <p
+              className="text-[#fabb22] text-base md:text-lg font-semibold uppercase tracking-wider mb-6"
+              style={{ fontFamily: 'var(--font-spartan)' }}
+            >
+              FREE 3KW Hybrid Solar System
             </p>
             <Link
               href="/contact"
@@ -55,7 +60,7 @@ export default function MajorClients() {
               style={{ fontFamily: 'var(--font-spartan)' }}
             >
               <span className="w-2 h-2 bg-[#fabb22] rotate-45 flex-shrink-0" />
-              Contact Us / Book Now
+              Book Now &amp; Make Your Dream Home a Reality!
             </Link>
           </motion.div>
         </div>
@@ -67,7 +72,7 @@ export default function MajorClients() {
           className="relative w-full h-[50vh] lg:h-auto min-h-[320px]"
         >
           <Image
-            src="/house-1.jpeg"
+            src="/jannat-homes.jpeg"
             alt="Jannat Homes – residential community"
             fill
             className="object-cover"

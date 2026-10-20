@@ -309,7 +309,7 @@ export default function HeroLenisGsap() {
       <div ref={bgRef} className="absolute inset-0 -z-10 overflow-hidden">
         <div className="relative h-[120%] w-full -top-[10%]">
           <Image
-            src="/hero-landscape.jpeg"
+            src="/hero-office.jpeg"
             alt="Luxurious interior design"
             fill
             priority
@@ -374,7 +374,7 @@ export default function HeroLenisGsap() {
                       className="absolute inset-0"
                     >
                       <Image
-                        src="/about-1.jpeg"
+                        src="/about-office.jpeg"
                         alt="Luxurious interior design"
                         fill
                         className="object-cover object-center"

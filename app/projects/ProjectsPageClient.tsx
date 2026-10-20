@@ -31,6 +31,7 @@ export default function ProjectsPageClient() {
             title="Our "
             titleAccent="Projects"
             description="Explore our curated selection of premium properties and real estate developments."
+            image="/projects-hero.jpeg"
           />
         ) : (
           <MobilePageHero

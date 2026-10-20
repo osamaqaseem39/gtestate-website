@@ -10,6 +10,8 @@ type PageHeroProps = {
   description?: string
   /** Minimal = no background image, full = same as ChoiceSection style */
   variant?: 'minimal' | 'full'
+  /** Background image for the full variant */
+  image?: string
 }
 
 export default function PageHero({
@@ -18,6 +20,7 @@ export default function PageHero({
   titleAccent,
   description,
   variant = 'full',
+  image = '/house-2.jpeg',
 }: PageHeroProps) {
   const displayTitle = titleAccent ? (
     <>
@@ -41,7 +44,7 @@ export default function PageHero({
           />
           <div className="absolute inset-0 z-0">
             <Image
-              src="/house-2.jpeg"
+              src={image}
               alt=""
               fill
               priority={false}

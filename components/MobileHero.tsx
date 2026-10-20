@@ -11,7 +11,7 @@ export default function MobileHero() {
       <div className="absolute inset-0 overflow-hidden">
         <div className="relative h-full w-full">
           <Image
-            src="/hero-landscape.jpeg"
+            src="/hero-office.jpeg"
             alt="Luxurious interior design"
             fill
             priority

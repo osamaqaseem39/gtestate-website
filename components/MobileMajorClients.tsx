@@ -18,23 +18,25 @@ export default function MobileMajorClients() {
         <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#fabb22]">
           Major Projects
         </p>
-        <h2 className="mt-2 text-2xl font-bold uppercase tracking-tight">Jannat Homes</h2>
+        <h2 className="mt-2 text-2xl font-bold uppercase tracking-tight">Your Dream Home on Easy Installments</h2>
         <p className="mt-3 text-sm text-white/80 leading-relaxed">
-          A thoughtfully planned residential community offering modern living, prime location benefits, and a
-          peaceful environment. Designed for comfort and long-term value, making it an ideal choice for both
-          living and secure investment.
+          Own your modern townhouse with GT Estates! Get possession within 1 year, pay easy installments over 3
+          years, and live in your own home while paying.
+        </p>
+        <p className="mt-3 text-sm font-semibold uppercase tracking-wider text-[#fabb22]">
+          FREE 3KW Hybrid Solar System
         </p>
         <Link
           href="/contact"
           className="mt-4 inline-flex items-center gap-2 border border-[#fabb22] px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white hover:bg-[#fabb22]/10 transition-colors"
         >
-          Contact Us / Book Now
+          Book Now &amp; Make Your Dream Home a Reality!
         </Link>
       </div>
 
       <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-white/5">
         <Image
-          src="/house-1.jpeg"
+          src="/jannat-homes.jpeg"
           alt="Jannat Homes"
           fill
           className="object-cover"

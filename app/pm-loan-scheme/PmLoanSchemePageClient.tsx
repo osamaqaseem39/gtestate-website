@@ -26,6 +26,7 @@ export default function PmLoanSchemePageClient() {
             title="PM "
             titleAccent="Loan Scheme"
             description="Apply for the Prime Minister housing loan program. Our team will guide you through eligibility and documentation."
+            image="/pm-loan-hero.jpeg"
           />
         ) : (
           <MobilePageHero

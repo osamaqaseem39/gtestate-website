@@ -50,7 +50,7 @@ export default function ReachUsSection() {
               <div className="bg-white text-black rounded-2xl shadow-xl overflow-hidden flex flex-col h-full max-w-md lg:max-w-none mx-auto lg:mx-0 w-full">
                 <div className="relative w-full aspect-[16/10] bg-gray-200 shrink-0">
                   <Image
-                    src="/house-2.jpeg"
+                    src="/gt-office-front.jpeg"
                     alt="GT Estates office"
                     fill
                     className="object-cover"
