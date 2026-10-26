@@ -29,7 +29,7 @@ const MAX_CV_BYTES = 4 * 1024 * 1024
 function fieldValue(form: HTMLFormElement, name: string): string {
   const el = form.elements.namedItem(name)
   if (!el || !('value' in el)) return ''
-  return String((el as HTMLInputElement).value || '').trim()
+  return String((el as { value?: unknown }).value || '').trim()
 }
 
 export default function CareersPageClient() {
