@@ -76,6 +76,7 @@ export default function ContactPageClient() {
           label="Get In Touch"
           title="Contact "
           titleAccent="Our Team"
+          image="/contact-hero.jpeg"
           description="Ready to start your real estate journey? Our expert team is here to help you find your perfect property or sell your current home."
         />
       ) : (

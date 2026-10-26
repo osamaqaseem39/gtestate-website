@@ -128,6 +128,7 @@ export default function CareersPageClient() {
             label="Careers"
             title="Join "
             titleAccent="GT Estates"
+            image="/careers-hero.jpeg"
             description="Build your career with a trusted real estate team. Share your details and we will review your application."
           />
         ) : (

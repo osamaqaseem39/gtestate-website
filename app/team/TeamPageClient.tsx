@@ -59,6 +59,7 @@ export default function TeamPageClient() {
             label="Our People"
             title="Meet "
             titleAccent="Leadership"
+            image="/team-hero.jpeg"
             description="The vision and leadership behind GT Estates — guiding clients with integrity and market expertise."
           />
         ) : (

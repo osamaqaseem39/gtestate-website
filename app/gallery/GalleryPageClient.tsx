@@ -30,6 +30,7 @@ export default function GalleryPageClient() {
             label="Gallery"
             title="Visualize Your"
             titleAccent="Next Property"
+            image="/gallery-hero.jpeg"
             description="Browse our curated collection of properties, interiors, and landmark projects that define GT Estate."
           />
         ) : (
