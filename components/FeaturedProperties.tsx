@@ -139,13 +139,9 @@ export default function FeaturedProperties({ featuredOnly = true }: FeaturedProp
           <p className="text-[11px] md:text-xs font-semibold text-neon-green tracking-[0.35em] uppercase mb-3">
             Our projects
           </p>
-          <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-tight text-white mb-3">
+          <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-tight text-white">
             Plots &amp; opportunities
           </h2>
-          <p className="mt-1 text-white/70 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
-            Residential and commercial plots in Etihad Town Sialkot and Etihad Town Phase 3 Lahore — curated for
-            location and investment value.
-          </p>
         </motion.div>
 
         <motion.div
